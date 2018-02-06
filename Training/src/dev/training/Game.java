@@ -1,6 +1,7 @@
 package dev.training;
 
 import dev.training.display.Display;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -61,10 +62,29 @@ public class Game implements Runnable{
             return;
         }
         g = bs.getDrawGraphics();
-        // g inizia a disegnare
-        g.fillRect(0, 0, width, height);
-        // g finisce di disegnare
+        /**
+         * Con questa operazione si pulisce una porzione di scermo: il sistema 
+         * di riferimento di java parte da in alto a sinistra per cui il frame, 
+         * possiamo dire, viene rappresentato dal quarto quadrante del sistema
+         * di riferimento cartesiano la direzione dell'asse delle y è top-down)
+         */
+        g.clearRect(0, 0, width, height);
+        /**
+         * Inizio disegno
+         */
+        
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(10, 50, 50, 70);
+        
+        /**
+         * Fine disegno
+         * switch buffer con display
+         */
+        // switch buffer con display
         bs.show();
+        /**
+         * Incolla il disegno sul display
+         */
         g.dispose();
     }
     
