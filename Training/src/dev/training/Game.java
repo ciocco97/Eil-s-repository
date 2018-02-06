@@ -1,6 +1,8 @@
 package dev.training;
 
 import dev.training.display.Display;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 /**
  * Per fare in modo che questa classe venga eseguita come un thread dobbiamo 
@@ -15,6 +17,21 @@ public class Game implements Runnable{
     
     private boolean running = false;
     private Thread thread;
+    
+    /**
+     * Si può pensare ad una variabile di tipo BufferStrategy come ad un modo 
+     * che il computer ha di disegnare "cose" sullo schermo e un modo di dire al 
+     * computer come dovrebbe disegnarle.
+     * Un buffer può essere infatti pensato come una schermata del computer che 
+     * ancora non puoi vedere. Maggiore è il numero di buffer (schermate che 
+     * verranno rappresentate in futuro) meno possibilità ci sono di avere lag.
+     */
+    private BufferStrategy bs;
+    /**
+     * Si può pensare ad un oggetto di tipo Graphics come ad un pennello in 
+     * grado di disegnare immagini sul canvas
+     */
+    private Graphics g;
     
     public Game(String title, int width, int height) {
         this.width = width;
@@ -34,7 +51,21 @@ public class Game implements Runnable{
     }
     
     private void render() {
-        
+        bs = display.getCanvas().getBufferStrategy();
+        /**
+         * Se bs è nullo significa che è la prima volta che apriamo il gioco e 
+         * quindi dobbiamo creare un nuovo buffer. Il buffer sarà di grandezza 3
+         */
+        if(bs == null) {
+            display.getCanvas().createBufferStrategy(3);
+            return;
+        }
+        g = bs.getDrawGraphics();
+        // g inizia a disegnare
+        g.fillRect(0, 0, width, height);
+        // g finisce di disegnare
+        bs.show();
+        g.dispose();
     }
     
     /**

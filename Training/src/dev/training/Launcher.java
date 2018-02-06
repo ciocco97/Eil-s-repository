@@ -9,6 +9,7 @@ public class Launcher {
         int height = 1080;
         
         Game game = new Game(title, width, height);
+        game.start();
     }
     
 }

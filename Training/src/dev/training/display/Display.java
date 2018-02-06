@@ -57,4 +57,8 @@ public class Display {
         frame.add(canvas);
         frame.pack(); // In modo da essere sicuri da vedere tutto il canvas
     }
+    
+    public Canvas getCanvas() {
+        return canvas;
+    }
 }
