@@ -185,7 +185,7 @@ public class Game implements Runnable{
              * render e update
              */
             if(timer >= 1000000000) {
-                // System.out.println("Update and Frames: " + update);
+                System.out.println("Update and Frames: " + update);
                 update = 0;
                 timer = 0;
             }

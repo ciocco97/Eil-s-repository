@@ -11,10 +11,12 @@ public class Player extends Creature{
      * riguarda l'input
      */
     private Game game;
+    private final int DEFAULT_PLAYER_SPEED = 20;
     
     public Player(Game game, float x, float y) {
         super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.game = game;
+        speed = DEFAULT_PLAYER_SPEED;
     }
 
     /**

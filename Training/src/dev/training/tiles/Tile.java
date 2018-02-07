@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 
 public class Tile {
     
+    /**
+     * Contiene ogni singolo tipo di Tile
+     */
     public static Tile[] tiles = new Tile[256];
     public static Tile grassTile = new GrassTile(0);
     public static Tile dirtTile = new DirtTile(1);
