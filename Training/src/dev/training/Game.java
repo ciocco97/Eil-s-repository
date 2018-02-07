@@ -2,6 +2,7 @@ package dev.training;
 
 import dev.training.display.Display;
 import dev.training.gfx.ImageLoader;
+import dev.training.gfx.SpriteSheet;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -37,6 +38,7 @@ public class Game implements Runnable{
     private Graphics g;
     
     private BufferedImage testImage;
+    private SpriteSheet sheet;
     
     public Game(String title, int width, int height) {
         this.width = width;
@@ -50,6 +52,7 @@ public class Game implements Runnable{
     private void init() {
         display = new Display(title, width, height);
         testImage = ImageLoader.loadImage("/textures/Bambino.png");
+        sheet = new SpriteSheet(testImage);
     }
     
     private void update() {
@@ -78,7 +81,8 @@ public class Game implements Runnable{
          * Inizio disegno
          */
         
-        g.drawImage(testImage, 20, 20, null);
+        g.drawImage(sheet.crop(130, 175, 100, 100), 5, 5, null);
+        g.drawImage(sheet.crop(285, 185, 100, 100), 105, 5, null);
         
         /**
          * Fine disegno
