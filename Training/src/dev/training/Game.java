@@ -2,12 +2,8 @@ package dev.training;
 
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
-import dev.training.gfx.ImageLoader;
-import dev.training.gfx.SpriteSheet;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 
 /**
  * Per fare in modo che questa classe venga eseguita come un thread dobbiamo 
@@ -81,7 +77,7 @@ public class Game implements Runnable{
          * Inizio disegno
          */
         
-        g.drawImage(Assets.dirt, x, 10, null);
+        g.drawImage(Assets.full, x, 10, null);
         
         /**
          * Fine disegno
