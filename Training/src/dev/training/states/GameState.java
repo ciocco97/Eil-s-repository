@@ -1,14 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dev.training.states;
 
-/**
- *
- * @author franc
- */
-public class GameState {
+import dev.training.gfx.Assets;
+import java.awt.Graphics;
+
+public class GameState extends State{
+    
+    public GameState() {
+        
+    }
+
+    @Override
+    public void update() {
+        
+    }
+
+    @Override
+    public void render(Graphics g) {
+        g.drawImage(Assets.full, 0, 0, null);
+    }
     
 }

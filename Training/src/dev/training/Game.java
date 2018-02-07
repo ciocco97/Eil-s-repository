@@ -2,6 +2,8 @@ package dev.training;
 
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
+import dev.training.states.GameState;
+import dev.training.states.State;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -34,6 +36,11 @@ public class Game implements Runnable{
      */
     private Graphics g;
     
+    /**
+     * States 
+     */
+    private State gameState;
+    
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
@@ -46,13 +53,18 @@ public class Game implements Runnable{
     private void init() {
         display = new Display(title, width, height);
         Assets.init();
+        
+        gameState = new GameState();
+        State.setState(gameState);
     }
     
-    int x = 0;
-    
     private void update() {
-        x += 1;
-        x = x % 1367;
+        /**
+         * Se è il programma ha inizializzato uno stato e quindi possiamo 
+         * lavorarci sopra
+         */
+        if(State.getState() != null)
+            State.getState().update();
     }
     
     private void render() {
@@ -77,7 +89,9 @@ public class Game implements Runnable{
          * Inizio disegno
          */
         
-        g.drawImage(Assets.full, x, 10, null);
+        
+        if(State.getState() != null)
+            State.getState().render(g);
         
         /**
          * Fine disegno
