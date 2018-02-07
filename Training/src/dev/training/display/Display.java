@@ -53,6 +53,12 @@ public class Display {
         canvas.setPreferredSize(d);
         canvas.setMaximumSize(d);
         canvas.setMinimumSize(d);
+        /**
+         * In modo tale che non venga selezionato il canvas ma il Frame: al 
+         * frame è infatti applicato un listener ma, se questo non è 
+         * selezionato, il listener non funziona.
+         */
+        canvas.setFocusable(false);
         
         frame.add(canvas);
         frame.pack(); // In modo da essere sicuri da vedere tutto il canvas
@@ -60,5 +66,9 @@ public class Display {
     
     public Canvas getCanvas() {
         return canvas;
+    }
+    
+    public JFrame getFrame() {
+        return frame;
     }
 }

@@ -2,6 +2,7 @@ package dev.training;
 
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
+import dev.training.input.KeyManager;
 import dev.training.states.GameState;
 import dev.training.states.MenuState;
 import dev.training.states.State;
@@ -43,10 +44,16 @@ public class Game implements Runnable{
     private State gameState;
     private State menuState;
     
+    /**
+     * Input
+     */
+    private KeyManager keyManager;
+    
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
+        keyManager = new KeyManager();
     }
     
     /**
@@ -54,10 +61,11 @@ public class Game implements Runnable{
      */
     private void init() {
         display = new Display(title, width, height);
+        display.getFrame().addKeyListener(keyManager);
         Assets.init();
         
-        gameState = new GameState();
-        menuState = new MenuState();
+        gameState = new GameState(this);
+        menuState = new MenuState(this);
         State.setState(gameState);
     }
     

@@ -1,5 +1,6 @@
 package dev.training.states;
 
+import dev.training.Game;
 import java.awt.Graphics;
 
 /**
@@ -34,7 +35,17 @@ public abstract class State {
     /**
      * I metodi riportati sotto non hanno niente a che vedere con il metodo 
      * sopra riportato
+     * Quelli sotto sono riferiti alle classi State mentre quelli sopra vengono 
+     * utilizzati per tenere traccia di una variabile accessibile da qualunque 
+     * altra classe
      */
+    
+    protected Game game;
+    
+    public State(Game game) {
+        this.game = game;
+    }
+    
     public abstract void update();
     
     public abstract void render(Graphics g);
