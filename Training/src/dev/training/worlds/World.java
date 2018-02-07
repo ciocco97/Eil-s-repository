@@ -58,7 +58,7 @@ public class World {
         
         for(int x = 0; x < width; x++) {
             for(int y = 0; y < height; y++) {
-                tiles[x][y] = 1;
+                tiles[x][y] = 2;
             }
         }
     }
