@@ -6,7 +6,7 @@ package models;
  * @author Alessandro
  * Classe molto astratta per rappresentare un entità coordinalizzabile nello spazio bidimensionale
  */
-public class ClasseCoordinalizzabile{
+public class CoordEntity{
     private int x;
     private int y;
 /**
@@ -14,14 +14,14 @@ public class ClasseCoordinalizzabile{
  * @param x Intero che indica la coordinata X
  * @param y Intero che indica la coordinata Y
  */
-    public ClasseCoordinalizzabile(int x, int y) {
+    public CoordEntity(int x, int y) {
         this.x = x;
         this.y = y;
     }
 /**
  * Costruttore vuoto per inizializzare le coordinate nell'origine degli assi
  */
-    public ClasseCoordinalizzabile() {
+    public CoordEntity() {
         this.x = 0;
         this.y = 0;
     }
