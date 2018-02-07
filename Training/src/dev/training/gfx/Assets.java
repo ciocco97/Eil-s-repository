@@ -11,18 +11,17 @@ import java.awt.image.BufferedImage;
  */
 public class Assets {
     
-    private static final int width = 32, height = 32;
+    private static final int width = 150, height = 150;
     
-    public static BufferedImage player, dirt, grass, stone, tree, full, soldierf, soldierr;
+    public static BufferedImage player, dirt, grass, stone, tree, rock;
     
     public static void init() {
-        SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Bambino.png"));
+        SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sprite.png"));
         
-        player = sheet.crop(100, 130, width, height);
-        dirt = sheet.crop(100 + width, 130, width, height);
-        grass = sheet.crop(149, 185, width, height);
-        stone = sheet.crop(100 + width * 3, 130, width, height);
-        tree = sheet.crop(100, 130 + width, width, height);
-        full = sheet.crop(0, 0, 553, 740);
+        grass = sheet.crop(0, 0, width, height);
+        dirt = sheet.crop(width, 0, width, height);
+        stone = sheet.crop(width * 2, 0, width, height);
+        rock = sheet.crop(width * 3, 0, width, height);
+        player = sheet.crop(0, height + 10, 553, 740);
     }
 }

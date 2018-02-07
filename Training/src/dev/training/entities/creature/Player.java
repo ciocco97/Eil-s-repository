@@ -13,7 +13,7 @@ public class Player extends Creature{
     private Game game;
     
     public Player(Game game, float x, float y) {
-        super(x, y);
+        super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         this.game = game;
     }
 
@@ -22,24 +22,37 @@ public class Player extends Creature{
      */
     @Override
     public void update() {
-        int cost = 20;
+        getInput();
+        move();
+    }
+    
+    private void getInput() {
+        xMove = 0;
+        yMove = 0;
+        
         if(game.getKeyManager().up)
-            y -= cost;
+            yMove = -speed;
         if(game.getKeyManager().down)
-            y += cost;
+            yMove = speed;
         if(game.getKeyManager().left)
-            x -= cost;
+            xMove = -speed;
         if(game.getKeyManager().right)
-            x += cost;
+            xMove = speed;
     }
 
     /**
      * Si "disegna" sullo schermo
+     * La funzione drawImage richiede 6 parametri:
+     * Il primo è la BufferedImage da "disegnare"
+     * Il secondo e il terzo rappresentano le coordinate da cui partire per 
+     * disegnare la BufferedImage
+     * Il terzo e il quarto servono per il resize della BufferedImage
+     * L'ultimo non viene utilizzato
      * @param g 
      */
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.full, (int) x, (int) y, null);
+        g.drawImage(Assets.player, (int) x, (int) y, width, height, null);
     }
     
 }

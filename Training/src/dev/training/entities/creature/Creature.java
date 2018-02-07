@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -13,11 +13,49 @@ import dev.training.entities.Entity;
  */
 public abstract class Creature extends Entity {
     
-    protected int health;
+    public static final int DEFAULT_HEALTH = 10;
+    public static final float DEFAULT_SPEED = 3.0f;
+    public static final int DEFAULT_CREATURE_WIDTH = 370,
+            DEFAULT_CREATURE_HEIGHT = 500;
     
-    public Creature(float x, float y) {
-        super(x, y);
-        health = 10;
+    protected int health;
+    protected float speed;
+    protected float xMove, yMove;
+    
+    public Creature(float x, float y, int width, int height) {
+        super(x, y, width, height);
+        health = DEFAULT_HEALTH;
+        speed = DEFAULT_SPEED;
+        xMove = 0;
+        yMove = 0;
     }
     
+    public void move() {
+        x += xMove;
+        y += yMove;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public float getSpeed() {
+        return speed;
+    }
+
+    public float getxMove() {
+        return xMove;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    public void setyMove(float yMove) {
+        this.yMove = yMove;
+    }
 }
