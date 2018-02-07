@@ -13,7 +13,7 @@ public class Assets {
     
     private static final int width = 32, height = 32;
     
-    public static BufferedImage player, dirt, grass, stone, tree, full;
+    public static BufferedImage player, dirt, grass, stone, tree, full, soldierf, soldierr;
     
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Bambino.png"));
@@ -24,5 +24,9 @@ public class Assets {
         stone = sheet.crop(100 + width * 3, 130, width, height);
         tree = sheet.crop(100, 130 + width, width, height);
         full = ImageLoader.loadImage("/textures/Bambino.png");
+        
+//        sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Soldatino.png"));
+//        soldierf = sheet.crop(0, 0, 100, 100);
+//        soldierr = sheet.crop(0, 100, 100, 100);
     }
 }
