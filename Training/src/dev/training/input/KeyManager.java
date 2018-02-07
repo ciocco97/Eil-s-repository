@@ -15,8 +15,8 @@ public class KeyManager implements KeyListener{
     public void update() {
         up = keys[KeyEvent.VK_W];
         down = keys[KeyEvent.VK_S];
-        left = keys[KeyEvent.VK_D];
-        right = keys[KeyEvent.VK_A];
+        left = keys[KeyEvent.VK_A];
+        right = keys[KeyEvent.VK_D];
     }
 
     @Override
@@ -26,7 +26,6 @@ public class KeyManager implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         keys[e.getKeyCode()] = true;
-        System.out.println("Pressed!");
     }
 
     @Override

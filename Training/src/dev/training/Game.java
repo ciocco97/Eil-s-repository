@@ -70,6 +70,8 @@ public class Game implements Runnable{
     }
     
     private void update() {
+        keyManager.update();
+        
         /**
          * Se è il programma ha inizializzato uno stato e quindi possiamo 
          * lavorarci sopra
@@ -191,6 +193,15 @@ public class Game implements Runnable{
         }
         
         stop();
+    }
+    
+    /**
+     * Utilizzato per fornire un'interfaccia alla classe Player ma anche a tutte 
+     * quelle che usano l'input da tastiera.
+     * @return 
+     */
+    public KeyManager getKeyManager() {
+        return keyManager;
     }
     
     /**

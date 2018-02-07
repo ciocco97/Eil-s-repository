@@ -40,6 +40,11 @@ public abstract class State {
      * altra classe
      */
     
+    /**
+     * La variabile di tipo Game viene aggiunta alle classi di State in modo che 
+     * in tutte le fasi del gioco si possa avere l'accesso a funzionalità come 
+     * l'input.
+     */
     protected Game game;
     
     public State(Game game) {
