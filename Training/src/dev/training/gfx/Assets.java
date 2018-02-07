@@ -23,10 +23,6 @@ public class Assets {
         grass = sheet.crop(149, 185, width, height);
         stone = sheet.crop(100 + width * 3, 130, width, height);
         tree = sheet.crop(100, 130 + width, width, height);
-        full = ImageLoader.loadImage("/textures/Bambino.png");
-        
-//        sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Soldatino.png"));
-//        soldierf = sheet.crop(0, 0, 100, 100);
-//        soldierr = sheet.crop(0, 100, 100, 100);
+        full = sheet.crop(0, 0, 553, 740);
     }
 }

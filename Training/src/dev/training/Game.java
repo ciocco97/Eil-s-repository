@@ -2,6 +2,10 @@ package dev.training;
 
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
+import dev.training.input.KeyManager;
+import dev.training.states.GameState;
+import dev.training.states.MenuState;
+import dev.training.states.State;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
@@ -34,10 +38,22 @@ public class Game implements Runnable{
      */
     private Graphics g;
     
+    /**
+     * States 
+     */
+    private State gameState;
+    private State menuState;
+    
+    /**
+     * Input
+     */
+    private KeyManager keyManager;
+    
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
+        keyManager = new KeyManager();
     }
     
     /**
@@ -45,14 +61,23 @@ public class Game implements Runnable{
      */
     private void init() {
         display = new Display(title, width, height);
+        display.getFrame().addKeyListener(keyManager);
         Assets.init();
+        
+        gameState = new GameState(this);
+        menuState = new MenuState(this);
+        State.setState(gameState);
     }
     
-    int x = 0;
-    
     private void update() {
-        x += 1;
-        x = x % 1367;
+        keyManager.update();
+        
+        /**
+         * Se è il programma ha inizializzato uno stato e quindi possiamo 
+         * lavorarci sopra
+         */
+        if(State.getState() != null)
+            State.getState().update();
     }
     
     private void render() {
@@ -77,7 +102,9 @@ public class Game implements Runnable{
          * Inizio disegno
          */
         
-        g.drawImage(Assets.full, x, 10, null);
+        
+        if(State.getState() != null)
+            State.getState().render(g);
         
         /**
          * Fine disegno
@@ -158,7 +185,7 @@ public class Game implements Runnable{
              * render e update
              */
             if(timer >= 1000000000) {
-                System.out.println("Update and Frames: " + update);
+                // System.out.println("Update and Frames: " + update);
                 update = 0;
                 timer = 0;
             }
@@ -166,6 +193,15 @@ public class Game implements Runnable{
         }
         
         stop();
+    }
+    
+    /**
+     * Utilizzato per fornire un'interfaccia alla classe Player ma anche a tutte 
+     * quelle che usano l'input da tastiera.
+     * @return 
+     */
+    public KeyManager getKeyManager() {
+        return keyManager;
     }
     
     /**
