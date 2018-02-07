@@ -2,6 +2,13 @@ package dev.training.gfx;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * La classe Assets serve per importare poche immagini all'interno del progetto 
+ * per renderlo molto meno pesante (tutte le texture possono essere aggiunte 
+ * attraverso un'immagine dalle quali vengono estrapolate. Se non venisse 
+ * utilizzata, ad ogni ciclo verrebbe caricata una nuova immagine appesantendo 
+ * in modo massiccio il programma.
+ */
 public class Assets {
     
     private static final int width = 32, height = 32;
@@ -9,12 +16,12 @@ public class Assets {
     public static BufferedImage player, dirt, grass, stone, tree;
     
     public static void init() {
-        SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/texture/Bambino.png"));
+        SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Bambino.png"));
         
-        player = sheet.crop(0, 0, width, height);
-        dirt = sheet.crop(width, 0, width, height);
-        grass = sheet.crop(width * 2, 0, width, height);
-        stone = sheet.crop(width * 3, 0, width, height);
-        tree = sheet.crop(0, width, width, height);
+        player = sheet.crop(100, 130, width, height);
+        dirt = sheet.crop(100 + width, 130, width, height);
+        grass = sheet.crop(149, 185, width, height);
+        stone = sheet.crop(100 + width * 3, 130, width, height);
+        tree = sheet.crop(100, 130 + width, width, height);
     }
 }

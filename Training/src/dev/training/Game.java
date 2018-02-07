@@ -1,6 +1,7 @@
 package dev.training;
 
 import dev.training.display.Display;
+import dev.training.gfx.Assets;
 import dev.training.gfx.ImageLoader;
 import dev.training.gfx.SpriteSheet;
 import java.awt.Color;
@@ -48,10 +49,14 @@ public class Game implements Runnable{
      */
     private void init() {
         display = new Display(title, width, height);
+        Assets.init();
     }
     
+    int x = 0;
+    
     private void update() {
-        
+        x += 1;
+        x = x % 1820;
     }
     
     private void render() {
@@ -76,6 +81,7 @@ public class Game implements Runnable{
          * Inizio disegno
          */
         
+        g.drawImage(Assets.dirt, x, 10, null);
         
         /**
          * Fine disegno
@@ -100,10 +106,67 @@ public class Game implements Runnable{
     public void run() {
         init();
         
+        /**
+         * Imposto fps e timePerUpdate per mettere una soglia di minimo tempo 
+         * del processore e massima velocità di gioco.
+         * Faccio in modo quindi che si possa entrare nell'if un numero limitato 
+         * di volte al secondo.
+         * Quindi:
+         * fps è la variabile che indica il numero di volte che vogliamo 
+         * chiamare i metodi di update e render al secondo
+         */
+        int fps = 60;
+        /**
+         * timePerUpdate è il massimo tempo in nanosecondi che abbiamo per 
+         * eseguire i metodi di update e render in modo da raggiungere i 60 
+         * frame al secondo
+         */
+        double timePerUpdate = 1000000000 / fps;
+        
+        /**
+         * Delta rappresenta il quanto di tempo che abbiamo prima di poter 
+         * chiamare ancora i metodi di update e render e facciamo in modo che 
+         * vada da 0 a 1
+         */
+        double delta = 0;
+        long now;
+        long lastTime = System.nanoTime();
+        /**
+         * Variabile che serve a contare fino ad un secondo
+         */
+        long timer = 0;
+        /**
+         * Variabile che conta il numero di volte in cui i metodi vengono 
+         * chiamati
+         */
+        int update = 0;
+        
         while(running) {
-            update();
+            /**
+             * Tempo corrente
+             */
+            now = System.nanoTime();
+            delta += (now - lastTime) / timePerUpdate;
+            timer += now - lastTime;
+            lastTime = now;
+            if(delta >= 1) {
+                update();
+
+                render();
+                update++;
+                delta--;
+            }
             
-            render();
+            /**
+             * Ogni secondo visualizzo quante volte vengono chiamati i metodi di 
+             * render e update
+             */
+            if(timer >= 1000000000) {
+                System.out.println("Update and Frames: " + update);
+                update = 0;
+                timer = 0;
+            }
+            
         }
         
         stop();
