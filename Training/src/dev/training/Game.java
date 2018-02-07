@@ -37,9 +37,6 @@ public class Game implements Runnable{
      */
     private Graphics g;
     
-    private BufferedImage testImage;
-    private SpriteSheet sheet;
-    
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
@@ -51,8 +48,6 @@ public class Game implements Runnable{
      */
     private void init() {
         display = new Display(title, width, height);
-        testImage = ImageLoader.loadImage("/textures/Bambino.png");
-        sheet = new SpriteSheet(testImage);
     }
     
     private void update() {
@@ -81,8 +76,6 @@ public class Game implements Runnable{
          * Inizio disegno
          */
         
-        g.drawImage(sheet.crop(130, 175, 100, 100), 5, 5, null);
-        g.drawImage(sheet.crop(285, 185, 100, 100), 105, 5, null);
         
         /**
          * Fine disegno
