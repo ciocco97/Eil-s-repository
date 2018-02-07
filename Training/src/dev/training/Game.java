@@ -3,6 +3,7 @@ package dev.training;
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
 import dev.training.states.GameState;
+import dev.training.states.MenuState;
 import dev.training.states.State;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -40,6 +41,7 @@ public class Game implements Runnable{
      * States 
      */
     private State gameState;
+    private State menuState;
     
     public Game(String title, int width, int height) {
         this.width = width;
@@ -55,6 +57,7 @@ public class Game implements Runnable{
         Assets.init();
         
         gameState = new GameState();
+        menuState = new MenuState();
         State.setState(gameState);
     }
     
