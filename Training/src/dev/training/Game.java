@@ -1,9 +1,11 @@
 package dev.training;
 
 import dev.training.display.Display;
+import dev.training.gfx.ImageLoader;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 /**
  * Per fare in modo che questa classe venga eseguita come un thread dobbiamo 
@@ -34,6 +36,8 @@ public class Game implements Runnable{
      */
     private Graphics g;
     
+    private BufferedImage testImage;
+    
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
@@ -45,6 +49,7 @@ public class Game implements Runnable{
      */
     private void init() {
         display = new Display(title, width, height);
+        testImage = ImageLoader.loadImage("/textures/Bambino.png");
     }
     
     private void update() {
@@ -73,8 +78,7 @@ public class Game implements Runnable{
          * Inizio disegno
          */
         
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillRect(10, 50, 50, 70);
+        g.drawImage(testImage, 20, 20, null);
         
         /**
          * Fine disegno
