@@ -52,7 +52,7 @@ public class Game implements Runnable{
     
     private void update() {
         x += 1;
-        x = x % 1820;
+        x = x % 1367;
     }
     
     private void render() {
