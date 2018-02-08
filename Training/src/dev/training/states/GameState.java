@@ -14,9 +14,9 @@ public class GameState extends State{
     public GameState(Game game) {
         super(game);
         ps = new LinkedList<>();
-        for(int i = 0; i < 10; i += 1) {
-            for(int j = 0; j < 12; j += 1) {
-                ps.add(new Player(game, i * 100, j * 100));
+        for(int i = 0; i < 20; i += 2) {
+            for(int j = 0; j < 4; j += 2) {
+                ps.add(new Player(game, i * 60, j * 60));
             }
         }
     }
