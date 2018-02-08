@@ -6,7 +6,7 @@ import dev.training.tiles.Tile;
 import dev.training.worlds.World;
 import java.awt.Graphics;
 
-public class GameState extends State{
+// public class GameState extends State{
     
     private Player player;
     private World world;
