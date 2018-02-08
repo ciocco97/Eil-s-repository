@@ -5,28 +5,32 @@ import dev.training.entities.creature.Player;
 import dev.training.tiles.Tile;
 import dev.training.worlds.World;
 import java.awt.Graphics;
+import java.util.LinkedList;
 
-// public class GameState extends State{
+public class GameState extends State{
     
-    private Player player;
-    private World world;
+    private LinkedList <Player> ps;
     
     public GameState(Game game) {
         super(game);
-        player = new Player(game, 100, 100);
-        world = new World(null);
+        ps = new LinkedList<>();
+        for(int i = 0; i < 10; i += 1) {
+            for(int j = 0; j < 12; j += 1) {
+                ps.add(new Player(game, i * 100, j * 100));
+            }
+        }
     }
 
     @Override
     public void update() {
-        world.update();
-        player.update();
+        for(Player p: ps)
+            p.update();
     }
 
     @Override
     public void render(Graphics g) {
-        world.render(g);
-        player.render(g);
+        for(Player p: ps)
+            p.render(g);
     }
     
 }
