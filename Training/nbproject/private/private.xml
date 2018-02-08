@@ -4,12 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/src/dev/training/worlds/World.java</file>
+            <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/src/dev/training/tiles/Tile.java</file>
             <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/src/dev/training/entities/creature/Player.java</file>
             <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/src/dev/training/Game.java</file>
-            <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/src/dev/training/Launcher.java</file>
             <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/src/dev/training/states/GameState.java</file>
-            <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/src/dev/training/entities/creature/Creature.java</file>
-            <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Training/res/textures/Sprite.png</file>
         </group>
     </open-files>
 </project-private>
