@@ -12,6 +12,7 @@ public class Player extends Creature{
      */
     private Game game;
     private final int DEFAULT_PLAYER_SPEED = 3;
+    private boolean movimento;
     
     public Player(Game game, float x, float y) {
         super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
@@ -40,6 +41,10 @@ public class Player extends Creature{
             xMove = -speed;
         if(game.getKeyManager().right)
             xMove = speed;
+        
+        if(xMove != 0 || yMove != 0)
+            movimento = true;
+        else movimento = false;
     }
 
     /**
@@ -54,7 +59,11 @@ public class Player extends Creature{
      */
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player, (int) x, (int) y, width, height, null);
+        if(movimento) {
+            g.drawImage(Assets.cammino, (int) x, (int) y, width, height, null);
+        }else {
+            g.drawImage(Assets.player, (int) x, (int) y, width, height, null);
+        }
     }
     
 }
