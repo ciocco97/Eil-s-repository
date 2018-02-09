@@ -2,6 +2,7 @@ package dev.training.worlds;
 
 import dev.training.Utils;
 import dev.training.tiles.Tile;
+import java.awt.BorderLayout;
 import java.awt.Graphics;
 
 public class World {
@@ -56,9 +57,9 @@ public class World {
         String file = Utils.loadFileAsStrig(path);
         String[] token = file.split("\\s+");
         width = Utils.parseInt(token[0]);
-        height = Utils.parseInt(token[2]);
-        spawnX = Utils.parseInt(token[3]);
-        spawnY = Utils.parseInt(token[4]);
+        height = Utils.parseInt(token[1]);
+        spawnX = Utils.parseInt(token[2]);
+        spawnY = Utils.parseInt(token[3]);
         
         tiles = new int[width][height];
         for(int y = 0; y < height; y++) 
