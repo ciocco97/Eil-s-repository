@@ -8,7 +8,6 @@ public class Utils {
     
     public static String loadFileAsStrig(String path) {
         StringBuilder sb = new StringBuilder();
-        System.out.println("Path: " + path);
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
             String line;
@@ -17,6 +16,7 @@ public class Utils {
         } catch(IOException e) {
             System.out.println(e.getMessage());
         }
+                
         return sb.toString();
     }
     
