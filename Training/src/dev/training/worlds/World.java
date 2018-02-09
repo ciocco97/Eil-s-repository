@@ -52,15 +52,7 @@ public class World {
     }
     
     private void loadWorld(String path) {
-        width = 20;
-        height = 11;
-        tiles = new int[width][height];
         
-        for(int x = 0; x < width; x++) {
-            for(int y = 0; y < height; y++) {
-                tiles[x][y] = 2;
-            }
-        }
     }
     
 }
