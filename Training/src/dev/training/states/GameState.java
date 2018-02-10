@@ -20,6 +20,7 @@ public class GameState extends State{
     public void update() {
         world.update();
         player.update();
+        game.getGameCamera().update();
     }
 
     @Override

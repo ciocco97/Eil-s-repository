@@ -6,8 +6,11 @@ import dev.training.entities.Entity;
 
 public class GameCamera {
     
+    private final int CAMERA_SPEED = 20;
+    
     private Game game;
     private float xOffset, yOffset;
+    private int xMove, yMove;
     
     public GameCamera(Game game, float xOffset, float yOffset) {
         this.game = game;
@@ -18,6 +21,25 @@ public class GameCamera {
     public void centerOnEntity(Entity e) {
         xOffset = e.getX() - game.getWidth() / 2 + e.getWidth() / 2;
         yOffset = e.getY() - game.getHeight() / 2 + e.getHeight() / 2;
+    }
+    
+    public void update() {
+        getInput();
+        move(xMove, yMove);
+    }
+    
+    private void getInput() {
+        xMove = 0;
+        yMove = 0;
+        
+        if(game.getKeyManager().up)
+            yMove = -CAMERA_SPEED;
+        if(game.getKeyManager().down)
+            yMove = CAMERA_SPEED;
+        if(game.getKeyManager().left)
+            xMove = -CAMERA_SPEED;
+        if(game.getKeyManager().right)
+            xMove = CAMERA_SPEED;
     }
     
     public void move(float xAmt, float yAmt) {

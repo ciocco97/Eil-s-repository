@@ -31,6 +31,10 @@ public class World {
     }
     
     public void render(Graphics g) {
+        /**
+         * Queste variabili servono per iniziare a renderizzare il mondo 
+         * solamente dove serve
+         */
         int xStart = (int) Math.max(0, game.getGameCamera().getxOffset() / Tile.TILEWIDTH);
         int xEnd = (int) Math.min(width, (game.getGameCamera().getxOffset() + game.getWidth()) / Tile.TILEWIDTH + 1);
         int yStart = (int) Math.max(0, game.getGameCamera().getyOffset() / Tile.TILEHEIGHT);

@@ -22,9 +22,9 @@ public class Player extends Creature{
      */
     @Override
     public void update() {
-        getInput();
-        move();
-        game.getGameCamera().centerOnEntity(this);
+//        getInput();
+//        move();
+//        game.getGameCamera().centerOnEntity(this);
     }
     
     private void getInput() {
