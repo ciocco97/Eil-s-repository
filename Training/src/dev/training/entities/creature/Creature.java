@@ -5,6 +5,7 @@
  */
 package dev.training.entities.creature;
 
+import dev.training.Game;
 import dev.training.entities.Entity;
 
 /**
@@ -22,8 +23,8 @@ public abstract class Creature extends Entity {
     protected float speed;
     protected float xMove, yMove;
     
-    public Creature(float x, float y, int width, int height) {
-        super(x, y, width, height);
+    public Creature(Game game, float x, float y, int width, int height) {
+        super(game, x, y, width, height);
         health = DEFAULT_HEALTH;
         speed = DEFAULT_SPEED;
         xMove = 0;

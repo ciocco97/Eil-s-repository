@@ -7,17 +7,19 @@ import java.io.IOException;
 public class Utils {
     
     public static String loadFileAsStrig(String path) {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
             String line;
-            while((line = br.readLine()) != null)
-                sb.append(line).append("\n");
+            while((line = bufferedReader.readLine()) != null)
+                stringBuilder.append(line).append("\n");
+            
+            bufferedReader.close();
         } catch(IOException e) {
             System.out.println(e.getMessage());
         }
                 
-        return sb.toString();
+        return stringBuilder.toString();
     }
     
     public static int parseInt(String number) {

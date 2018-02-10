@@ -1,12 +1,13 @@
 package dev.training.worlds;
 
+import dev.training.Game;
 import dev.training.Utils;
 import dev.training.tiles.Tile;
-import java.awt.BorderLayout;
 import java.awt.Graphics;
 
 public class World {
     
+    private Game game;
     private int width, height, spawnX, spawnY;
     /**
      * Una matrice di ID che indicano come sono disposti i "Tile" all'interno 
@@ -16,10 +17,12 @@ public class World {
     
     /**
      * 
+     * @param game
      * @param path il percorso per raggiungere il "World" che abbiamo salvato 
      * da qualche parte nel file system.
      */
-    public World(String path) {
+    public World(Game game, String path) {
+        this.game = game;
         loadWorld(path);
     }
     
@@ -37,7 +40,8 @@ public class World {
                  * farlo partire da 1 * larghezza del Tile, 3 * altezza del 
                  * Tile.
                  */
-                getTile(x, y).render(g, x * Tile.TILEWIDTH, y * Tile.TILEHEIGHT);
+                getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - game.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - game.getGameCamera().getyOffset()));
             }
         }
     }
@@ -64,6 +68,12 @@ public class World {
         tiles = new int[width][height];
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)
+                /**
+                 * Se siamo alla terza riga e quarta colonna significa che 
+                 * abbiamo già copiato un numero di elementi pari a: 2 * numero 
+                 * totale di colonne + numero di colonne. si aggiunge 4 perchè i 
+                 * primi 4 elementi di token sono utilizzati per altri scopi.
+                 */
                 tiles[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
         
     }

@@ -2,7 +2,6 @@ package dev.training.states;
 
 import dev.training.Game;
 import dev.training.entities.creature.Player;
-import dev.training.tiles.Tile;
 import dev.training.worlds.World;
 import java.awt.Graphics;
 
@@ -14,7 +13,7 @@ public class GameState extends State{
     public GameState(Game game) {
         super(game);
         player = new Player(game, 100, 100);
-        world = new World("res\\worlds\\world");
+        world = new World(game, "res\\worlds\\world");
     }
 
     @Override

@@ -10,12 +10,10 @@ public class Player extends Creature{
      * La variabile game ci consente l'accesso al KeyManager e a tutto ciò che 
      * riguarda l'input
      */
-    private Game game;
-    private final int DEFAULT_PLAYER_SPEED = 3;
+    private final int DEFAULT_PLAYER_SPEED = 20;
     
     public Player(Game game, float x, float y) {
-        super(x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
-        this.game = game;
+        super(game, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         speed = DEFAULT_PLAYER_SPEED;
     }
 
@@ -26,6 +24,7 @@ public class Player extends Creature{
     public void update() {
         getInput();
         move();
+        game.getGameCamera().centerOnEntity(this);
     }
     
     private void getInput() {
@@ -54,7 +53,8 @@ public class Player extends Creature{
      */
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player, (int) x, (int) y, width, height, null);
+        g.drawImage(Assets.player, (int) (x - game.getGameCamera().getxOffset()), 
+                (int) (y - game.getGameCamera().getyOffset()), width, height, null);
     }
     
 }
