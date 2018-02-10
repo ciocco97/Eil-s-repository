@@ -18,10 +18,10 @@ public class Assets {
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sprite.png"));
         
-        grass = sheet.crop(0, 0, width, height);
-        dirt = sheet.crop(width, 0, width, height);
-        stone = sheet.crop(width * 2, 0, width, height);
+        grass = sheet.crop(600, 0, 20, 20);
+        dirt = sheet.crop(620, 0, 20, 20);
+        stone = sheet.crop(640, 0, 20, 20);
         rock = sheet.crop(width * 3, 0, width, height);
-        player = sheet.crop(0, height + 10, 553, 740);
+        player = sheet.crop(0, height + 10, 450, 700);
     }
 }
