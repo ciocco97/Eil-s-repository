@@ -8,6 +8,11 @@ import javax.imageio.ImageIO;
 
 public class ImageLoader {
     
+    /**
+     * Metodo che ritorna un'immagine dato un percorso.
+     * @param path persorso
+     * @return 
+     */
     public static BufferedImage loadImage(String path) {
         try {
             return ImageIO.read(ImageLoader.class.getResource(path));

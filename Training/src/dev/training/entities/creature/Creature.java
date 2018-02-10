@@ -1,16 +1,11 @@
- /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dev.training.entities.creature;
 
 import dev.training.Game;
 import dev.training.entities.Entity;
 
 /**
- *
- * @author franc
+ * Classe astratta che rappresenta tutte le Entity con vita che popolano il 
+ * gioco.
  */
 public abstract class Creature extends Entity {
     
@@ -23,6 +18,14 @@ public abstract class Creature extends Entity {
     protected float speed;
     protected float xMove, yMove;
     
+    /**
+     * Costruttore.
+     * @param game
+     * @param x
+     * @param y
+     * @param width
+     * @param height 
+     */
     public Creature(Game game, float x, float y, int width, int height) {
         super(game, x, y, width, height);
         health = DEFAULT_HEALTH;
@@ -31,6 +34,10 @@ public abstract class Creature extends Entity {
         yMove = 0;
     }
     
+    /**
+     * Metodo volto a modificare il punto di render della creatura: muovere la 
+     * creatura rispetto all'origine.
+     */
     public void move() {
         x += xMove;
         y += yMove;

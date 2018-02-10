@@ -3,6 +3,9 @@ package dev.training.entities;
 import dev.training.Game;
 import java.awt.Graphics;
 
+/**
+ * Classe per gli elementi animati del gioco
+ */
 public abstract class Entity {
     
     /**
@@ -13,6 +16,14 @@ public abstract class Entity {
     protected float x, y;
     protected int width, height;
     
+    /**
+     * Costruttore.
+     * @param game
+     * @param x
+     * @param y
+     * @param width
+     * @param height 
+     */
     public Entity(Game game, float x, float y, int width, int height) {
         this.game = game;
         this.x = x;

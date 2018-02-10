@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 /**
  * La classe Assets serve per importare poche immagini all'interno del progetto 
  * per renderlo molto meno pesante (tutte le texture possono essere aggiunte 
- * attraverso un'immagine dalle quali vengono estrapolate. Se non venisse 
+ * attraverso un'immagine dalle quali vengono estrapolate). Se non venisse 
  * utilizzata, ad ogni ciclo verrebbe caricata una nuova immagine appesantendo 
  * in modo massiccio il programma.
  */
@@ -15,6 +15,9 @@ public class Assets {
     
     public static BufferedImage player, dirt, grass, stone, tree, rock;
     
+    /**
+     * Metodo che carica tutte le immagini da utilizzare nel gioco
+     */
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sprite.png"));
         

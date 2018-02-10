@@ -11,6 +11,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
 /**
+ * Rappresenta il cuore del gioco in quanto da qua vengono gestiti tutte le 
+ * altre classi ed i loro metodi
  * Per fare in modo che questa classe venga eseguita come un thread dobbiamo 
  * aggiungere alla dichiarazione della classe "implements Runnable"
  */
@@ -55,6 +57,12 @@ public class Game implements Runnable{
      */
     private GameCamera gameCamera;
     
+    /**
+     * Costruttore della classe Game
+     * @param title Il nome che verrà visualizzato nell'header del frame
+     * @param width La larghezza del frame principale
+     * @param height L'altezza del frame principale
+     */
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
@@ -63,7 +71,8 @@ public class Game implements Runnable{
     }
     
     /**
-     * Questo metodo serve ad inizializzare tutta la grafica del gioco
+     * Metodo chiamato all'interno del metodo run() come prima istruzione; serve 
+     * a inizializzare i principali componenti del gioco.
      */
     private void init() {
         display = new Display(title, width, height);
@@ -127,11 +136,11 @@ public class Game implements Runnable{
     }
     
     /**
-     * Ogni volta che viene implementata una classe "Runnable", bisogna che 
-     * all'interno sia presente il metodo pubblico "run".
+     * Metodo che verrà eseguito in ogni momento dal lancio del gioco; qua 
+     * vengono definiti un insieme di parametri tra cui la "velocità" di gioco;
      * Nel nostro caso rappresenta il "Game Loop" che si svolge in due fasi:
-     * 1 - Aggiornamento delle variabili, della posizione di oggetti, etc...
-     * 2 - Rendering
+     * 1 - Aggiornamento delle variabili, della posizione di oggetti, etc
+     * 2 - Rendering.
      */
     @Override
     public void run() {
@@ -212,19 +221,32 @@ public class Game implements Runnable{
         return keyManager;
     }
     
+    /**
+     * 
+     * @return gameCamera
+     */
     public GameCamera getGameCamera() {
         return gameCamera;
     }
     
+    /**
+     * 
+     * @return width
+     */
     public int getWidth() {
         return width;
     }
     
+    /**
+     * 
+     * @return height
+     */
     public int getHeight() {
         return height;
     }
     
     /**
+     * Metodo per l'avvio di run().
      * Tutte le volte che vogliamo interagire in modo diretto al thread 
      * attraverso una funzione utilizziamo synchronized, in parole povere, 
      * per non creare casini
@@ -241,6 +263,9 @@ public class Game implements Runnable{
         thread.start();
     }
     
+    /**
+     * Metodo per terminare la chiamate di run().
+     */
     public synchronized void stop() {
         if(!running)
             return;

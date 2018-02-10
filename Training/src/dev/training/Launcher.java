@@ -1,5 +1,9 @@
 package dev.training;
 
+/**
+ * Questa è la classe che viene utilizzata al lancio del programma: qua vengono 
+ * settati i valori riguardanti la grandezza del frame principale
+ */
 public class Launcher {
 
     @SuppressWarnings("ResultOfObjectAllocationIgnored")

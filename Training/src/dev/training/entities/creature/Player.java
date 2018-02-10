@@ -4,6 +4,9 @@ import dev.training.Game;
 import dev.training.gfx.Assets;
 import java.awt.Graphics;
 
+/**
+ * Classe che rappresenta l'avatar del giocatore
+ */
 public class Player extends Creature{
     
     /**
@@ -12,6 +15,12 @@ public class Player extends Creature{
      */
     private final int DEFAULT_PLAYER_SPEED = 20;
     
+    /**
+     * Costruttore
+     * @param game
+     * @param x
+     * @param y 
+     */
     public Player(Game game, float x, float y) {
         super(game, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         speed = DEFAULT_PLAYER_SPEED;
@@ -27,6 +36,10 @@ public class Player extends Creature{
         game.getGameCamera().centerOnEntity(this);
     }
     
+    /**
+     * Metodo che sfrutta l'input per poi muovere il Player rispetto 
+     * all'origine.
+     */
     private void getInput() {
         xMove = 0;
         yMove = 0;
@@ -42,6 +55,7 @@ public class Player extends Creature{
     }
 
     /**
+     * Disegna tramite un oggetto Graphics il player su Canvas del display.
      * Si "disegna" sullo schermo
      * La funzione drawImage richiede 6 parametri:
      * Il primo è la BufferedImage da "disegnare"

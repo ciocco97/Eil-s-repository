@@ -11,6 +11,12 @@ public class Display {
     private String title;
     private int width, height;
     
+    /**
+     * Costruttore della finestra.
+     * @param title
+     * @param width
+     * @param height 
+     */
     public Display(String title, int width, int height) {
         this.title = title;
         this.width = width;
@@ -19,6 +25,10 @@ public class Display {
         createDisplay();
     }
     
+    /**
+     * Chiamato direttamente dal costruttore, il metodo serve a creare un frame 
+     * non resizable ed applicargli un canvas non focussable.
+     */
     private void createDisplay() {
         frame = new JFrame(title);
         frame.setSize(width, height);
@@ -64,10 +74,18 @@ public class Display {
         frame.pack(); // In modo da essere sicuri da vedere tutto il canvas
     }
     
+    /**
+     * 
+     * @return canvas
+     */
     public Canvas getCanvas() {
         return canvas;
     }
     
+    /**
+     * 
+     * @return frame
+     */
     public JFrame getFrame() {
         return frame;
     }

@@ -5,6 +5,10 @@ import dev.training.Utils;
 import dev.training.tiles.Tile;
 import java.awt.Graphics;
 
+/**
+ * Classe che gestisce ciò su ciu le Entity si appoggiano.
+ * @author francesco
+ */
 public class World {
     
     private Game game;
@@ -16,7 +20,7 @@ public class World {
     private int[][] tiles;
     
     /**
-     * 
+     * Costruttore
      * @param game
      * @param path il percorso per raggiungere il "World" che abbiamo salvato 
      * da qualche parte nel file system.
@@ -30,6 +34,10 @@ public class World {
         
     }
     
+    /**
+     * Metodo che "disegna" il mondo visibile dal giocatore
+     * @param g 
+     */
     public void render(Graphics g) {
         int xStart = (int) Math.max(0, game.getGameCamera().getxOffset() / Tile.TILEWIDTH);
         int xEnd = (int) Math.min(width, (game.getGameCamera().getxOffset() + game.getWidth()) / Tile.TILEWIDTH + 1);
@@ -51,6 +59,12 @@ public class World {
         }
     }
     
+    /**
+     * dato l'ID di una tile, il metodo ritorna l'oggetto tile corrispondente.
+     * @param x
+     * @param y
+     * @return 
+     */
     public Tile getTile(int x, int y) {
         Tile t = Tile.tiles[tiles[x][y]];
         /**
@@ -62,6 +76,10 @@ public class World {
         return t;
     }
     
+    /**
+     * Caricamento di un mondo già costruito e salvato su file.
+     * @param path 
+     */
     private void loadWorld(String path) {
         String file = Utils.loadFileAsStrig(path);
         String[] token = file.split("\\s+");

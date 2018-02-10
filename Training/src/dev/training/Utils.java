@@ -6,6 +6,11 @@ import java.io.IOException;
 
 public class Utils {
     
+    /**
+     * Metodo generico per ottenere ciò che è scritto in un file.
+     * @param path il percorso del file
+     * @return file sottoforma di stringa
+     */
     public static String loadFileAsStrig(String path) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -22,6 +27,11 @@ public class Utils {
         return stringBuilder.toString();
     }
     
+    /**
+     * Metodo generico per convertire una stringa in un numero.
+     * @param number stringa da convertire in numero
+     * @return il numero rappresentato dalla stringa o 0 in caso di errore
+     */
     public static int parseInt(String number) {
         try {
             return Integer.parseInt(number);
