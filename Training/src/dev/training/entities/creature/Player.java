@@ -15,6 +15,7 @@ public class Player extends Creature{
      * riguarda l'input
      */
     private final int DEFAULT_PLAYER_SPEED = 20;
+    boolean p, pu, pd, pl, pr;
     
     /**
      * Costruttore
@@ -53,6 +54,15 @@ public class Player extends Creature{
             xMove = -speed;
         if(handeler.getKeyManager().right)
             xMove = speed;
+        
+        if(handeler.getKeyManager().up)
+            pu = true;
+        else
+            pu = false;
+        if(handeler.getKeyManager().down)
+            pd = true;
+        else
+            pd = false;
     }
 
     /**
@@ -68,8 +78,16 @@ public class Player extends Creature{
      */
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player, (int) (x - handeler.getGameCamera().getxOffset()), 
-                (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
+        if(!pd && !pu)
+            g.drawImage(Assets.player, (int) (x - handeler.getGameCamera().getxOffset()), 
+                    (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
+        else if(pd)
+            g.drawImage(Assets.pd, (int) (x - handeler.getGameCamera().getxOffset()), 
+                    (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
+        else if(pu)
+            g.drawImage(Assets.pu, (int) (x - handeler.getGameCamera().getxOffset()), 
+                    (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
+            
     }
     
 }
