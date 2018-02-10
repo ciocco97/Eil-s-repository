@@ -31,8 +31,13 @@ public class World {
     }
     
     public void render(Graphics g) {
-        for(int y = 0; y < height; y++) {
-            for(int x = 0; x < width; x++) {
+        int xStart = (int) Math.max(0, game.getGameCamera().getxOffset() / Tile.TILEWIDTH);
+        int xEnd = (int) Math.min(width, (game.getGameCamera().getxOffset() + game.getWidth()) / Tile.TILEWIDTH + 1);
+        int yStart = (int) Math.max(0, game.getGameCamera().getyOffset() / Tile.TILEHEIGHT);
+        int yEnd = (int) Math.min(height, (game.getGameCamera().getyOffset() + game.getHeight()) / Tile.TILEHEIGHT + 1);
+        
+        for(int y = yStart; y < yEnd; y++) {
+            for(int x = xStart; x < xEnd; x++) {
                 /**
                  * Moltiplico la x e la y per larghezza e altezza in quanto, 
                  * per esempio, se voglio disegnare il Tile con cordinate 1, 3 
