@@ -1,6 +1,7 @@
 package dev.training.states;
 
 import dev.training.Game;
+import dev.training.Handeler;
 import dev.training.entities.creature.Player;
 import dev.training.worlds.World;
 import java.awt.Graphics;
@@ -17,10 +18,11 @@ public class GameState extends State{
      * Costruttore che istanzia tutti gli elementi necessari al gioco.
      * @param game 
      */
-    public GameState(Game game) {
-        super(game);
-        player = new Player(game, 100, 100);
-        world = new World(game, "res\\worlds\\world");
+    public GameState(Handeler handeler) {
+        super(handeler);
+        world = new World(handeler, "res\\worlds\\world");
+        handeler.setWorld(world);
+        player = new Player(handeler, 100, 100);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package dev.training.entities.creature;
 
 import dev.training.Game;
+import dev.training.Handeler;
 import dev.training.gfx.Assets;
 import java.awt.Graphics;
 
@@ -21,8 +22,8 @@ public class Player extends Creature{
      * @param x
      * @param y 
      */
-    public Player(Game game, float x, float y) {
-        super(game, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
+    public Player(Handeler handeler, float x, float y) {
+        super(handeler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         speed = DEFAULT_PLAYER_SPEED;
     }
 
@@ -33,7 +34,7 @@ public class Player extends Creature{
     public void update() {
         getInput();
         move();
-        game.getGameCamera().centerOnEntity(this);
+        handeler.getGameCamera().centerOnEntity(this);
     }
     
     /**
@@ -44,13 +45,13 @@ public class Player extends Creature{
         xMove = 0;
         yMove = 0;
         
-        if(game.getKeyManager().up)
+        if(handeler.getKeyManager().up)
             yMove = -speed;
-        if(game.getKeyManager().down)
+        if(handeler.getKeyManager().down)
             yMove = speed;
-        if(game.getKeyManager().left)
+        if(handeler.getKeyManager().left)
             xMove = -speed;
-        if(game.getKeyManager().right)
+        if(handeler.getKeyManager().right)
             xMove = speed;
     }
 
@@ -67,8 +68,8 @@ public class Player extends Creature{
      */
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player, (int) (x - game.getGameCamera().getxOffset()), 
-                (int) (y - game.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.player, (int) (x - handeler.getGameCamera().getxOffset()), 
+                (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
     }
     
 }

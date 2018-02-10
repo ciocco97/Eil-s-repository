@@ -1,6 +1,7 @@
 package dev.training.worlds;
 
 import dev.training.Game;
+import dev.training.Handeler;
 import dev.training.Utils;
 import dev.training.tiles.Tile;
 import java.awt.Graphics;
@@ -11,7 +12,7 @@ import java.awt.Graphics;
  */
 public class World {
     
-    private Game game;
+    private Handeler handeler;
     private int width, height, spawnX, spawnY;
     /**
      * Una matrice di ID che indicano come sono disposti i "Tile" all'interno 
@@ -21,12 +22,12 @@ public class World {
     
     /**
      * Costruttore
-     * @param game
+     * @param handeler
      * @param path il percorso per raggiungere il "World" che abbiamo salvato 
      * da qualche parte nel file system.
      */
-    public World(Game game, String path) {
-        this.game = game;
+    public World(Handeler handeler, String path) {
+        this.handeler = handeler;
         loadWorld(path);
     }
     
@@ -39,10 +40,10 @@ public class World {
      * @param g 
      */
     public void render(Graphics g) {
-        int xStart = (int) Math.max(0, game.getGameCamera().getxOffset() / Tile.TILEWIDTH);
-        int xEnd = (int) Math.min(width, (game.getGameCamera().getxOffset() + game.getWidth()) / Tile.TILEWIDTH + 1);
-        int yStart = (int) Math.max(0, game.getGameCamera().getyOffset() / Tile.TILEHEIGHT);
-        int yEnd = (int) Math.min(height, (game.getGameCamera().getyOffset() + game.getHeight()) / Tile.TILEHEIGHT + 1);
+        int xStart = (int) Math.max(0, handeler.getGameCamera().getxOffset() / Tile.TILEWIDTH);
+        int xEnd = (int) Math.min(width, (handeler.getGameCamera().getxOffset() + handeler.getWidth()) / Tile.TILEWIDTH + 1);
+        int yStart = (int) Math.max(0, handeler.getGameCamera().getyOffset() / Tile.TILEHEIGHT);
+        int yEnd = (int) Math.min(height, (handeler.getGameCamera().getyOffset() + handeler.getHeight()) / Tile.TILEHEIGHT + 1);
         
         for(int y = yStart; y < yEnd; y++) {
             for(int x = xStart; x < xEnd; x++) {
@@ -53,8 +54,8 @@ public class World {
                  * farlo partire da 1 * larghezza del Tile, 3 * altezza del 
                  * Tile.
                  */
-                getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - game.getGameCamera().getxOffset()), 
-                        (int) (spawnY + y * Tile.TILEHEIGHT - game.getGameCamera().getyOffset()));
+                getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
             }
         }
     }

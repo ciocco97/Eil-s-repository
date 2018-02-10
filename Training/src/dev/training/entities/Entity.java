@@ -1,6 +1,7 @@
 package dev.training.entities;
 
 import dev.training.Game;
+import dev.training.Handeler;
 import java.awt.Graphics;
 
 /**
@@ -12,20 +13,20 @@ public abstract class Entity {
      * Solamente le classi che estendono questa classe hanno accesso alle 
      * variabili protected
      */
-    protected Game game;
+    protected Handeler handeler;
     protected float x, y;
     protected int width, height;
     
     /**
      * Costruttore.
-     * @param game
+     * @param handeler
      * @param x
      * @param y
      * @param width
      * @param height 
      */
-    public Entity(Game game, float x, float y, int width, int height) {
-        this.game = game;
+    public Entity(Handeler handeler, float x, float y, int width, int height) {
+        this.handeler = handeler;
         this.x = x;
         this.y = y;
         this.width = width;

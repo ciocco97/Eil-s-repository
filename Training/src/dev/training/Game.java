@@ -58,6 +58,11 @@ public class Game implements Runnable{
     private GameCamera gameCamera;
     
     /**
+     * Handeler
+     */
+    private Handeler handeler;
+    
+    /**
      * Costruttore della classe Game
      * @param title Il nome che verrà visualizzato nell'header del frame
      * @param width La larghezza del frame principale
@@ -79,10 +84,11 @@ public class Game implements Runnable{
         display.getFrame().addKeyListener(keyManager);
         Assets.init();
         
-        gameCamera = new GameCamera(this, 0, 0);
+        handeler = new Handeler(this);
+        gameCamera = new GameCamera(handeler, 0, 0);
         
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
+        gameState = new GameState(handeler);
+        menuState = new MenuState(handeler);
         State.setState(gameState);
     }
     
