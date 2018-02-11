@@ -3,6 +3,7 @@ package dev.training.entities.creature;
 import dev.training.Game;
 import dev.training.Handeler;
 import dev.training.gfx.Assets;
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -15,7 +16,6 @@ public class Player extends Creature{
      * riguarda l'input
      */
     private final int DEFAULT_PLAYER_SPEED = 20;
-    boolean p, pu, pd, pl, pr;
     
     /**
      * Costruttore
@@ -26,6 +26,11 @@ public class Player extends Creature{
     public Player(Handeler handeler, float x, float y) {
         super(handeler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
         speed = DEFAULT_PLAYER_SPEED;
+        
+        bounds.x = (int) (249 * 0.29);
+        bounds.y = (int) (72 * 0.29);
+        bounds.width = (int) (493 * 0.29);
+        bounds.height = (int) (402 * 0.29);
     }
 
     /**
@@ -55,14 +60,6 @@ public class Player extends Creature{
         if(handeler.getKeyManager().right)
             xMove = speed;
         
-        if(handeler.getKeyManager().up)
-            pu = true;
-        else
-            pu = false;
-        if(handeler.getKeyManager().down)
-            pd = true;
-        else
-            pd = false;
     }
 
     /**
@@ -78,15 +75,13 @@ public class Player extends Creature{
      */
     @Override
     public void render(Graphics g) {
-        if(!pd && !pu)
-            g.drawImage(Assets.player, (int) (x - handeler.getGameCamera().getxOffset()), 
-                    (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
-        else if(pd)
-            g.drawImage(Assets.pd, (int) (x - handeler.getGameCamera().getxOffset()), 
-                    (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
-        else if(pu)
-            g.drawImage(Assets.pu, (int) (x - handeler.getGameCamera().getxOffset()), 
-                    (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
+        g.drawImage(Assets.player, (int) (x - handeler.getGameCamera().getxOffset()), 
+                (int) (y - handeler.getGameCamera().getyOffset()), width, height, null);
+        
+        g.setColor(Color.red);
+        /*g.fillRect((int) (x + bounds.x - handeler.getGameCamera().getxOffset()), 
+                (int) (y + bounds.y - handeler.getGameCamera().getyOffset()), 
+                bounds.width, bounds.height);*/
             
     }
     

@@ -67,6 +67,13 @@ public class World {
      * @return 
      */
     public Tile getTile(int x, int y) {
+        /**
+         * Questo controllo serve nel caso si richieda un tile fuouri dalla 
+         * mappa: in questo caso ritorniamo un tile di Erba
+         */
+        if(x < 0 || y < 0 || x >= width || y >= height)
+            return Tile.grassTile;
+        
         Tile t = Tile.tiles[tiles[x][y]];
         /**
          * Se nell'array di tutti i tipi di tiles cerco di accedere ad un tile 

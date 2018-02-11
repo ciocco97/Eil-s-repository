@@ -3,6 +3,7 @@ package dev.training.entities;
 import dev.training.Game;
 import dev.training.Handeler;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 /**
  * Classe per gli elementi animati del gioco
@@ -16,6 +17,7 @@ public abstract class Entity {
     protected Handeler handeler;
     protected float x, y;
     protected int width, height;
+    protected Rectangle bounds;;
     
     /**
      * Costruttore.
@@ -31,6 +33,8 @@ public abstract class Entity {
         this.y = y;
         this.width = width;
         this.height = height;
+        
+        bounds = new Rectangle(0, 0, width, height);
     }
     
     public abstract void update();

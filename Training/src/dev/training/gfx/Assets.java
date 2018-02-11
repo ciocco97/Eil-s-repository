@@ -29,7 +29,7 @@ public class Assets {
         player = sheet.crop(0, height + 10, 450, 700);
         
         sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Pitoto.png"));
-        dirt = stone = grass;
+        dirt = grass;
         player = sheet.crop(3577, 151, 960, 660);
         pu = sheet.crop(2500, 155, 960, 660);
         pd = sheet.crop(8, 179, 960, 660);
