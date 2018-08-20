@@ -18,7 +18,7 @@ public class World {
      * Una matrice designa il mondo, la mappa di gioco, una la posizione degli 
      * omini e una la selezione dell'utente
      */
-    private int[][] world, charapters, selections, tiles;
+    private int[][] world, charapters, selections, tiles, toGo;
     
     /**
      * 
@@ -28,7 +28,7 @@ public class World {
      */
     public World(Game game, String path) {
         this.game = game;
-        mousePressed = true;
+        mousePressed = false;
         this.mouseManager = game.getMouseManager();
         loadWorld(path);
     }
@@ -38,13 +38,18 @@ public class World {
         yMouseTile = mouseManager.getyTile();
         if (mouseManager.isPressed)
         {
-            if (!mousePressed)
+            
+            if (!mousePressed){
             selections[xMouseTile][yMouseTile] = 1;
+            mousePressed=true;
+            }
             else
             selections[xMouseTile][yMouseTile] = 2;
-        }
-        else{
-            
+        }else if (mousePressed)
+        {
+            selections[xMouseTile][yMouseTile] = 3;
+            mousePressed=false;
+            cleanSelections();
         }
         
     }
@@ -53,6 +58,11 @@ public class World {
      */
     private void mousePressed(){
         
+    }
+    private void cleanSelections()
+    {
+        toGo=selections.clone();
+        selections = new int[width][height];
     }
 
     public int getWidth() {
@@ -98,15 +108,19 @@ public class World {
     public Tile getTile(int x, int y) {
         Tile t;
         
-//        if(charapters[x][y] != 0) {
-//            
-//        } else {
-//            if(selections[x][y] != 0) {
-//                
-//            } else {
-//                
-//            }
-//        }
+        if(charapters[x][y] != 0) {
+            return Tile.playerTile;
+        } else {
+            if(x == xMouseTile && y == yMouseTile)
+            {
+                t = Tile.rockTile;
+            }
+            if(selections[x][y] != 0) {
+                t = Tile.selectedTile;
+            } else {
+                
+            }
+        }
         
         /**
          * Controllo per vedere se il tile è o non è selezionato e se la 
@@ -117,13 +131,13 @@ public class World {
             t = Tile.rockTile;
         
         else t = Tile.tiles[world[x][y]];
-        
         /**
          * Se nell'array di tutti i tipi di tiles cerco di accedere ad un tile 
          * che non ho settato, mi ritorna il Tile di default: dirtTile
          */
         if(t == null)
             t = Tile.dirtTile;
+        
         return t;
     }
     
@@ -138,6 +152,8 @@ public class World {
         world = new int[width][height];
         charapters = new int[width][height];
         tiles = new int[width][height];
+        selections = new int[width][height];
+        charapters[3][4] = 1;
         
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)

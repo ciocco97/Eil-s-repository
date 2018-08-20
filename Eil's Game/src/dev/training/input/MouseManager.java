@@ -1,5 +1,6 @@
 package dev.training.input;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener;
 import dev.training.gfx.GameCamera;
 import dev.training.tiles.Tile;
 import java.awt.MouseInfo;
@@ -64,11 +65,13 @@ public class MouseManager implements MouseListener{
 
     @Override
     public void mouseClicked(MouseEvent me) {
+        System.out.println("Cliccched");
         
     }
 
     @Override
     public void mousePressed(MouseEvent me) {
+        System.out.println("Pressed");
         this.isPressed = true;
     }
 

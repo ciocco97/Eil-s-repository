@@ -71,6 +71,7 @@ public class Game implements Runnable{
     private void init() {
         display = new Display(title, width, height);
         display.getFrame().addKeyListener(keyManager);
+        display.getCanvas().addMouseListener(mouseManager);
         Assets.init();
         
         gameCamera = new GameCamera(this, 0, 0);
