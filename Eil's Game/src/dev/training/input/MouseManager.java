@@ -4,9 +4,10 @@ import dev.training.gfx.GameCamera;
 import dev.training.tiles.Tile;
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class MouseManager {
-    public boolean up, down, left, right;
+public class MouseManager implements MouseListener{
+    public boolean up, down, left, right, isPressed;
     private int width, height, xLeft, xRight, yTop, yBottom, xTile, yTile;
     private GameCamera camera;
     
@@ -17,6 +18,7 @@ public class MouseManager {
         this.down = false;
         this.left = false;
         this.right = false;
+        this.isPressed = false;
         this.width = width;
         this.height = height + Y_OFFSET;
         
@@ -25,6 +27,10 @@ public class MouseManager {
         xRight = width - xLeft;
         yTop = height / 8;
         yBottom = height - yTop;
+    }
+    public void initMouseManager(int x, int y)
+    {
+        
     }
     
     public void update(int x, int y) {
@@ -54,5 +60,30 @@ public class MouseManager {
 
     public int getyTile() {
         return yTile;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mousePressed(MouseEvent me) {
+        this.isPressed = true;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent me) {
+        this.isPressed = false;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent me) {
+        
+    }
+
+    @Override
+    public void mouseExited(MouseEvent me) {
+        
     }
 }

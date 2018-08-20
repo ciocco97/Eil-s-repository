@@ -9,6 +9,7 @@ import java.awt.Graphics;
 public class World {
     
     private Game game;
+    private Boolean mousePressed;
     private int width, height, spawnX, spawnY, xMouseTile, yMouseTile;
     private MouseManager mouseManager;
     /**
@@ -17,7 +18,7 @@ public class World {
      * Una matrice designa il mondo, la mappa di gioco, una la posizione degli 
      * omini e una la selezione dell'utente
      */
-    private int[][] tiles, omini, selezioni;
+    private int[][] world, charapters, selections, tiles;
     
     /**
      * 
@@ -27,18 +28,44 @@ public class World {
      */
     public World(Game game, String path) {
         this.game = game;
+        mousePressed = true;
         this.mouseManager = game.getMouseManager();
-        
         loadWorld(path);
     }
     
     public void update() {
         xMouseTile = mouseManager.getxTile();
         yMouseTile = mouseManager.getyTile();
-        
+        if (mouseManager.isPressed)
+        {
+            if (!mousePressed)
+            selections[xMouseTile][yMouseTile] = 1;
+            else
+            selections[xMouseTile][yMouseTile] = 2;
+        }
+        else{
+            
+        }
         
     }
+    /**
+     * metodo che gestisce le caselle selezionate quando viene premuto il mouse
+     */
+    private void mousePressed(){
+        
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
     
+    private void getSelectedTile()
+    {
+    }
     public void render(Graphics g) {
         /**
          * Queste variabili servono per iniziare a renderizzare il mondo 
@@ -64,19 +91,22 @@ public class World {
             }
         }
     }
-    
+    private void tilesGenerator()
+    {
+        
+    }
     public Tile getTile(int x, int y) {
         Tile t;
         
-        if(omini[x][y] != 0) {
-            
-        } else {
-            if(selezioni[x][y] != 0) {
-                
-            } else {
-                
-            }
-        }
+//        if(charapters[x][y] != 0) {
+//            
+//        } else {
+//            if(selections[x][y] != 0) {
+//                
+//            } else {
+//                
+//            }
+//        }
         
         /**
          * Controllo per vedere se il tile è o non è selezionato e se la 
@@ -86,7 +116,7 @@ public class World {
         if(x == xMouseTile && y == yMouseTile)
             t = Tile.rockTile;
         
-        else t = Tile.tiles[tiles[x][y]];
+        else t = Tile.tiles[world[x][y]];
         
         /**
          * Se nell'array di tutti i tipi di tiles cerco di accedere ad un tile 
@@ -105,9 +135,9 @@ public class World {
         spawnX = Utils.parseInt(token[2]);
         spawnY = Utils.parseInt(token[3]);
         
+        world = new int[width][height];
+        charapters = new int[width][height];
         tiles = new int[width][height];
-        omini = new int[width][height];
-        selezioni = new int[width][height];
         
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)
@@ -117,7 +147,7 @@ public class World {
                  * totale di colonne + numero di colonne. si aggiunge 4 perchè i 
                  * primi 4 elementi di token sono utilizzati per altri scopi.
                  */
-                tiles[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+                world[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
         
     }
     

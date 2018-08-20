@@ -83,7 +83,8 @@ public class Game implements Runnable{
     private void update() {
         keyManager.update();
         // Prendo la posizione del frame
-        int xFrame = display.getFrame().getX(); int yFrame = display.getFrame().getY();
+        int xFrame = display.getFrame().getX(); 
+        int yFrame = display.getFrame().getY();
         mouseManager.update(xFrame, yFrame);
         
         /**
