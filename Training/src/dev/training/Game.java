@@ -4,6 +4,7 @@ import dev.training.display.Display;
 import dev.training.gfx.Assets;
 import dev.training.gfx.GameCamera;
 import dev.training.input.KeyManager;
+import dev.training.input.MouseManager;
 import dev.training.states.GameState;
 import dev.training.states.MenuState;
 import dev.training.states.State;
@@ -49,6 +50,7 @@ public class Game implements Runnable{
      * Input
      */
     private KeyManager keyManager;
+    private MouseManager mouseManager;
     
     /**
      * Camera
@@ -60,6 +62,7 @@ public class Game implements Runnable{
         this.height = height;
         this.title = title;
         keyManager = new KeyManager();
+        mouseManager = new MouseManager(width, height);
     }
     
     /**
@@ -79,6 +82,9 @@ public class Game implements Runnable{
     
     private void update() {
         keyManager.update();
+        // Prendo la posizione del frame
+        int xFrame = display.getFrame().getX(); int yFrame = display.getFrame().getY();
+        mouseManager.update(xFrame, yFrame);
         
         /**
          * Se è il programma ha inizializzato uno stato e quindi possiamo 
@@ -210,6 +216,10 @@ public class Game implements Runnable{
      */
     public KeyManager getKeyManager() {
         return keyManager;
+    }
+
+    public MouseManager getMouseManager() {
+        return mouseManager;
     }
     
     public GameCamera getGameCamera() {

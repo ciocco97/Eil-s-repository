@@ -32,13 +32,13 @@ public class GameCamera {
         xMove = 0;
         yMove = 0;
         
-        if(game.getKeyManager().up)
+        if(game.getMouseManager().up)
             yMove = -CAMERA_SPEED;
-        if(game.getKeyManager().down)
+        if(game.getMouseManager().down)
             yMove = CAMERA_SPEED;
-        if(game.getKeyManager().left)
+        if(game.getMouseManager().left)
             xMove = -CAMERA_SPEED;
-        if(game.getKeyManager().right)
+        if(game.getMouseManager().right)
             xMove = CAMERA_SPEED;
     }
     
