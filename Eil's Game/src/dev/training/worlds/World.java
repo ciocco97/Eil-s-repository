@@ -9,9 +9,10 @@ import java.awt.Graphics;
 public class World {
     
     private Game game;
-    private Boolean mousePressed;
-    private int width, height, spawnX, spawnY, xMouseTile, yMouseTile;
     private MouseManager mouseManager;
+    
+    private Boolean wasMousePressed, enablePath;
+    private int width, height, spawnX, spawnY, xMouseTile, yMouseTile, lastTileX, lastTileY;
     /**
      * Una matrice di ID che indicano come sono disposti i "Tile" all'interno 
      * del mondo.
@@ -19,6 +20,12 @@ public class World {
      * omini e una la selezione dell'utente
      */
     private int[][] world, charapters, selections, tiles, toGo;
+    
+    // Costanti
+    private final int START_PATH = 1;
+    private final int PATH = 2;
+    private final int END_PATH = 3;
+    
     
     /**
      * 
@@ -28,7 +35,8 @@ public class World {
      */
     public World(Game game, String path) {
         this.game = game;
-        mousePressed = false;
+        wasMousePressed = false;
+        enablePath = false;
         this.mouseManager = game.getMouseManager();
         loadWorld(path);
     }
@@ -36,20 +44,45 @@ public class World {
     public void update() {
         xMouseTile = mouseManager.getxTile();
         yMouseTile = mouseManager.getyTile();
-        if (mouseManager.isPressed)
+        
+        
+        // Se non esco dai bordi e il tile cliccato è un character
+        if (!(    xMouseTile > 0 && 
+                yMouseTile > 0 && 
+                xMouseTile < width && 
+                yMouseTile < height))
         {
+            cleanSelections();
+            return;
+        }
             
-            if (!mousePressed){
-            selections[xMouseTile][yMouseTile] = 1;
-            mousePressed=true;
+        
+        if (charapters[xMouseTile][yMouseTile] != 0) enablePath=true;
+        
+        // Controllo per vedere se la creazione del path è possibile
+        if (mouseManager.isPressed && enablePath) {
+            /**
+             * Entrati in questo if sappiamo che stiamo tracciando un percorso:
+             * la prima casella selezionata è stata un player
+             */
+            if (!wasMousePressed){
+                selections[xMouseTile][yMouseTile] = START_PATH;
+                wasMousePressed = true;
             }
             else
-            selections[xMouseTile][yMouseTile] = 2;
-        }else if (mousePressed)
-        {
-            selections[xMouseTile][yMouseTile] = 3;
-            mousePressed=false;
+            {
+                selections[xMouseTile][yMouseTile] = PATH;
+            }
+            
+        /**
+         * Se il mouse non è più premuto ma il flag "mousePressed" è ancora true
+         * Significa che il tile è l'ultimodel path
+         */
+        } else if (wasMousePressed) {
+            selections[xMouseTile][yMouseTile] = END_PATH;
+            wasMousePressed=false;
             cleanSelections();
+            enablePath=false;
         }
         
     }
@@ -98,6 +131,9 @@ public class World {
                  */
                 getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - game.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - game.getGameCamera().getyOffset()));
+                if (x == xMouseTile && y == yMouseTile)
+                    Tile.selectedTile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - game.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - game.getGameCamera().getyOffset()));
             }
         }
     }
@@ -106,15 +142,14 @@ public class World {
         
     }
     public Tile getTile(int x, int y) {
-        Tile t;
+        //se tutto va bene, c'è il mondo reale
+        Tile t = Tile.tiles[world[x][y]];
         
+        //potrebbe essere un giocatore
         if(charapters[x][y] != 0) {
-            return Tile.playerTile;
+            t = Tile.playerTile;
         } else {
-            if(x == xMouseTile && y == yMouseTile)
-            {
-                t = Tile.rockTile;
-            }
+           
             if(selections[x][y] != 0) {
                 t = Tile.selectedTile;
             } else {
@@ -127,10 +162,7 @@ public class World {
          * selezione prevede solamente il passaggio del mouse o anche la 
          * pressione
          */
-        if(x == xMouseTile && y == yMouseTile)
-            t = Tile.rockTile;
         
-        else t = Tile.tiles[world[x][y]];
         /**
          * Se nell'array di tutti i tipi di tiles cerco di accedere ad un tile 
          * che non ho settato, mi ritorna il Tile di default: dirtTile

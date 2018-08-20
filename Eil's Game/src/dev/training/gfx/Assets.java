@@ -17,12 +17,12 @@ public class Assets {
     
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sprite.png"));
-        
+        selected = sheet.crop(580, 0, 20, 20);
         grass = sheet.crop(600, 0, 20, 20);
         dirt = sheet.crop(620, 0, 20, 20);
         stone = sheet.crop(640, 0, 20, 20);
         rock = sheet.crop(width * 3, 0, width, height);
-        selected = sheet.crop(660, 0, 20, 20);
+        
 //        player = sheet.crop(0, height + 10, 450, 700);
         charapter = sheet.crop(680, 0, 20, 20);
     }
