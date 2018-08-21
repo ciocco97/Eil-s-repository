@@ -1,9 +1,7 @@
 package dev.training.worlds;
 
-import dev.training.Game;
 import dev.training.Handeler;
 import dev.training.Utils;
-import dev.training.input.MouseManager;
 import dev.training.tiles.Tile;
 import java.awt.Graphics;
 
@@ -19,7 +17,7 @@ public class World {
      * Una matrice designa il mondo, la mappa di gioco, una la posizione degli 
      * omini e una la selezione dell'utente
      */
-    private int[][] world, charapters, selections, tiles, toGo;
+    private int[][] world, charapters, selections, toGo;
     
     // Costanti
     private final int START_PATH = 1;
@@ -29,13 +27,21 @@ public class World {
     
     /**
      * 
-     * @param game
+     * @param handeler
      * @param path il percorso per raggiungere il "World" che abbiamo salvato 
      * da qualche parte nel file system.
      */
     public World(Handeler handeler, String path) {
         this.handeler = handeler;
+        
+        charapters = new int[width][height];
+        selections = new int[width][height];
+        
+        // Inserisco un character all'interno della mappa
+        charapters[3][4] = 1;
+        
         loadWorld(path);
+        
         wasMousePressed = enablePath = false;
     }
     
@@ -94,29 +100,16 @@ public class World {
         }
         
     }
-    /**
-     * metodo che gestisce le caselle selezionate quando viene premuto il mouse
-     */
-    private void mousePressed(){
-        
-    }
-    private void cleanSelections()
-    {
+    
+    private void cleanSelections() {
         toGo=selections.clone();
         selections = new int[width][height];
     }
 
-    public int getWidth() {
-        return width;
-    }
+    public int getWidth() { return width; }
 
-    public int getHeight() {
-        return height;
-    }
+    public int getHeight() { return height; }
     
-    private void getSelectedTile()
-    {
-    }
     public void render(Graphics g) {
         /**
          * Queste variabili servono per iniziare a renderizzare il mondo 
@@ -145,10 +138,13 @@ public class World {
             }
         }
     }
-    private void tilesGenerator()
-    {
-        
-    }
+    
+    /**
+     * Funzione assolutamente da cambiare
+     * @param x
+     * @param y
+     * @return 
+     */
     public Tile getTile(int x, int y) {
         //se tutto va bene, c'è il mondo reale
         Tile t = Tile.tiles[world[x][y]];
@@ -166,12 +162,6 @@ public class World {
         }
         
         /**
-         * Controllo per vedere se il tile è o non è selezionato e se la 
-         * selezione prevede solamente il passaggio del mouse o anche la 
-         * pressione
-         */
-        
-        /**
          * Se nell'array di tutti i tipi di tiles cerco di accedere ad un tile 
          * che non ho settato, mi ritorna il Tile di default: dirtTile
          */
@@ -181,6 +171,10 @@ public class World {
         return t;
     }
     
+    /**
+     * Crea la matrica world
+     * @param path percorso del file in cui si trova il mondo codificato
+     */
     private void loadWorld(String path) {
         String file = Utils.loadFileAsStrig(path);
         String[] token = file.split("\\s+");
@@ -190,10 +184,6 @@ public class World {
         spawnY = Utils.parseInt(token[3]);
         
         world = new int[width][height];
-        charapters = new int[width][height];
-        tiles = new int[width][height];
-        selections = new int[width][height];
-        charapters[3][4] = 1;
         
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)

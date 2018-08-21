@@ -86,13 +86,7 @@ public class MouseManager implements MouseListener{
      * tabella di tiles
      * @return xTile
      */
-    public int getxTile() {
-        return xTile;
-    }
-    
-    public void setHandeler(Handeler handeler) {
-        this.handeler = handeler;
-    }
+    public int getxTile() { return xTile; }
 
     /**
      * Funzione che ritorna l'ordinata della tile considerando il mondo come una 
@@ -100,6 +94,8 @@ public class MouseManager implements MouseListener{
      * @return yTile
      */
     public int getyTile() { return yTile; }
+    
+    public void setHandeler(Handeler handeler) { this.handeler = handeler; }
 
     @Override
     public void mouseClicked(MouseEvent me) { }
