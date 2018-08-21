@@ -25,6 +25,8 @@ public class MouseManager implements MouseListener{
 
      // Y_OFFSET è il numero di pixel che vengono "mangiati"
     private final int Y_OFFSET = 27;
+    private final float Y_PERC_CORNICE = 8;
+    private final float X_PERC_CORNICE = 10;
 
     public MouseManager(int width, int height) { 
         
@@ -39,12 +41,12 @@ public class MouseManager implements MouseListener{
         this.isPressed = false;
         
         // Calcolo del range cornice
-        xLeft = width / 10;
+        xLeft = (int) (width / X_PERC_CORNICE);
         xRight = width - xLeft;
-        yTop = (height + Y_OFFSET) / 8;
+        yTop = (int) ((height + Y_OFFSET) / Y_PERC_CORNICE);
         yBottom = height + Y_OFFSET - yTop;
+        
         System.out.println(xLeft + " " + xRight + " " + yTop + " " + yBottom);
-        System.out.println(width + " " + height);
     }
     
     /**
@@ -67,6 +69,7 @@ public class MouseManager implements MouseListener{
             up=down=left=right=false;
         else { left = xRelative < xLeft; right = xRelative > xRight;
             up = yRelative < yTop; down = yRelative > yBottom; }
+        
         
         /**
          * Calcolo della posizione dell'ascissa Tile attraverso il rapprto tra 
