@@ -57,7 +57,7 @@ public class World {
         }
             
         
-        if (charapters[xMouseTile][yMouseTile] != 0) enablePath=true;
+        if (charapters[xMouseTile][yMouseTile] != 0 && mouseManager.isPressed) enablePath=true;
         
         // Controllo per vedere se la creazione del path è possibile
         if (mouseManager.isPressed && enablePath) {
@@ -69,10 +69,18 @@ public class World {
                 selections[xMouseTile][yMouseTile] = START_PATH;
                 wasMousePressed = true;
             }
-            else
-            {
-                selections[xMouseTile][yMouseTile] = PATH;
+            
+            //in questo caso il percorso è enabled e siamo lungo il percorso, aggiungo le tile del percorso alla LinkedList
+            else{
+                if (xMouseTile!=lastTileX && yMouseTile!=lastTileY)
+                    {
+                        System.out.println("mamma");
+                        selections[xMouseTile][yMouseTile] = PATH;
+                        lastTileX=xMouseTile;
+                        lastTileY=yMouseTile;
+                    }
             }
+                
             
         /**
          * Se il mouse non è più premuto ma il flag "mousePressed" è ancora true
@@ -83,6 +91,8 @@ public class World {
             wasMousePressed=false;
             cleanSelections();
             enablePath=false;
+            lastTileX = -1;
+            lastTileY = -1;
         }
         
     }
