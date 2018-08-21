@@ -26,7 +26,7 @@ public class World {
     
     
     /**
-     * 
+     * Costruttore
      * @param handeler
      * @param path il percorso per raggiungere il "World" che abbiamo salvato 
      * da qualche parte nel file system.
@@ -38,23 +38,25 @@ public class World {
         
         charapters = new int[width][height];
         selections = new int[width][height];
-        
         // Inserisco un character all'interno della mappa
         charapters[3][4] = 1;
         
         wasMousePressed = enablePath = false;
     }
     
+    /**
+     * Funzione assolutamente da mettere a posto in quanto disordinata
+     */
     public void update() {
         xMouseTile = handeler.getMouseManager().getxTile();
         yMouseTile = handeler.getMouseManager().getyTile();
         
         
-        // Se non esco dai bordi e il tile cliccato è un character
+        // Se esco dai bordi 
         if (!(    xMouseTile > 0 && 
                 yMouseTile > 0 && 
                 xMouseTile < width && 
-                yMouseTile < height))
+                yMouseTile < height)) 
         {
             cleanSelections();
             return;
@@ -74,7 +76,7 @@ public class World {
                 wasMousePressed = true;
             }
             
-            //in questo caso il percorso è enabled e siamo lungo il percorso, aggiungo le tile del percorso alla LinkedList
+            // In questo caso il percorso è enabled e siamo lungo il percorso, aggiungo le tile del percorso alla LinkedList
             else{
                 if (xMouseTile!=lastTileX && yMouseTile!=lastTileY)
                     {
@@ -92,15 +94,17 @@ public class World {
          */
         } else if (wasMousePressed) {
             selections[xMouseTile][yMouseTile] = END_PATH;
-            wasMousePressed=false;
+            wasMousePressed = false;
             cleanSelections();
-            enablePath=false;
+            enablePath = false;
             lastTileX = -1;
             lastTileY = -1;
         }
         
     }
-    
+    /**
+     * Funzione che crea la 
+     */
     private void cleanSelections() {
         toGo=selections.clone();
         selections = new int[width][height];
@@ -132,6 +136,10 @@ public class World {
                  */
                 getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+                /**
+                 * Se il Tile è quello su cui è presente il mouse bisogna 
+                 * disegnarci sopra il Tile selezione
+                 */
                 if (x == xMouseTile && y == yMouseTile)
                     Tile.selectedTile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
@@ -140,34 +148,22 @@ public class World {
     }
     
     /**
-     * Funzione assolutamente da cambiare
+     * Funzione che sceglie il Tile da visualizzare
      * @param x
      * @param y
      * @return 
      */
     public Tile getTile(int x, int y) {
-        //se tutto va bene, c'è il mondo reale
+        // Di default viene scelto il Tile in world
         Tile t = Tile.tiles[world[x][y]];
-        
-        //potrebbe essere un giocatore
-        if(charapters[x][y] != 0) {
-            t = Tile.playerTile;
-        } else {
-           
-            if(selections[x][y] != 0) {
-                t = Tile.selectedTile;
-            } else {
-                
-            }
-        }
+        if(charapters[x][y] != 0) t = Tile.playerTile;
+        else if(selections[x][y] != 0) t = Tile.selectedTile;
         
         /**
          * Se nell'array di tutti i tipi di tiles cerco di accedere ad un tile 
          * che non ho settato, mi ritorna il Tile di default: dirtTile
          */
-        if(t == null)
-            t = Tile.dirtTile;
-        
+        if(t == null) t = Tile.dirtTile;
         return t;
     }
     
