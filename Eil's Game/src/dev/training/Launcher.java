@@ -1,7 +1,5 @@
 package dev.training;
 
-import java.awt.Toolkit;
-
 public class Launcher {
 
     @SuppressWarnings("ResultOfObjectAllocationIgnored")

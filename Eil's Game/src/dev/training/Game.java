@@ -57,10 +57,16 @@ public class Game implements Runnable{
      */
     private GameCamera gameCamera;
     
+    /**
+     * Handeler: fa da tramite tra le classi
+     */
+    private Handeler handeler;
+    
     public Game(String title, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
+        
         keyManager = new KeyManager();
         mouseManager = new MouseManager(width, height);
     }
@@ -74,19 +80,24 @@ public class Game implements Runnable{
         display.getCanvas().addMouseListener(mouseManager);
         Assets.init();
         
-        gameCamera = new GameCamera(this, 0, 0);
-        
-        gameState = new GameState(this);
-        menuState = new MenuState(this);
+        handeler = new Handeler(this);
+        gameState = new GameState(handeler);
+        menuState = new MenuState(handeler);
         State.setState(gameState);
+        
+        gameCamera = new GameCamera(handeler, 0, 0);
+        mouseManager.setHandeler(handeler);
+        
     }
     
     private void update() {
-        keyManager.update();
         // Prendo la posizione del frame
         int xFrame = display.getFrame().getX(); 
         int yFrame = display.getFrame().getY();
+        // Aggiorno gli input manager
         mouseManager.update(xFrame, yFrame);
+        keyManager.update();
+        gameCamera.update();
         
         /**
          * Se è il programma ha inizializzato uno stato e quindi possiamo 

@@ -1,18 +1,18 @@
 
 package dev.training.gfx;
 
-import dev.training.Game;
+import dev.training.Handeler;
 
 public class GameCamera {
     
     private final int CAMERA_SPEED = 20;
     
-    private Game game;
-    public static float xOffset, yOffset;
+    Handeler handeler;
+    public float xOffset, yOffset;
     private int xMove, yMove;
     
-    public GameCamera(Game game, float xOffset, float yOffset) {
-        this.game = game;
+    public GameCamera(Handeler handeler, float xOffset, float yOffset) {
+        this.handeler = handeler;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
     }
@@ -26,13 +26,13 @@ public class GameCamera {
         xMove = 0;
         yMove = 0;
         
-        if(game.getMouseManager().up)
+        if(handeler.getMouseManager().up)
             yMove = -CAMERA_SPEED;
-        if(game.getMouseManager().down)
+        if(handeler.getMouseManager().down)
             yMove = CAMERA_SPEED;
-        if(game.getMouseManager().left)
+        if(handeler.getMouseManager().left)
             xMove = -CAMERA_SPEED;
-        if(game.getMouseManager().right)
+        if(handeler.getMouseManager().right)
             xMove = CAMERA_SPEED;
     }
     

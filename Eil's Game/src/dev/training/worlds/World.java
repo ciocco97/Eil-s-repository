@@ -1,6 +1,7 @@
 package dev.training.worlds;
 
 import dev.training.Game;
+import dev.training.Handeler;
 import dev.training.Utils;
 import dev.training.input.MouseManager;
 import dev.training.tiles.Tile;
@@ -8,8 +9,7 @@ import java.awt.Graphics;
 
 public class World {
     
-    private Game game;
-    private MouseManager mouseManager;
+    private Handeler handeler;
     
     private Boolean wasMousePressed, enablePath;
     private int width, height, spawnX, spawnY, xMouseTile, yMouseTile, lastTileX, lastTileY;
@@ -33,17 +33,15 @@ public class World {
      * @param path il percorso per raggiungere il "World" che abbiamo salvato 
      * da qualche parte nel file system.
      */
-    public World(Game game, String path) {
-        this.game = game;
-        wasMousePressed = false;
-        enablePath = false;
-        this.mouseManager = game.getMouseManager();
+    public World(Handeler handeler, String path) {
+        this.handeler = handeler;
         loadWorld(path);
+        wasMousePressed = enablePath = false;
     }
     
     public void update() {
-        xMouseTile = mouseManager.getxTile();
-        yMouseTile = mouseManager.getyTile();
+        xMouseTile = handeler.getMouseManager().getxTile();
+        yMouseTile = handeler.getMouseManager().getyTile();
         
         
         // Se non esco dai bordi e il tile cliccato è un character
@@ -57,10 +55,10 @@ public class World {
         }
             
         
-        if (charapters[xMouseTile][yMouseTile] != 0 && mouseManager.isPressed) enablePath=true;
+        if (charapters[xMouseTile][yMouseTile] != 0 && handeler.getMouseManager().isPressed) enablePath=true;
         
         // Controllo per vedere se la creazione del path è possibile
-        if (mouseManager.isPressed && enablePath) {
+        if (handeler.getMouseManager().isPressed && enablePath) {
             /**
              * Entrati in questo if sappiamo che stiamo tracciando un percorso:
              * la prima casella selezionata è stata un player
@@ -125,10 +123,10 @@ public class World {
          * solamente dove serve
          */
         update();
-        int xStart = (int) Math.max(0, game.getGameCamera().getxOffset() / Tile.TILEWIDTH);
-        int xEnd = (int) Math.min(width, (game.getGameCamera().getxOffset() + game.getWidth()) / Tile.TILEWIDTH + 1);
-        int yStart = (int) Math.max(0, game.getGameCamera().getyOffset() / Tile.TILEHEIGHT);
-        int yEnd = (int) Math.min(height, (game.getGameCamera().getyOffset() + game.getHeight()) / Tile.TILEHEIGHT + 1);
+        int xStart = (int) Math.max(0, handeler.getGameCamera().getxOffset() / Tile.TILEWIDTH);
+        int xEnd = (int) Math.min(width, (handeler.getGameCamera().getxOffset() + handeler.getWidth()) / Tile.TILEWIDTH + 1);
+        int yStart = (int) Math.max(0, handeler.getGameCamera().getyOffset() / Tile.TILEHEIGHT);
+        int yEnd = (int) Math.min(height, (handeler.getGameCamera().getyOffset() + handeler.getHeight()) / Tile.TILEHEIGHT + 1);
         
         for(int y = yStart; y < yEnd; y++) {
             for(int x = xStart; x < xEnd; x++) {
@@ -139,11 +137,11 @@ public class World {
                  * farlo partire da 1 * larghezza del Tile, 3 * altezza del 
                  * Tile.
                  */
-                getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - game.getGameCamera().getxOffset()), 
-                        (int) (spawnY + y * Tile.TILEHEIGHT - game.getGameCamera().getyOffset()));
+                getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
                 if (x == xMouseTile && y == yMouseTile)
-                    Tile.selectedTile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - game.getGameCamera().getxOffset()), 
-                        (int) (spawnY + y * Tile.TILEHEIGHT - game.getGameCamera().getyOffset()));
+                    Tile.selectedTile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
             }
         }
     }

@@ -1,6 +1,6 @@
 package dev.training.states;
 
-import dev.training.Game;
+import dev.training.Handeler;
 import java.awt.Graphics;
 
 /**
@@ -45,10 +45,10 @@ public abstract class State {
      * in tutte le fasi del gioco si possa avere l'accesso a funzionalità come 
      * l'input.
      */
-    protected Game game;
+    protected Handeler handeler;
     
-    public State(Game game) {
-        this.game = game;
+    public State(Handeler handeler) {
+        this.handeler = handeler;
     }
     
     public abstract void update();
