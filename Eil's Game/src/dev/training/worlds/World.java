@@ -34,13 +34,13 @@ public class World {
     public World(Handeler handeler, String path) {
         this.handeler = handeler;
         
+        loadWorld(path);
+        
         charapters = new int[width][height];
         selections = new int[width][height];
         
         // Inserisco un character all'interno della mappa
         charapters[3][4] = 1;
-        
-        loadWorld(path);
         
         wasMousePressed = enablePath = false;
     }
