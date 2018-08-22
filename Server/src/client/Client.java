@@ -1,9 +1,9 @@
 package client;
 
 import PackageDiProva.ClasseDiProva;
+import server.Server;
 import java.io.*;
 import java.net.*;
-import server.Server;
 
 public class Client {
     
