@@ -1,5 +1,6 @@
 package server;
 
+import PackageDiProva.ClasseDiProva;
 import java.io.*;
 import java.net.*;
 
@@ -8,16 +9,18 @@ import java.net.*;
  */
 public class Connect extends Thread {
     private Socket client;
+//    private PrintStream out;
+    private ObjectOutputStream out;
     private BufferedReader in;
-    private PrintStream out;
     
     public Connect(Socket clientSocket) {
         client = clientSocket;
         try {
+            // Canale di comunicazione in output
+//            out = new PrintStream(client.getOutputStream(), true);
+            out = new ObjectOutputStream(client.getOutputStream());
             // Canale di comunicazione in input
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            // Canale di comunicazione in output
-            out = new PrintStream(client.getOutputStream(), true);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             System.out.println("Tentativo chiusura connessione ...");
@@ -33,8 +36,9 @@ public class Connect extends Thread {
      */
     @Override
     public void run() {
+        ClasseDiProva classeDiProva = new ClasseDiProva("Questo è il messaggio");
         try {
-            out.println("Messaggio di prova");
+            out.writeObject(classeDiProva);
             out.flush();
             
             out.close();
