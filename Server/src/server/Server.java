@@ -5,17 +5,21 @@ import java.net.*;
 
 public class Server extends Thread{
     private ServerSocket server;
+    private final ServerUDP serverUDP;
     
     public static final int PORT = 7777;
     
     /**
      * Creazione di una server socket in ascolto sulla porta PORT
+     * Successivamente istanza classe ServerUDPP
      */
     public Server() {
         try { server = new ServerSocket(PORT); } 
         catch (IOException ex) { System.out.println(ex.getMessage()); }
         System.out.println("Il server è in attesa sulla porta " + PORT);
         this.start();
+        
+        serverUDP = new ServerUDP();
     }
     
     /**

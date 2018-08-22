@@ -12,6 +12,9 @@ public class Client {
 //   BufferedReader in;
     private ObjectInputStream in;
     private Socket socket;
+    private ClientUDP clientUDP;
+    
+    // Costanti
     private final String serverAddress = "localhost";
 
     public Client() {
@@ -25,6 +28,8 @@ public class Client {
         } catch (IOException|ClassNotFoundException ex) { 
             System.out.println(ex.getMessage()); 
         }
+        
+        clientUDP = new ClientUDP();
     }
     
     private void whatToDo() throws IOException, ClassNotFoundException {
