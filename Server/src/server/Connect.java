@@ -11,7 +11,8 @@ public class Connect extends Thread {
     private Socket client;
 //    private PrintStream out;
     private ObjectOutputStream out;
-    private BufferedReader in;
+//    private BufferedReader in;
+    private ObjectInputStream in;
     
     public Connect(Socket clientSocket) {
         client = clientSocket;
@@ -20,7 +21,7 @@ public class Connect extends Thread {
 //            out = new PrintStream(client.getOutputStream(), true);
             out = new ObjectOutputStream(client.getOutputStream());
             // Canale di comunicazione in input
-            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            in = new ObjectInputStream(client.getInputStream());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             System.out.println("Tentativo chiusura connessione ...");
@@ -36,15 +37,17 @@ public class Connect extends Thread {
      */
     @Override
     public void run() {
-        ClasseDiProva classeDiProva = new ClasseDiProva("Questo è il messaggio");
+        ClasseDiProva classeDiProva = new ClasseDiProva("Questo è un altro messaggio");
         try {
             out.writeObject(classeDiProva);
             out.flush();
+            classeDiProva = (ClasseDiProva) in.readObject();
+            System.out.println("Risposta: " + classeDiProva.getMessaggio());
             
             out.close();
             in.close();
             client.close();
-        } catch (IOException ex) {
+        } catch (IOException|ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
     }
