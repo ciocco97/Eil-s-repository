@@ -1,5 +1,6 @@
 package dev.training;
 
+import dev.conn.client.Client;
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
 import dev.training.gfx.GameCamera;
@@ -61,6 +62,11 @@ public class Game implements Runnable{
      * Handeler: fa da tramite tra le classi
      */
     private Handeler handeler;
+    
+    /**
+     * Classe che gestisce le comunicazioni di rete
+     */
+    private Client client;
     
     public Game(String title, int width, int height) {
         this.width = width;
