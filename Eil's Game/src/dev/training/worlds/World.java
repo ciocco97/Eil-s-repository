@@ -5,26 +5,28 @@ import dev.training.Handeler;
 import dev.training.Utils;
 import dev.training.tiles.Tile;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class World {
     
     private Handeler handeler;
+    /**
+     * width rappresenta il numero di colonne di tiles mentre height il numero di righe
+     * spawnX e spawnY sono sempre 0
+     */
+    private int width, height, spawnX, spawnY;
     
-    private Boolean wasMousePressed, enablePath;
-    private int width, height, spawnX, spawnY, xMouseTile, yMouseTile, lastTileX, lastTileY;
+    private boolean path;
+    
     /**
      * Una matrice di ID che indicano come sono disposti i "Tile" all'interno 
      * del mondo.
      * Una matrice designa il mondo, la mappa di gioco, una la posizione degli 
-     * omini e una la selezione dell'utente
+     * omini e una la selezione dell'utente; infine toGo rappresenta ciò che 
+     * verrà inviato al server
      */
-    private int[][] world, charapters, selections, toGo;
-    
-    // Costanti
-    private final int START_PATH = 1;
-    private final int PATH = 2;
-    private final int END_PATH = 3;
-    
+    private int[][] world, selections;
+    private ArrayList<Coordinate> pathSteps;
     
     /**
      * Costruttore
@@ -37,83 +39,13 @@ public class World {
         
         loadWorld(path);
         
-        charapters = new int[width][height];
         selections = new int[width][height];
-        // Inserisco un character all'interno della mappa
-        charapters[3][4] = 1;
-        
-        wasMousePressed = enablePath = false;
+        pathSteps = new ArrayList<>();
     }
     
-    /**
-     * Funzione assolutamente da mettere a posto in quanto disordinata
-     */
     public void update() {
-        xMouseTile = handeler.getMouseManager().getxTile();
-        yMouseTile = handeler.getMouseManager().getyTile();
-        
-        
-        // Se esco dai bordi 
-        if (!(    xMouseTile > 0 && 
-                yMouseTile > 0 && 
-                xMouseTile < width && 
-                yMouseTile < height)) 
-        {
-            cleanSelections();
-            return;
-        }
-            
-        
-        if (charapters[xMouseTile][yMouseTile] != 0 && handeler.getMouseManager().isPressed) enablePath=true;
-        
-        // Controllo per vedere se la creazione del path è possibile
-        if (handeler.getMouseManager().isPressed && enablePath) {
-            /**
-             * Entrati in questo if sappiamo che stiamo tracciando un percorso:
-             * la prima casella selezionata è stata un player
-             */
-            if (!wasMousePressed){
-                selections[xMouseTile][yMouseTile] = START_PATH;
-                wasMousePressed = true;
-            }
-            
-            // In questo caso il percorso è enabled e siamo lungo il percorso, aggiungo le tile del percorso alla LinkedList
-            else{
-                if (xMouseTile!=lastTileX && yMouseTile!=lastTileY)
-                    {
-                        System.out.println("mamma");
-                        selections[xMouseTile][yMouseTile] = PATH;
-                        lastTileX=xMouseTile;
-                        lastTileY=yMouseTile;
-                    }
-            }
-                
-            
-        /**
-         * Se il mouse non è più premuto ma il flag "mousePressed" è ancora true
-         * Significa che il tile è l'ultimodel path
-         */
-        } else if (wasMousePressed) {
-            selections[xMouseTile][yMouseTile] = END_PATH;
-            wasMousePressed = false;
-            cleanSelections();
-            enablePath = false;
-            lastTileX = -1;
-            lastTileY = -1;
-        }
-        
+        selection();
     }
-    /**
-     * Funzione che crea la 
-     */
-    private void cleanSelections() {
-        toGo=selections.clone();
-        selections = new int[width][height];
-    }
-
-    public int getWidth() { return width; }
-
-    public int getHeight() { return height; }
     
     public void render(Graphics g) {
         /**
@@ -141,11 +73,81 @@ public class World {
                  * Se il Tile è quello su cui è presente il mouse bisogna 
                  * disegnarci sopra il Tile selezione
                  */
-                if (x == xMouseTile && y == yMouseTile)
-                    Tile.selectedTile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                if (selections[x][y] != 0)
+                    Tile.tiles[selections[x][y]].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
             }
         }
+    }
+    
+    private void selection() {
+        int x = handeler.getMouseManager().getxTile();
+        int y = handeler.getMouseManager().getyTile();
+        Coordinate coordinate = new Coordinate(x, y);
+        // Caso in cui si è fuori dalla mappa
+        if(x < 0 || y < 0 || x > width || y > height) {
+            // Sbagliato
+            reset();
+        // Casi in cui è stato premuto il mouse
+        } else if(handeler.getMouseManager().isPressed) {
+            // Caso in cui il tile su cui si è è un charapter
+            if(world[x][y] > 29 && world[x][y] < 36) {
+                // Se si stava già tracciando un percorso e si seleziona un charapter
+                if(path) {
+                    // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
+                    if(!pathSteps.get(pathSteps.size() - 1).equal(coordinate)) {
+                        reset();
+                    }
+                // Unico caso in cui si può iniziare a tracciare un percorso
+                } else {
+                    // Giusto: inizio
+                    path = true;
+                    selections[x][y] = Tile.SELECT;
+                    if(pathSteps.isEmpty()) {
+                        pathSteps.add(new Coordinate(x, y));
+                        System.out.println("Inizio");
+                    }
+                }
+            } else if(Tile.tiles[world[x][y]].isSolid()) {
+                // Sbagliato
+                reset();
+            // Caso in cui il tile premuto sia erba o terra
+            } else {
+                if(!path) {
+                    // Sbagliato
+                    reset();
+                } else {
+                    // Giusto:  continua
+                    selections[x][y] = Tile.SELECT;
+                    if(pathSteps.get(pathSteps.size() - 1) != new Coordinate(x, y))
+                        pathSteps.add(new Coordinate(x, y));
+                    System.out.println("Continua");
+                }
+            }
+        } else if(path) {
+            // Giusto: invia
+            invia();
+        // Caso in cui il mouse non è stato premuto e non si stava tracciando un percorso
+        } else {
+            // Sbagliato
+            reset();
+        }
+    }
+    
+    /**
+     * Funzione che resetta gli elementi della selezione
+     */
+    private void reset() {
+        path = false;
+        selections = new int[width][height];
+        pathSteps = new ArrayList<>();
+    }
+    
+    /**
+     * Funzione che comincia l'invio dell'istruzione al server
+     */
+    private void invia() {
+        System.out.println(pathSteps.toString());
     }
     
     /**
@@ -155,18 +157,19 @@ public class World {
      * @return 
      */
     public Tile getTile(int x, int y) {
-        // Di default viene scelto il Tile in world
         Tile t = Tile.tiles[world[x][y]];
-        if(charapters[x][y] != 0) t = Tile.playerTile;
-        else if(selections[x][y] != 0) t = Tile.selectedTile;
         
         /**
          * Se nell'array di tutti i tipi di tiles cerco di accedere ad un tile 
          * che non ho settato, mi ritorna il Tile di default: dirtTile
          */
-        if(t == null) t = Tile.dirtTile;
+        if(t == null) t = Tile.tiles[11];
         return t;
     }
+
+    public int getWidth() { return width; }
+
+    public int getHeight() { return height; }
     
     /**
      * Crea la matrica world

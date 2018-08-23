@@ -11,9 +11,9 @@ import java.awt.image.BufferedImage;
  */
 public class Assets {
     
-    private static final int width = 150, height = 150;
-    
-    public static BufferedImage player, dirt, grass, stone, tree, rock, selected, charapter, chapter_archer;
+    public static BufferedImage dirt, grass, stone, selected, charapter;
+    public static BufferedImage chapter_soldier100, chapter_soldier50, chapter_soldier10, 
+            chapter_archer100, chapter_archer50, chapter_archer10;
     
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sprite.png"));
@@ -25,10 +25,11 @@ public class Assets {
 //        dirt = sheet.crop(1395, 825, 348, 348);
         stone = sheet.crop(640, 0, 20, 20);
 //        stone = sheet.crop(697, 825, 348, 348);
-        rock = sheet.crop(width * 3, 0, width, height);
+//        rock = sheet.crop(width * 3, 0, width, height);
         
 //        player = sheet.crop(0, height + 10, 450, 700);
 //        charapter = sheet.crop(680, 0, 20, 20);
-        charapter = sheet.crop(1491, 69, 348, 348);
+        chapter_soldier100 = chapter_soldier50 = chapter_soldier10 = sheet.crop(1491, 69, 348, 348);
+        chapter_archer100 = chapter_archer50 = chapter_archer10 = sheet.crop(351, 825, 348, 348);
     }
 }

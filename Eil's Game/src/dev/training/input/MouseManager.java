@@ -45,8 +45,6 @@ public class MouseManager implements MouseListener{
         xRight = width - xLeft;
         yTop = (int) ((height + Y_OFFSET) / Y_PERC_CORNICE);
         yBottom = height + Y_OFFSET - yTop;
-        
-        System.out.println(xLeft + " " + xRight + " " + yTop + " " + yBottom);
     }
     
     /**
