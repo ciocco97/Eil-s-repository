@@ -15,6 +15,7 @@ public class ClientUDP extends Thread{
     public ClientUDP() {
         try { socket = new DatagramSocket(ServerUDP.UDPORT + 1); } 
         catch (SocketException ex) { System.out.println(ex.getMessage()); }
+        run = true;
         this.start();
     }
     
@@ -23,7 +24,7 @@ public class ClientUDP extends Thread{
         ClasseDiProva classeDiProva = new ClasseDiProva("");
         byte[] buffer = new byte[BUFF_LENGHT];
         DatagramPacket packet = new DatagramPacket(buffer, BUFF_LENGHT);
-        while(true) {
+        while(run) {
             try { 
             socket.receive(packet);
             ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(packet.getData()));
