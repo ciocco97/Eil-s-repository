@@ -95,7 +95,7 @@ public class World {
                 // Se si stava già tracciando un percorso e si seleziona un charapter
                 if(path) {
                     // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
-                    if(!pathSteps.get(pathSteps.size() - 1).equal(coordinate)) {
+                    if(pathSteps.size() != 1) {
                         reset();
                     }
                 // Unico caso in cui si può iniziare a tracciare un percorso
@@ -105,7 +105,6 @@ public class World {
                     selections[x][y] = Tile.SELECT;
                     if(pathSteps.isEmpty()) {
                         pathSteps.add(new Coordinate(x, y));
-                        System.out.println("Inizio");
                     }
                 }
             } else if(Tile.tiles[world[x][y]].isSolid()) {
@@ -119,9 +118,8 @@ public class World {
                 } else {
                     // Giusto:  continua
                     selections[x][y] = Tile.SELECT;
-                    if(pathSteps.get(pathSteps.size() - 1) != new Coordinate(x, y))
+                    if(!pathSteps.get(pathSteps.size() - 1).equal(coordinate))
                         pathSteps.add(new Coordinate(x, y));
-                    System.out.println("Continua");
                 }
             }
         } else if(path) {
@@ -148,6 +146,7 @@ public class World {
      */
     private void invia() {
         System.out.println(pathSteps.toString());
+        reset();
     }
     
     /**
