@@ -1,6 +1,8 @@
 package dev.training.worlds;
 
-public class Coordinate {
+import java.io.Serializable;
+
+public class Coordinate implements Serializable {
     private int x;
     private int y;
 
@@ -21,6 +23,7 @@ public class Coordinate {
 
     public void setY(int y) { this.y = y; }
     
+    @Override
     public String toString() {
         String s = x + " " + y;
         return s;

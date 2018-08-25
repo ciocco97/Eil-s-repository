@@ -21,6 +21,10 @@ public class Game implements Runnable{
     
     private Display display;
     
+    /**
+     * Intestazione frame, larghezza in pixel del frame e altezza in pixel del 
+     * frame
+     */
     public String title;
     private int width, height;
     
@@ -69,13 +73,15 @@ public class Game implements Runnable{
      */
     private Client client;
     
-    public Game(String title, int width, int height) {
+    public Game(String title, String address, int width, int height) {
         this.width = width;
         this.height = height;
         this.title = title;
         
         keyManager = new KeyManager();
         mouseManager = new MouseManager(width, height);
+        
+        client = new Client(address);
     }
     
     /**
@@ -94,7 +100,10 @@ public class Game implements Runnable{
         
         gameCamera = new GameCamera(handeler, 0, 0);
         mouseManager.setHandeler(handeler);
+        client.setHandeler(handeler);
+        client.init();
         
+        handeler.getWorld().setCharaptersBounds(client.getLowerBound(), client.getUpperBound());
     }
     
     private void update() {
@@ -244,6 +253,10 @@ public class Game implements Runnable{
     
     public GameCamera getGameCamera() {
         return gameCamera;
+    }
+    
+    public Client getClient() {
+        return client;
     }
     
     public int getWidth() {

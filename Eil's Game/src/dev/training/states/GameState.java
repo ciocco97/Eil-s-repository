@@ -1,16 +1,19 @@
 package dev.training.states;
 
-import dev.training.Game;
+import dev.conn.client.ClientUDP;
 import dev.training.Handeler;
 import dev.training.worlds.World;
 import java.awt.Graphics;
 
 public class GameState extends State{
     private World world;
+    private ClientUDP clientUDP;
     
     public GameState(Handeler handeler) {
         super(handeler);
-        world = new World(handeler, "res\\worlds\\world");
+        clientUDP = new ClientUDP();
+        clientUDP.start();
+        world = new World(handeler);
         handeler.setWorld(world);
     }
 

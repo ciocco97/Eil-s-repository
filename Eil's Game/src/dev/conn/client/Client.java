@@ -1,54 +1,85 @@
 package dev.conn.client;
 
-import dev.conn.PackageDiProva.ClasseDiProva;
-import dev.training.Game;
 import dev.training.Handeler;
+import dev.training.Utils;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 
-public class Client {
+public class Client extends Thread {
     
-//   PrintStream out;
+    /**
+     * Valori per il settaggio iniziale del gioco:
+     * lower and upper bound servono per capire che omini visualizzare come "propri"
+     * width e height sono rappresentano le dimensioni della matrice dei tile
+     */
+    private int lowerBound, upperBound, width, height;
+    
+    // Elementi della connessione
+    private PrintStream printOut;
     private ObjectOutputStream out;
-//   BufferedReader in;
+    private BufferedReader printIn;
     private ObjectInputStream in;
     private Socket socket;
-    private ClientUDP clientUDP;
+    
     private Handeler handeler;
+    
+    private final int PORT = 7777;
 
-    public Client(int PORT, String serverAddress) {
+    public Client(String serverAddress) {
         try {
             socket = new Socket(serverAddress, PORT);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
-            whatToDo();
-            out.close();
-            in.close();
-        } catch (IOException|ClassNotFoundException ex) { 
+        } catch (IOException ex) { 
             System.out.println(ex.getMessage()); 
         }
         
-        clientUDP = new ClientUDP();
+    }
+    
+    public void init() {
+        try {
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            primaApertura();
+        } catch (IOException|ClassNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+    
+    private void primaApertura() throws IOException, ClassNotFoundException {
+        
+        lowerBound = Utils.parseInt(in.readUTF());
+        upperBound = Utils.parseInt(in.readUTF());
+        width = Utils.parseInt(in.readUTF());
+        height = Utils.parseInt(in.readUTF());
+        System.out.println("Range di omini: " + lowerBound + " - " + upperBound);
+        System.out.println("Dimensioni griglia mondo: " + width + " - " + height);
         
     }
     
-    /**
-     * Secondo Eil è fatta male
-     * @throws IOException
-     * @throws ClassNotFoundException 
-     */
-    private void whatToDo() throws IOException, ClassNotFoundException {
-        int primo = in.readInt();
-        int secondo = in.readInt();
-        System.out.println(primo + " - " + secondo);
-        
+    public void inviaPath(ArrayList pathSteps) {
+        try {
+            out.writeUTF(pathSteps.toString());
+            out.flush();
+            System.out.println("Inviato");
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     
     public void setHandeler(Handeler handeler) { this.handeler = handeler; }
     
+    public int getLowerBound() { return lowerBound; }
+
+    public int getUpperBound() { return upperBound; }
+
+    public int getWidth() { return width; }
+
+    public int getHeight() { return height; }
     
-    public static void main(String args[])
-    {
-        Client client = new Client(7777, "localhost");
-    }
+    
+//    public static void main(String args[])
+//    {
+//        Client client = new Client("192.168.1.119");
+//    }
+
 }

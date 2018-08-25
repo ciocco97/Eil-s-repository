@@ -1,6 +1,7 @@
 
 package dev.training.worlds;
 
+import dev.conn.client.ClientUDP;
 import dev.training.Handeler;
 import dev.training.Utils;
 import dev.training.tiles.Tile;
@@ -16,6 +17,12 @@ public class World {
      */
     private int width, height, spawnX, spawnY;
     
+    /**
+     * Variabili settate da remoto che indicano al client quali sono i charapter 
+     * selezionabili, nonché i "buoni"
+     */
+    private int lowerBound, upperBound;
+    
     private boolean path;
     
     /**
@@ -25,25 +32,32 @@ public class World {
      * omini e una la selezione dell'utente; infine toGo rappresenta ciò che 
      * verrà inviato al server
      */
-    private int[][] world, selections;
+    private int[][] world, selections, abcd;                                    // Da togliere (abcd)
     private ArrayList<Coordinate> pathSteps;
+    
+    /**
+     * Costanti che servono a definire i separatori utilizzati per codificare la 
+     * matrice di interi in String da parte del server
+     */
+    private final String SEPARATORE_RIGHE = "-";
+    private final String SEPARATORE_COLONNE = " ";
     
     /**
      * Costruttore
      * @param handeler
-     * @param path il percorso per raggiungere il "World" che abbiamo salvato 
-     * da qualche parte nel file system.
      */
-    public World(Handeler handeler, String path) {
+    public World(Handeler handeler) {
         this.handeler = handeler;
         
-        loadWorld(path);
+        loadWorld("res//worlds/world");                                         // Da togliere
         
+        world = new int[width][height];                                         // Da togliere
         selections = new int[width][height];
         pathSteps = new ArrayList<>();
     }
     
     public void update() {
+        getWorld();
         selection();
     }
     
@@ -94,7 +108,7 @@ public class World {
         // Casi in cui è stato premuto il mouse
         } else if(handeler.getMouseManager().isPressed) {
             // Caso in cui il tile su cui si è è un charapter
-            if(world[x][y] > 29 && world[x][y] < 36) {
+            if(world[x][y] > lowerBound && world[x][y] < upperBound) {
                 // Se si stava già tracciando un percorso e si seleziona un charapter
                 if(path) {
                     // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
@@ -148,8 +162,10 @@ public class World {
      * Funzione che comincia l'invio dell'istruzione al server
      */
     private void invia() {
-        if(pathSteps.size() > 1)
-            System.out.println(pathSteps.toString());
+        if(pathSteps.size() > 1) {
+            System.out.println("Invio di: " + pathSteps.toString());
+            handeler.getGame().getClient().inviaPath(pathSteps);
+        }
         reset();
     }
     
@@ -174,19 +190,24 @@ public class World {
 
     public int getHeight() { return height; }
     
+    public void setCharaptersBounds(int lb, int ub) {
+        this.lowerBound = lb;
+        this.upperBound = ub;
+    }
+    
     /**
      * Crea la matrica world
      * @param path percorso del file in cui si trova il mondo codificato
      */
-    private void loadWorld(String path) {
+    private void loadWorld(String path) {                                       // Da togliere
         String file = Utils.loadFileAsStrig(path);
         String[] token = file.split("\\s+");
-        width = Utils.parseInt(token[0]);
+        width = Utils.parseInt(token[0]);                                       // Importante: per adesso qua vengono settati numero righe e numero colonne
         height = Utils.parseInt(token[1]);
         spawnX = Utils.parseInt(token[2]);
         spawnY = Utils.parseInt(token[3]);
         
-        world = new int[width][height];
+        abcd = new int[width][height];
         
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)
@@ -196,8 +217,18 @@ public class World {
                  * totale di colonne + numero di colonne. si aggiunge 4 perchè i 
                  * primi 4 elementi di token sono utilizzati per altri scopi.
                  */
-                world[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+                abcd[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
         
+    }
+    
+    /**
+     * Funzione che aggiorna il world da server prendendo una String da ClientUDP 
+     * e poi convertendola in una matrice di interi
+     */
+    private void getWorld() {
+        world = abcd;                                                           // Da cambiare perchè bypassa l'update remoto          
+        String updateMap = ClientUDP.map;
+        String[] righeMappa = updateMap.split(SEPARATORE_RIGHE);
     }
     
 }
