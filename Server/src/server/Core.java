@@ -21,13 +21,13 @@ public class Core {
     
     public Core()
     {
-        //serverUDP = new ServerUDP();
+        serverUDP = new ServerUDP();
         game = new Game();
         game.loadWorld("res\\World\\world");
         this.width = game.getWidth();
         this.height = game.getHeight();
         System.out.println(this.mapToString());
-        //server = new Server(game.getWidth(), game.getHeight());
+        server = new Server(game.getWidth(), game.getHeight());
     }
     public void initConnection()
     {
@@ -64,6 +64,8 @@ public class Core {
                 update = 0;
                 timer = 0;
             }
+            String map = this.mapToString();
+            serverUDP.send(map);
         }
     }
     /**

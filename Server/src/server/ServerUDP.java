@@ -52,17 +52,12 @@ public class ServerUDP extends Thread{
         
     }
     
-    public void invia() { 
+    public void send(String data) { 
         try {
-            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-            ObjectOutput oo = new ObjectOutputStream(bStream);
-            oo.writeObject(classeDiProva);
-            oo.close();
             
-            byte[] serializedMessage = bStream.toByteArray();
-            
+            byte[] dataBytes = data.getBytes();
             InetAddress ia = InetAddress.getByName("localhost");
-            DatagramPacket packet = new DatagramPacket(serializedMessage, serializedMessage.length, ia, UDPORT + 1);
+            DatagramPacket packet = new DatagramPacket(dataBytes, dataBytes.length, ia, UDPORT + 1);
             socket.send(packet);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
