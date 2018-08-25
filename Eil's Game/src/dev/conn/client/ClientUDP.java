@@ -1,8 +1,6 @@
 package dev.conn.client;
 
-import dev.conn.PackageDiProva.ClasseDiProva;
-import dev.training.worlds.Coordinate;
-import java.io.*;
+import java.io.IOException;
 import java.net.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +8,11 @@ import java.util.logging.Logger;
 public class ClientUDP extends Thread{
     private DatagramSocket socket;
     private boolean run;
+    
+    /**
+     * Praticamente variabile più importandte della classe
+     */
+    public static String map;
     
     // Costanti
     private final int BUFF_LENGHT = 2048;
@@ -22,22 +25,20 @@ public class ClientUDP extends Thread{
             System.out.println(ex.getMessage());
         }
         run = true;
-        this.start();
     }
     
     @Override
     public void run() {
-        ClasseDiProva classeDiProva = new ClasseDiProva(new Coordinate(0, 0));
         byte[] buffer = new byte[BUFF_LENGHT];
         DatagramPacket packet = new DatagramPacket(buffer, BUFF_LENGHT);
         while(run) {
             try { 
-            socket.receive(packet);
-            ObjectInputStream iStream = new ObjectInputStream(new ByteArrayInputStream(packet.getData()));
-            classeDiProva = (ClasseDiProva) iStream.readObject();
-            iStream.close();
-            } catch (IOException|ClassNotFoundException ex) { System.out.println(ex.getMessage()); }
-            System.out.println("Messaggio ricevuto: " + classeDiProva.getMessaggio());
+                socket.receive(packet);
+                map = new String(packet.getData());
+                System.out.println("FROM SERVER:" + map);
+            } catch (IOException ex) {
+                Logger.getLogger(ClientUDP.class.getName()).log(Level.SEVERE, null, ex);
+            } 
         }
     }
     
