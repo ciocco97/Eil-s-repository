@@ -1,7 +1,5 @@
 package server;
 
-import PackageDiProva.ClasseDiProva;
-import PackageDiProva.Coordinate;
 import java.io.*;
 import java.net.*;
 
