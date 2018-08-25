@@ -76,6 +76,9 @@ public class World {
                 if (selections[x][y] != 0)
                     Tile.tiles[selections[x][y]].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+                if(x == handeler.getMouseManager().getxTile() && y == handeler.getMouseManager().getyTile())
+                    Tile.tiles[Tile.SELECT].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
             }
         }
     }
@@ -145,7 +148,8 @@ public class World {
      * Funzione che comincia l'invio dell'istruzione al server
      */
     private void invia() {
-        System.out.println(pathSteps.toString());
+        if(pathSteps.size() > 1)
+            System.out.println(pathSteps.toString());
         reset();
     }
     

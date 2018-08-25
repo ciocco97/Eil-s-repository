@@ -1,6 +1,7 @@
 package server;
 
 import PackageDiProva.ClasseDiProva;
+import PackageDiProva.Coordinate;
 import java.io.*;
 import java.net.*;
 
@@ -54,7 +55,7 @@ public class ServerUDP extends Thread{
     }
     
     public void invia() { 
-        ClasseDiProva classeDiProva = new ClasseDiProva("Messaggio UDP");
+        ClasseDiProva classeDiProva = new ClasseDiProva(new Coordinate(0, 0));
         try {
             ByteArrayOutputStream bStream = new ByteArrayOutputStream();
             ObjectOutput oo = new ObjectOutputStream(bStream);

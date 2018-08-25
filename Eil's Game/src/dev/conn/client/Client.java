@@ -1,7 +1,8 @@
 package dev.conn.client;
 
 import dev.conn.PackageDiProva.ClasseDiProva;
-import dev.conn.server.Server;
+import dev.training.Game;
+import dev.training.Handeler;
 import java.io.*;
 import java.net.*;
 
@@ -13,13 +14,11 @@ public class Client {
     private ObjectInputStream in;
     private Socket socket;
     private ClientUDP clientUDP;
-    
-    // Costanti
-    private final String serverAddress = "localhost";
+    private Handeler handeler;
 
-    public Client() {
+    public Client(int PORT, String serverAddress) {
         try {
-            socket = new Socket(serverAddress, Server.PORT);
+            socket = new Socket(serverAddress, PORT);
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
             whatToDo();
@@ -30,18 +29,26 @@ public class Client {
         }
         
         clientUDP = new ClientUDP();
+        
     }
     
+    /**
+     * Secondo Eil è fatta male
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
     private void whatToDo() throws IOException, ClassNotFoundException {
-        ClasseDiProva classeDiProva = (ClasseDiProva) in.readObject();
-        System.out.println("Messaggio ricevuto: " + classeDiProva.getMessaggio());
-        classeDiProva = new ClasseDiProva("Questa è una risposta");
-        out.writeObject(classeDiProva);
-        out.flush();
+        int primo = in.readInt();
+        int secondo = in.readInt();
+        System.out.println(primo + " - " + secondo);
+        
     }
     
-    public static void main(String[] args) {
-        Client client = new Client();
-    }
+    public void setHandeler(Handeler handeler) { this.handeler = handeler; }
     
+    
+    public static void main(String args[])
+    {
+        Client client = new Client(7777, "localhost");
+    }
 }

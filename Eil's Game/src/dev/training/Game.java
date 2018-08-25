@@ -1,6 +1,7 @@
 package dev.training;
 
 import dev.conn.client.Client;
+import dev.conn.client.ClientUDP;
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
 import dev.training.gfx.GameCamera;
@@ -218,7 +219,7 @@ public class Game implements Runnable{
              * render e update
              */
             if(timer >= 1000000000) {
-                System.out.println("Update and Frames: " + update);
+                // System.out.println("Update and Frames: " + update);
                 update = 0;
                 timer = 0;
             }

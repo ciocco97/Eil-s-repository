@@ -1,9 +1,11 @@
 package dev.conn.client;
 
 import dev.conn.PackageDiProva.ClasseDiProva;
-import dev.conn.server.ServerUDP;
+import dev.training.worlds.Coordinate;
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientUDP extends Thread{
     private DatagramSocket socket;
@@ -11,17 +13,21 @@ public class ClientUDP extends Thread{
     
     // Costanti
     private final int BUFF_LENGHT = 2048;
+    private final int PORT = 4444;
     
     public ClientUDP() {
-        try { socket = new DatagramSocket(ServerUDP.UDPORT + 1); } 
-        catch (SocketException ex) { System.out.println(ex.getMessage()); }
+        try {
+            socket = new DatagramSocket(PORT);
+        } catch (SocketException ex) {
+            System.out.println(ex.getMessage());
+        }
         run = true;
         this.start();
     }
     
     @Override
     public void run() {
-        ClasseDiProva classeDiProva = new ClasseDiProva("");
+        ClasseDiProva classeDiProva = new ClasseDiProva(new Coordinate(0, 0));
         byte[] buffer = new byte[BUFF_LENGHT];
         DatagramPacket packet = new DatagramPacket(buffer, BUFF_LENGHT);
         while(run) {

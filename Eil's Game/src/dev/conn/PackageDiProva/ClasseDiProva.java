@@ -1,13 +1,14 @@
 package dev.conn.PackageDiProva;
 
+import dev.training.worlds.Coordinate;
 import java.io.Serializable;
 
 public class ClasseDiProva implements Serializable{
-    private String messaggio;
+    private Coordinate messaggio;
 
-    public ClasseDiProva(String messaggio) { this.messaggio = messaggio; }
+    public ClasseDiProva(Coordinate messaggio) { this.messaggio = messaggio; }
 
-    public String getMessaggio() { return messaggio; }
+    public Coordinate getMessaggio() { return messaggio; }
 
-    public void setMessaggio(String messaggio) { this.messaggio = messaggio; }
+    public void setMessaggio(Coordinate messaggio) { this.messaggio = messaggio; }
 }

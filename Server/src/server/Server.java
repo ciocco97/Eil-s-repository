@@ -5,7 +5,9 @@ import java.net.*;
 
 public class Server extends Thread{
     private ServerSocket server;
-    private final ServerUDP serverUDP;
+    private boolean running, firstTime;
+    
+    private static InetAddress ia;
     
     public static final int PORT = 7777;
     
@@ -16,10 +18,11 @@ public class Server extends Thread{
     public Server() {
         try { server = new ServerSocket(PORT); } 
         catch (IOException ex) { System.out.println(ex.getMessage()); }
-        System.out.println("Il server è in attesa sulla porta " + PORT);
+    }
+    
+    public void startServer() {
         this.start();
-        
-        serverUDP = new ServerUDP();
+        running = true;
     }
     
     /**
@@ -28,20 +31,31 @@ public class Server extends Thread{
      */
     @Override
     public void run() {
-        while(true) {
+        while(running) {
             try {
                 System.out.println("In attesa di connessione ...");
                 Socket client = server.accept();
                 System.out.println("Connessione accettata da: " + client.getInetAddress());
-                Connect connect = new Connect(client);
+                ia = client.getInetAddress();
+                Connect connect = new Connect(client, firstTime);
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
         }
     }
     
-    public static void main(String[] args) {
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
+    
+    public static void main (String args[])
+    {
         Server server = new Server();
+        server.start();
     }
     
 }

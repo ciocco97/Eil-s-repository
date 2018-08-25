@@ -1,6 +1,7 @@
 package server;
 
 import PackageDiProva.ClasseDiProva;
+import PackageDiProva.Coordinate;
 import java.io.*;
 import java.net.*;
 
@@ -13,8 +14,10 @@ public class Connect extends Thread {
     private ObjectOutputStream out;
 //    private BufferedReader in;
     private ObjectInputStream in;
+//  per decidere che client ha quale range di personaggi  
+    private boolean firstTime;
     
-    public Connect(Socket clientSocket) {
+    public Connect(Socket clientSocket, boolean firstTime) {
         client = clientSocket;
         try {
             // Canale di comunicazione in output
@@ -37,11 +40,18 @@ public class Connect extends Thread {
      */
     @Override
     public void run() {
-        ClasseDiProva classeDiProva = new ClasseDiProva("Questo è un altro messaggio");
         try {
-            out.writeObject(classeDiProva);
+            if (firstTime) 
+            {
+                out.writeInt(29);
+                out.writeInt(100);
+            }
+            else
+            {
+                out.writeInt(101);
+                out.writeInt(200);
+            }
             out.flush();
-            classeDiProva = (ClasseDiProva) in.readObject();
             System.out.println("Risposta: " + classeDiProva.getMessaggio());
             
             out.close();
