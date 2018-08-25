@@ -1,37 +1,35 @@
 package server;
 
 import PackageDiProva.ClasseDiProva;
-import PackageDiProva.Coordinate;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Classe che implementa il canale di comunicazone tra Server e Client
  */
 public class Connect extends Thread {
-    private Socket client;
+
 //    private PrintStream out;
     private ObjectOutputStream out;
 //    private BufferedReader in;
     private ObjectInputStream in;
-//  per decidere che client ha quale range di personaggi  
-    private boolean firstTime;
     
-    public Connect(Socket clientSocket, boolean firstTime) {
-        client = clientSocket;
+    private String buffer;
+    
+    public Connect(Socket client) {
         try {
             // Canale di comunicazione in output
 //            out = new PrintStream(client.getOutputStream(), true);
-            out = new ObjectOutputStream(client.getOutputStream());
-            // Canale di comunicazione in input
-            in = new ObjectInputStream(client.getInputStream());
+            this.out = new ObjectOutputStream (client.getOutputStream());
+            this.in = new ObjectInputStream (client.getInputStream());
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-            System.out.println("Tentativo chiusura connessione ...");
-            try { client.close(); } 
-            catch (IOException e) { System.out.println(e.getMessage()); }
-            return;
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
         }
+            // Canale di comunicazione in input
+        
         this.start();
     }
     
@@ -41,25 +39,27 @@ public class Connect extends Thread {
     @Override
     public void run() {
         try {
-            if (firstTime) 
-            {
-                out.writeInt(29);
-                out.writeInt(100);
-            }
-            else
-            {
-                out.writeInt(101);
-                out.writeInt(200);
-            }
-            out.flush();
-            System.out.println("Risposta: " + classeDiProva.getMessaggio());
-            
-            out.close();
-            in.close();
-            client.close();
-        } catch (IOException|ClassNotFoundException ex) {
+           while(true)
+           {
+               System.out.println("attesa di oggetti");
+               String buffer = in.readUTF();
+               System.out.println("ricevuto: " + buffer);
+           }
+        } catch (Exception ex ) {
             System.out.println(ex.getMessage());
         }
     }
+
+    public String getBuffer() {
+        return buffer;
+    }
+
+    public void clearBuffer()
+    {
+        this.buffer = null;
+    }
+    
+    
+    
     
 }

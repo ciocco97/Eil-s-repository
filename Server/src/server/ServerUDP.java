@@ -24,38 +24,37 @@ public class ServerUDP extends Thread{
     
     @Override
     public void run() {
-        int fps = 5;
-        double timePerUpdate = 1000000000 / fps;
-        double delta = 0;
-        long now;
-        long lastTime = System.nanoTime();
-        long timer = 0;
-        int update = 0;
-        
-        /**
-         * While per decidere la frequenza di aggiornamento
-         */
-        while(play) {
-            now = System.nanoTime();
-            delta += (now - lastTime) / timePerUpdate;
-            timer += now - lastTime;
-            lastTime = now;
-            if(delta >= 1) {
-                update++;
-                delta--;
-            }
-            if(timer >= 1000000000) {
-                // Funzione del ServerUDP
-                invia();
-                update = 0;
-                timer = 0;
-            }
-        }
+//        int fps = 5;
+//        double timePerUpdate = 1000000000 / fps;
+//        double delta = 0;
+//        long now;
+//        long lastTime = System.nanoTime();
+//        long timer = 0;
+//        int update = 0;
+//        
+//        /**
+//         * While per decidere la frequenza di aggiornamento
+//         */
+//        while(play) {
+//            now = System.nanoTime();
+//            delta += (now - lastTime) / timePerUpdate;
+//            timer += now - lastTime;
+//            lastTime = now;
+//            if(delta >= 1) {
+//                update++;
+//                delta--;
+//            }
+//            if(timer >= 1000000000) {
+//                // Funzione del ServerUDP
+//                invia();
+//                update = 0;
+//                timer = 0;
+//            }
+//        }
         
     }
     
     public void invia() { 
-        ClasseDiProva classeDiProva = new ClasseDiProva(new Coordinate(0, 0));
         try {
             ByteArrayOutputStream bStream = new ByteArrayOutputStream();
             ObjectOutput oo = new ObjectOutputStream(bStream);

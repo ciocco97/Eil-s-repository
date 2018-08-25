@@ -1,4 +1,4 @@
-package PackageDiProva;
+package Utils;
 
 public class Coordinate {
     private int x;

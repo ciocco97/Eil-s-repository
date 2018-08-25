@@ -1,11 +1,20 @@
 package server;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.*;
 
 public class Server extends Thread{
     private ServerSocket server;
     private boolean running, firstTime;
+    private int width, height;
+    
+    private Connect connect;
+    
+    private ObjectOutputStream out;
+//    private BufferedReader in;
+    private ObjectInputStream in;
     
     private static InetAddress ia;
     
@@ -15,7 +24,10 @@ public class Server extends Thread{
      * Creazione di una server socket in ascolto sulla porta PORT
      * Successivamente istanza classe ServerUDPP
      */
-    public Server() {
+    public Server(int width, int height) {
+        this.width = width;
+        this.height = height;
+        firstTime = true;
         try { server = new ServerSocket(PORT); } 
         catch (IOException ex) { System.out.println(ex.getMessage()); }
     }
@@ -36,8 +48,30 @@ public class Server extends Thread{
                 System.out.println("In attesa di connessione ...");
                 Socket client = server.accept();
                 System.out.println("Connessione accettata da: " + client.getInetAddress());
+                out = new ObjectOutputStream(client.getOutputStream());
+                
+                if (firstTime) 
+                {
+                    out.writeUTF(""+ 29);
+                    out.writeUTF("" + 36);
+                    firstTime = !firstTime;
+                }
+                else
+                {
+                    out.writeUTF(""+ 29);
+                    out.writeUTF("" + 36);
+                    firstTime = !firstTime;
+                }
+                out.writeUTF(""+ width);
+                out.writeUTF("" + height);
+                out.flush();
+                System.out.println("Risposta: ho mandato le informazion iniziali al client di indirizzo" + client.getInetAddress());
+                
+                
                 ia = client.getInetAddress();
-                Connect connect = new Connect(client, firstTime);
+                // passo al client le informazioni necessarie per la creazione del gioco
+                
+                connect = new Connect(client);
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             }
@@ -54,8 +88,8 @@ public class Server extends Thread{
     
     public static void main (String args[])
     {
-        Server server = new Server();
-        server.start();
+        Server server = new Server(1400, 800);
+        server.startServer();
     }
     
 }
