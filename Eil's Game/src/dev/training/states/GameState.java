@@ -13,8 +13,12 @@ public class GameState extends State{
         super(handeler);
         clientUDP = new ClientUDP();
         clientUDP.start();
-        world = new World(handeler);
-        handeler.setWorld(world);
+    }
+    
+    @Override
+    public void createWorld(int width, int height, int lowerBound, int upperBound) {
+        world = new World(handeler, width, height);
+        world.setCharaptersBounds(lowerBound, upperBound);
     }
 
     @Override

@@ -102,8 +102,8 @@ public class Game implements Runnable{
         mouseManager.setHandeler(handeler);
         client.setHandeler(handeler);
         client.init();
-        
-        handeler.getWorld().setCharaptersBounds(client.getLowerBound(), client.getUpperBound());
+        // Creazione mondo
+        gameState.createWorld(client.getWidth(), client.getHeight(), client.getLowerBound(), client.getUpperBound());
     }
     
     private void update() {

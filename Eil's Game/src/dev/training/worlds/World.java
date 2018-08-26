@@ -45,13 +45,16 @@ public class World {
     /**
      * Costruttore
      * @param handeler
+     * @param width
+     * @param height
      */
-    public World(Handeler handeler) {
+    public World(Handeler handeler, int width, int height) {
         this.handeler = handeler;
+        this.width = width;
+        this.height = height;
         
-        loadWorld("res//worlds/world");                                         // Da togliere
-        
-        world = new int[width][height];                                         // Da togliere
+//        world = new int[width][height];                                         // Da togliere
+//        loadWorld("res//worlds/world");                                         // Da togliere
         selections = new int[width][height];
         pathSteps = new ArrayList<>();
     }
@@ -225,10 +228,18 @@ public class World {
      * Funzione che aggiorna il world da server prendendo una String da ClientUDP 
      * e poi convertendola in una matrice di interi
      */
-    private void getWorld() {
-        world = abcd;                                                           // Da cambiare perchè bypassa l'update remoto          
+    private void getWorld() {                                                      // Da cambiare perchè bypassa l'update remoto          
         String updateMap = ClientUDP.map;
-        String[] righeMappa = updateMap.split(SEPARATORE_RIGHE);
+        if(updateMap != null) {
+            String[] righeMappa = updateMap.split(SEPARATORE_RIGHE);
+            String[] rigaSplittata;
+            for(int i = 0; i < righeMappa.length; i++) {
+                rigaSplittata = righeMappa[i].split(SEPARATORE_COLONNE);
+                for (int j = 0; j < rigaSplittata.length; j++) {
+                    world[i][j] = Utils.parseInt(rigaSplittata[j]);
+                }
+            }
+        }
     }
     
 }
