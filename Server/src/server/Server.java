@@ -9,6 +9,7 @@ public class Server extends Thread{
     private ServerSocket server;
     private boolean running, firstTime;
     private int width, height;
+    private Core core;
     
     private Connect connect;
     
@@ -24,7 +25,7 @@ public class Server extends Thread{
      * Creazione di una server socket in ascolto sulla porta PORT
      * Successivamente istanza classe ServerUDPP
      */
-    public Server(int width, int height) {
+    public Server(int width, int height, Core core) {
         this.width = width;
         this.height = height;
         firstTime = true;
@@ -47,9 +48,11 @@ public class Server extends Thread{
             try {
                 System.out.println("In attesa di connessione ...");
                 Socket client = server.accept();
-                System.out.println("Connessione accettata da: " + client.getInetAddress());
+                ia = client.getInetAddress();
+                core.initUDP(ia);
+                System.out.println("Connessione accettata da: " + ia);
                 out = new ObjectOutputStream(client.getOutputStream());
-                
+                // prima connessione, si passano gli upper e lower bound 
                 if (firstTime) 
                 {
                     out.writeUTF(""+ 29);
@@ -68,7 +71,7 @@ public class Server extends Thread{
                 System.out.println("Risposta: ho mandato le informazion iniziali al client di indirizzo" + client.getInetAddress());
                 
                 
-                ia = client.getInetAddress();
+                
                 // passo al client le informazioni necessarie per la creazione del gioco
                 
                 connect = new Connect(client);
@@ -86,10 +89,10 @@ public class Server extends Thread{
         return running;
     }
     
-    public static void main (String args[])
-    {
-        Server server = new Server(1400, 800);
-        server.startServer();
-    }
+//    public static void main (String args[])
+//    {
+//        Server server = new Server(1400, 800);
+//        server.startServer();
+//    }
     
 }

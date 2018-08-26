@@ -6,6 +6,7 @@
 package server;
 
 import Utils.Coordinate;
+import java.net.InetAddress;
 import java.util.ArrayList;
 
 /**
@@ -21,21 +22,20 @@ public class Core {
     
     public Core()
     {
-        serverUDP = new ServerUDP();
         game = new Game();
         game.loadWorld("res\\World\\world");
         this.width = game.getWidth();
         this.height = game.getHeight();
-        System.out.println(this.mapToString());
-        server = new Server(game.getWidth(), game.getHeight());
+        //System.out.println(this.mapToString());
+        server = new Server(width, height, this);
     }
-    public void initConnection()
+    public void init()
     {
         server.startServer();
         play=true;
         
     }
-    private void update()
+    public void play()
     {
         int fps = 5;
         double timePerUpdate = 1000000000 / fps;
@@ -45,10 +45,13 @@ public class Core {
         long timer = 0;
         int update = 0;
         
+        
         /**
          * While per decidere la frequenza di aggiornamento
          */
         while(play) {
+            
+            //inizializziamo il timer per ottenere un tick di mezzo secondo
             now = System.nanoTime();
             delta += (now - lastTime) / timePerUpdate;
             timer += now - lastTime;
@@ -57,15 +60,17 @@ public class Core {
                 update++;
                 delta--;
             }
-            if(timer >= 1000000000) {
+            //esegue questa operazione ogni mezzo secondo
+            if(timer >= 500000000) {
                 // Funzione del ServerUDP
                 game.update();
-                
+                String map = this.mapToString();
+                serverUDP.send(map);
                 update = 0;
                 timer = 0;
+                System.out.println("render game");
             }
-            String map = this.mapToString();
-            serverUDP.send(map);
+            
         }
     }
     /**
@@ -102,7 +107,10 @@ public class Core {
             return new Coordinate(x,y);
         }
     }
-    
+    public void initUDP(InetAddress ia)
+    {
+        serverUDP = new ServerUDP(ia);
+    }
     private String mapToString()
     {
         int [][] map = game.getMap();
@@ -117,9 +125,13 @@ public class Core {
         }
         return buffer;
     }
-    
-    public static void main (String args[])
+    public ServerUDP getServerUDP()
     {
-        Core core = new Core();
+        return this.serverUDP;
     }
+    
+//    public static void main (String args[])
+//    {
+//        Core core = new Core();
+//    }
 }
