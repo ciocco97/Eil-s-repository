@@ -6,9 +6,10 @@ import java.net.*;
 public class ServerUDP extends Thread{
     boolean play;
     private DatagramSocket socket;
+    private InetAddress ia;
     
     // Costanti
-    public static int UDPORT = 8888;
+    public static int UDPORT = 4444;
     
     public ServerUDP() { 
         play = true; 
@@ -56,9 +57,9 @@ public class ServerUDP extends Thread{
         try {
             
             byte[] dataBytes = data.getBytes();
-            InetAddress ia = InetAddress.getByName("localhost");
-            DatagramPacket packet = new DatagramPacket(dataBytes, dataBytes.length, ia, UDPORT + 1);
+            DatagramPacket packet = new DatagramPacket(dataBytes, dataBytes.length, InetAddress.getByName("25.82.137.22"), UDPORT);
             socket.send(packet);
+            System.out.println("invio UDP effettuato");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
