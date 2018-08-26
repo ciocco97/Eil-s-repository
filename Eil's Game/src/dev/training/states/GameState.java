@@ -23,12 +23,14 @@ public class GameState extends State{
 
     @Override
     public void update() {
-        world.update();
+        if(world.getWorld() != null)
+            world.update();
     }
 
     @Override
     public void render(Graphics g) {
-        world.render(g);
+        if(world.getWorld() != null)
+            world.render(g);
     }
     
 }

@@ -60,7 +60,7 @@ public class World {
     }
     
     public void update() {
-        getWorld();
+        reciveWorld();
         selection();
     }
     
@@ -193,6 +193,8 @@ public class World {
 
     public int getHeight() { return height; }
     
+    public int[][] getWorld() { return world; }
+    
     public void setCharaptersBounds(int lb, int ub) {
         this.lowerBound = lb;
         this.upperBound = ub;
@@ -228,7 +230,7 @@ public class World {
      * Funzione che aggiorna il world da server prendendo una String da ClientUDP 
      * e poi convertendola in una matrice di interi
      */
-    private void getWorld() {                                                      // Da cambiare perchè bypassa l'update remoto          
+    private void reciveWorld() {                                                      // Da cambiare perchè bypassa l'update remoto          
         String updateMap = ClientUDP.map;
         if(updateMap != null) {
             String[] righeMappa = updateMap.split(SEPARATORE_RIGHE);
