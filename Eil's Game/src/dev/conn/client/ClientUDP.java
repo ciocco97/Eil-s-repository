@@ -2,8 +2,6 @@ package dev.conn.client;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ClientUDP extends Thread{
     private DatagramSocket socket;
@@ -37,7 +35,7 @@ public class ClientUDP extends Thread{
                 map = new String(packet.getData());
                 System.out.println("FROM SERVER:" + map);
             } catch (IOException ex) {
-                Logger.getLogger(ClientUDP.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.getMessage());
             } 
         }
     }
