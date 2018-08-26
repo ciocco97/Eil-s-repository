@@ -23,6 +23,7 @@ public class ClientUDP extends Thread{
             System.out.println(ex.getMessage());
         }
         run = true;
+        map = null;
     }
     
     @Override
@@ -33,7 +34,7 @@ public class ClientUDP extends Thread{
             try { 
                 socket.receive(packet);
                 map = new String(packet.getData());
-                System.out.println("FROM SERVER:" + map);
+//                System.out.println("FROM SERVER:" + map);
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             } 

@@ -52,6 +52,7 @@ public class World {
         this.handeler = handeler;
         this.width = width;
         this.height = height;
+        world = null;
         
 //        world = new int[width][height];                                         // Da togliere
 //        loadWorld("res//worlds/world");                                         // Da togliere
@@ -60,7 +61,7 @@ public class World {
     }
     
     public void update() {
-        getWorld();
+        reciveWorld();
         selection();
     }
     
@@ -193,6 +194,8 @@ public class World {
 
     public int getHeight() { return height; }
     
+    public int[][] getWorld() { return world; }
+    
     public void setCharaptersBounds(int lb, int ub) {
         this.lowerBound = lb;
         this.upperBound = ub;
@@ -228,9 +231,13 @@ public class World {
      * Funzione che aggiorna il world da server prendendo una String da ClientUDP 
      * e poi convertendola in una matrice di interi
      */
-    private void getWorld() {                                                      // Da cambiare perchè bypassa l'update remoto          
+    private void reciveWorld() {                                                      // Da cambiare perchè bypassa l'update remoto          
         String updateMap = ClientUDP.map;
         if(updateMap != null) {
+            if(world == null) {
+                System.out.println("Creazione matrice");
+                world = new int[width][height];
+            }
             String[] righeMappa = updateMap.split(SEPARATORE_RIGHE);
             String[] rigaSplittata;
             for(int i = 0; i < righeMappa.length; i++) {
