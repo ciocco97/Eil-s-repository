@@ -57,6 +57,7 @@ public class Game {
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
                     charapters[x][y] = ID;
+                    System.out.println(ID);
                     if (new Random().nextBoolean())
                         charaptersList.add(new Arcere(ID));
                     else
@@ -107,7 +108,14 @@ public class Game {
             for (int j=0; j<height; j++)
             {
                 if (charapters[i][j]!=0)
-                    map[i][j]=charapters[i][j];
+                {
+                    int ID = charapters[i][j];
+                    for (Charapter pic:charaptersList)
+                    {
+                        if (pic.getId() == ID)
+                            map[i][j] = Utils.getIdFromCharapter(pic);
+                    }
+                }
                 else
                     map[i][j]=world[i][j];
             }

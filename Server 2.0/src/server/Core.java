@@ -93,31 +93,30 @@ public class Core extends Thread{
                 //se non sono nulle, le mando a Game per elaborarle
                 if (move1 != null)
                 {
-                    System.out.println("qui entra 1");
                     Object data = Utils.getDataFromString(move1);
                     System.out.println(data.getClass());
                     if (data.getClass() == ciao.getClass())
                     {
                         ciao = (ArrayList<Coordinate>) data;
                         game.addMoves(ciao);
-                        System.out.println("ha funzionat davvero ahahaha e la cosa è" + ciao);
+                        
                         player1.clearBuffer();
                     }
                 }
                 if (move2 != null)
                 {
-                    System.out.println("qui entra 2");
                     Object data = Utils.getDataFromString(move2);
                     if (data.getClass() == ciao.getClass())
                     {
                         ciao = (ArrayList<Coordinate>) data;
                         game.addMoves(ciao);
-                        System.out.println("ha funzionat davvero ahahaha e la cosa è" + ciao);
+                        
                         player2.clearBuffer();
                     }
                 }
                 game.update();
                 String map = Utils.mapToString(game);
+                //System.out.println(map);
                 serverUDP.send(map);
                 update = 0;
                 timer = 0;
