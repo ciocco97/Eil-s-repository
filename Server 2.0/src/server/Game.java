@@ -1,7 +1,9 @@
 package server;
 
-import PackageDiProva.Charapter;
+import Models.Charapter;
+import Utils.Coordinate;
 import Utils.Utils;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 
@@ -12,9 +14,15 @@ public class Game {
     private int width, height;
     private int[][] world, charapters;
     private LinkedList<Charapter> charaptersList;
+    private LinkedList<ArrayList<Coordinate>> moves;
     
     
-    
+    public Game()
+    {
+        charaptersList = new LinkedList();
+        moves = new LinkedList();
+        
+    }
     public void loadWorld(String path) {
         String fileWorld = Utils.loadFileAsStrig(path + "world");
         String fileCharapters = Utils.loadFileAsStrig(path + "charapters");
@@ -38,15 +46,15 @@ public class Game {
                  */
                 world[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
         
-//        token = fileCharapters.split("\\s+");
-//        width = Utils.parseInt(token[0]);
-//        height = Utils.parseInt(token[1]);
-//        
-//         for(int y = 0; y < height; y++) 
-//            for(int x = 0; x < width; x++){
-//                charapters[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
-//                charaptersList.add(new Charapter(x,y,100));
-//            }
+            token = fileCharapters.split("\\s+");
+            width = Utils.parseInt(token[0]);
+            height = Utils.parseInt(token[1]);
+
+             for(int y = 0; y < height; y++) 
+                for(int x = 0; x < width; x++){
+                    charapters[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+                    charaptersList.add(new Charapter(x,y,100));
+                }
  
         
     }
@@ -61,15 +69,27 @@ public class Game {
     
     public void update()
     {
-//        for (int i=0; i<width-1; i++)
-//            for (int j=0; j<height-1; j++)
-//            {
-//                if (charapters[i][j]!=0)
-//                {
-//                    charapters[(i+1)][j]=charapters[i][j];
-//                    charapters[i][j]=0;
-//                }
-//            }
+        //se c'è qualcosa da fare
+        if (moves.size() > 0)
+        {
+            System.out.println("c'è qualcosa");
+            //scorro tutte le mosse ancora da eseguire
+            for (int i = 0; i<moves.size(); i++)
+            {
+                Coordinate current, next;
+                if (moves.get(i).size() != 1)
+                {
+                    System.out.println("muovo");
+                    current = moves.get(i).get(0);
+                    next = moves.get(i).get(1);
+                    charapters[next.getX()][next.getY()] = charapters[current.getX()][current.getY()];
+                    charapters[current.getX()][current.getY()]=0;
+                    moves.get(i).remove(0);
+                }
+                else
+                    moves.remove(i);
+            }
+        }
     }
     public int[][] getMap()
     {
@@ -78,14 +98,19 @@ public class Game {
         {
             for (int j=0; j<height; j++)
             {
-//                if (charapters[i][j]!=0)
-//                    map[i][j]=charapters[i][j];
-//                else
+                if (charapters[i][j]!=0)
+                    map[i][j]=charapters[i][j];
+                else
                     map[i][j]=world[i][j];
             }
         }
         return map;
         
+    }
+    
+    public void addMoves(ArrayList<Coordinate> list)
+    {
+        moves.add(list);
     }
     
 }
