@@ -1,10 +1,13 @@
 package server;
 
+import Models.Arcere;
 import Models.Charapter;
+import Models.Gueriero;
 import Utils.Coordinate;
 import Utils.Utils;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 
 
@@ -52,8 +55,13 @@ public class Game {
 
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
-                    charapters[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
-                    charaptersList.add(new Charapter(x,y,100));
+                    int ID = Utils.parseInt(token[x + (y * width) + 4]);
+                    charapters[x][y] = ID;
+                    if (new Random().nextBoolean())
+                        charaptersList.add(new Arcere(ID));
+                    else
+                        charaptersList.add(new Gueriero(ID));
+                    
                 }
  
         

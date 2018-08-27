@@ -10,36 +10,37 @@ package Models;
  * @author aless
  */
 public class Charapter {
-    private int x, y, health;
+    protected int id, health, strength, defence;
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public int getId() {
+        return id;
     }
 
     public int getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public int getStrength() {
+        return strength;
     }
 
-    public Charapter(int x, int y, int health) {
-        this.x = x;
-        this.y = y;
-        this.health = health;
+    public int getDefence() {
+        return defence;
+    }
+    public Charapter(int id)
+    {
+        this.id = id;
+    }
+    
+    public void attack(Charapter charapter)
+    {
+        int damage = (this.strength * 10) / charapter.defence;
+        charapter.health -= damage;
+    }
+    public int getType()
+    {
+        //ritorna il tipo di personaggio, 0 è personaggio generico, non istanziato
+        return 0;
     }
     
     
