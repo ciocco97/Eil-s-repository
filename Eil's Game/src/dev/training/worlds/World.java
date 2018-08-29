@@ -107,7 +107,7 @@ public class World {
         int y = handeler.getMouseManager().getyTile();
         Coordinate coordinate = new Coordinate(x, y);
         // Caso in cui si è fuori dalla mappa
-        if(x < 0 || y < 0 || x > width || y > height) {
+        if(x < 0 || y < 0 || x >= width || y >= height) {
             // Sbagliato
             reset();
         // Casi in cui è stato premuto il mouse

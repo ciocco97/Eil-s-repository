@@ -13,11 +13,11 @@ import server.Game;
 public class Utils {
     
     private static final int ARCERE_FULL_1 = 33;
-    private static final int ARCERE_HALF_1 = 21;
-    private static final int ARCERE_LOW_1 = 22;
+    private static final int ARCERE_HALF_1 = 34;
+    private static final int ARCERE_LOW_1 = 35;
     private static final int GUERIERO_FULL_1 = 30;
-    private static final int GUERIERO_HALF_1 = 24;
-    private static final int GUERIERO_LOW_1 = 25;
+    private static final int GUERIERO_HALF_1 = 31;
+    private static final int GUERIERO_LOW_1 = 32;
     
     private static final int ARCERE_FULL_2 = 33;
     private static final int ARCERE_HALF_2 = 41;
