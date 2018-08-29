@@ -29,7 +29,11 @@ public class Assets {
         
 //        player = sheet.crop(0, height + 10, 450, 700);
 //        charapter = sheet.crop(680, 0, 20, 20);
-        chapter_soldier100 = chapter_soldier50 = chapter_soldier10 = sheet.crop(0, 29, 350, 350);
-        chapter_archer100 = chapter_archer50 = chapter_archer10 = sheet.crop(0, 380, 350, 350);
+        chapter_soldier100 = sheet.crop(0, 29, 350, 350);
+        chapter_soldier50 = sheet.crop(351, 29, 350, 350);
+        chapter_soldier10 = sheet.crop(702, 29, 350, 350);
+        chapter_archer100 = sheet.crop(0, 380, 350, 350);
+        chapter_archer50 = sheet.crop(351, 380, 350, 350);
+        chapter_archer10 = sheet.crop(702, 380, 350, 350);
     }
 }
