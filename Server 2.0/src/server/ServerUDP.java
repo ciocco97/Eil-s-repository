@@ -37,6 +37,8 @@ public class ServerUDP extends Thread{
             DatagramPacket packet2 = new DatagramPacket(dataBytes, dataBytes.length, ia2, UDPORT);
             socket.send(packet);
             socket.send(packet2);
+            
+            
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }

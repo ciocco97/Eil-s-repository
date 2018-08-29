@@ -12,17 +12,17 @@ import server.Game;
 
 public class Utils {
     
-    private static final int ARCERE_FULL_1 = 20;
+    private static final int ARCERE_FULL_1 = 33;
     private static final int ARCERE_HALF_1 = 21;
     private static final int ARCERE_LOW_1 = 22;
-    private static final int GUERIERO_FULL_1 = 23;
+    private static final int GUERIERO_FULL_1 = 30;
     private static final int GUERIERO_HALF_1 = 24;
     private static final int GUERIERO_LOW_1 = 25;
     
-    private static final int ARCERE_FULL_2 = 40;
+    private static final int ARCERE_FULL_2 = 33;
     private static final int ARCERE_HALF_2 = 41;
     private static final int ARCERE_LOW_2 = 42;
-    private static final int GUERIERO_FULL_2 = 43;
+    private static final int GUERIERO_FULL_2 = 30;
     private static final int GUERIERO_HALF_2 = 44;
     private static final int GUERIERO_LOW_2 = 45;
     
@@ -133,7 +133,6 @@ public class Utils {
         //fa parte del secondo team
         else
         {
-            System.out.println("secondo team");
             if (charapter.getType() == 1){
                 if (charapter.getHealth() > 50)
                     return GUERIERO_FULL_2;
@@ -154,4 +153,5 @@ public class Utils {
         }
         
     }
+    
 }

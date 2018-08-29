@@ -4,6 +4,7 @@ import Models.Arcere;
 import Models.Charapter;
 import Models.Gueriero;
 import Utils.Coordinate;
+import Utils.Move;
 import Utils.Utils;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,14 +16,14 @@ import java.util.Random;
 public class Game {
     
     private int width, height;
-    private int[][] world, charapters;
-    private LinkedList<Charapter> charaptersList;
-    private LinkedList<ArrayList<Coordinate>> moves;
+    private int[][] world;
+    private LinkedList<Charapter> charapters;
+    private LinkedList<Move> moves;
     
     
     public Game()
     {
-        charaptersList = new LinkedList();
+        charapters = new LinkedList();
         moves = new LinkedList();
         
     }
@@ -32,12 +33,11 @@ public class Game {
         String[] token = fileWorld.split("\\s+");
         width = Utils.parseInt(token[0]);
         height = Utils.parseInt(token[1]);
-        charaptersList = new LinkedList<>();
+        charapters = new LinkedList<>();
         //spawnX = Utils.parseInt(token[2]);
         //spawnY = Utils.parseInt(token[3]);
         
         world = new int[width][height];
-        charapters = new int[width][height];
         
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)
@@ -52,16 +52,19 @@ public class Game {
             token = fileCharapters.split("\\s+");
             width = Utils.parseInt(token[0]);
             height = Utils.parseInt(token[1]);
-
+            int MaxIDTeam = Utils.parseInt(token[2]);
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
-                    charapters[x][y] = ID;
-                    System.out.println(ID);
-                    if (new Random().nextBoolean())
-                        charaptersList.add(new Arcere(ID));
-                    else
-                        charaptersList.add(new Gueriero(ID));
+                    //un if un po strano spero si capisca, in caso è per capire di chi è quel particolare personaggio
+                    int owner = ID<MaxIDTeam?0:1;
+                    
+                    if (ID != 0){
+                        if (new Random().nextBoolean())
+                            charapters.add(new Arcere(owner, ID, new Coordinate(x,y)));
+                        else
+                            charapters.add(new Gueriero(owner, ID, new Coordinate(x,y)));
+                    }
                     
                 }
  
@@ -76,57 +79,106 @@ public class Game {
         return height;
     }
     
-    public void update()
+    public void update(int tick)
     {
-        //se c'è qualcosa da fare
-        if (moves.size() > 0)
+        boolean toDo = true;
+        //entra l'update delle mosse, ogni 2 tick 
+        if (moves.size() > 0 && tick%2 == 0)
         {
             System.out.println("c'è qualcosa");
             //scorro tutte le mosse ancora da eseguire
-            for (int i = 0; i<moves.size(); i++)
+            for (int i=0; i<moves.size(); i++)
             {
-                Coordinate current, next;
-                if (moves.get(i).size() != 1)
-                {
-                    System.out.println("muovo");
-                    current = moves.get(i).get(0);
-                    next = moves.get(i).get(1);
-                    charapters[next.getX()][next.getY()] = charapters[current.getX()][current.getY()];
-                    charapters[current.getX()][current.getY()]=0;
-                    moves.get(i).remove(0);
+                toDo=true;
+                Move mossa = moves.get(i);
+                Charapter charapter = null;
+                int ID = mossa.getID();
+                for(Charapter charap:charapters){
+                        if (charap.getId()==ID)
+                            charapter = charap;
+                }
+                if (charapter.getSpeed()==1 && tick==4)
+                    toDo=false;
+                Coordinate nextCoordinate = null;
+                //prendo le future coordinate e tolgo quelle in cui andrà il giocatore
+                if (mossa.getSteps().size()==1){
+                    moves.remove(i);
+                    break;
                 }
                 else
-                    moves.remove(i);
+                {
+                    nextCoordinate = mossa.getSteps().get(1);
+                    //scorro tutti i giocatori per vedere se non c'è nessuno in quelle coordinate
+                    for (Charapter charap:charapters){
+                        if (charap.getCoordinate().equals(nextCoordinate))
+                        {
+                            //significa che c'è qualcuno lungo il tragitto, mi fermo
+                            moves.remove(i);
+                            toDo = false;
+                        }           
+                    }
+                }
+                    
+                if(toDo){
+                    charapter.setCoordinate(nextCoordinate);
+                    mossa.getSteps().remove(0);
+                }
             }
         }
+        
     }
     public int[][] getMap()
     {
         int[][] map = new int[width][height];
+        //riempio con il mondo
         for (int i=0; i<width; i++)
-        {
             for (int j=0; j<height; j++)
-            {
-                if (charapters[i][j]!=0)
-                {
-                    int ID = charapters[i][j];
-                    for (Charapter pic:charaptersList)
-                    {
-                        if (pic.getId() == ID)
-                            map[i][j] = Utils.getIdFromCharapter(pic);
-                    }
-                }
-                else
-                    map[i][j]=world[i][j];
-            }
+                map[i][j] = world[i][j];
+        
+        //inserisco gli ID dei vari personaggi
+        for (Charapter charap:charapters)
+        {
+            int x=charap.getCoordinate().getX();
+            int y=charap.getCoordinate().getY();
+            int ID = Utils.getIdFromCharapter(charap);
+            map[x][y] = ID;
         }
+            
         return map;
         
     }
     
-    public void addMoves(ArrayList<Coordinate> list)
-    {
-        moves.add(list);
+    public void addMoves(ArrayList<Coordinate> list, int owner)
+    {   //se è grande solo 1 significa che quel personaggio deve bloccarsi
+        if (list.size() == 1)
+        {
+            System.out.println("selezione e basta, coordinate:" + list.get(0));
+            //scorro tutte le mosse per vedere quale ha quella posizione come attuale
+            for (int i=0; i<moves.size(); i++)
+            {   //se non è il proprietario della mossa, non può annullarla
+                if (moves.get(i).getOwner() == owner)
+                {
+                    //se la prima coordinata della mossa (il giocatore) è uguale all'unica componente della lista
+                    if(moves.get(i).getSteps().get(0).equals(list.get(0)))
+                        moves.remove(i);
+                }
+            }
+        }
+        else
+        {
+            //la prima coordinata della lista rappresenta il giocatore, ogni mossa ha l'ID del giocatore
+            int ID = getIDFromCoordinate(list.get(0));
+            moves.add(new Move(owner, ID, list));
+        }
+        
+                
     }
     
+    private int getIDFromCoordinate(Coordinate coord)
+    {
+        for(Charapter charap:charapters)
+            if(charap.getCoordinate().equals(coord))
+                return charap.getId();
+        return 0;
+    } 
 }

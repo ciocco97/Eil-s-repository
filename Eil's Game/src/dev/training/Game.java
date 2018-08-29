@@ -217,7 +217,6 @@ public class Game implements Runnable{
             lastTime = now;
             if(delta >= 1) {
                 update();
-
                 render();
                 update++;
                 delta--;

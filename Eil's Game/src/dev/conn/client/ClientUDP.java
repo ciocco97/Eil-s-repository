@@ -13,7 +13,7 @@ public class ClientUDP extends Thread{
     public static String map;
     
     // Costanti
-    private final int BUFF_LENGHT = 2048;
+    private final int BUFF_LENGHT = 4096;
     private final int PORT = 4444;
     
     public ClientUDP() {

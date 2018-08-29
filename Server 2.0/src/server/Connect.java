@@ -37,9 +37,7 @@ public class Connect extends Thread {
         try {
             while(true)
             {
-               System.out.println("attesa di oggetti");
                String buffer = in.readUTF();
-               System.out.println("ricevuto: " + buffer);
                this.buffer = buffer;
             }
         } catch (Exception ex ) {

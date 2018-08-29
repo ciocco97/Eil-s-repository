@@ -5,13 +5,17 @@
  */
 package Models;
 
+import Utils.Coordinate;
+
 /**
  *
  * @author aless
  */
 public class Charapter {
-    protected int id, health, strength, defence;
+    protected int owner, id, health, strength, defence, speed;
+    private Coordinate coordinate;
 
+    
     public int getId() {
         return id;
     }
@@ -27,9 +31,11 @@ public class Charapter {
     public int getDefence() {
         return defence;
     }
-    public Charapter(int id)
+    public Charapter(int owner, int id, Coordinate coord)
     {
         this.id = id;
+        this.coordinate = coord;
+        this.owner = owner;
     }
     
     public void attack(Charapter charapter)
@@ -41,6 +47,26 @@ public class Charapter {
     {
         //ritorna il tipo di personaggio, 0 è personaggio generico, non istanziato
         return 0;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Coordinate coord) {
+        this.coordinate = coord;
+    }
+
+    public int getOwner() {
+        return owner;
+    }
+
+    public void setOwner(int owner) {
+        this.owner = owner;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
     
     

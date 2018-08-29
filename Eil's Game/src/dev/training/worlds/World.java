@@ -39,8 +39,8 @@ public class World {
      * Costanti che servono a definire i separatori utilizzati per codificare la 
      * matrice di interi in String da parte del server
      */
-    private final String SEPARATORE_RIGHE = "-";
-    private final String SEPARATORE_COLONNE = " ";
+    private final String SEPARATORE_COLONNE = "-";
+    private final String SEPARATORE_RIGHE = " ";
     
     /**
      * Costruttore
@@ -61,7 +61,8 @@ public class World {
     }
     
     public void update() {
-        reciveWorld();
+
+        this.reciveWorld();
         selection();
     }
     
@@ -166,10 +167,8 @@ public class World {
      * Funzione che comincia l'invio dell'istruzione al server
      */
     private void invia() {
-        if(pathSteps.size() > 1) {
-            System.out.println("Invio di: " + pathSteps.toString());
-            handeler.getGame().getClient().inviaPath(pathSteps);
-        }
+        System.out.println("Invio di: " + pathSteps.toString());
+        handeler.getGame().getClient().inviaPath(pathSteps);
         reset();
     }
     
@@ -231,19 +230,19 @@ public class World {
      * Funzione che aggiorna il world da server prendendo una String da ClientUDP 
      * e poi convertendola in una matrice di interi
      */
-    private void reciveWorld() {                                                      // Da cambiare perchè bypassa l'update remoto          
+    private void reciveWorld() { 
         String updateMap = ClientUDP.map;
         if(updateMap != null) {
             if(world == null) {
                 System.out.println("Creazione matrice");
                 world = new int[width][height];
             }
-            String[] righeMappa = updateMap.split(SEPARATORE_RIGHE);
-            String[] rigaSplittata;
-            for(int i = 0; i < righeMappa.length; i++) {
-                rigaSplittata = righeMappa[i].split(SEPARATORE_COLONNE);
-                for (int j = 0; j < rigaSplittata.length; j++) {
-                    world[i][j] = Utils.parseInt(rigaSplittata[j]);
+            String[] colonne = updateMap.split(SEPARATORE_COLONNE);
+            String[] elementi;
+            for(int i = 0; i < width; i++) {
+                elementi = colonne[i].split(SEPARATORE_RIGHE);
+                for(int j = 0; j < height; j++) {
+                    world[i][j] = Utils.parseInt(elementi[j]);
                 }
             }
         }

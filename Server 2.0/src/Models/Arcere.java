@@ -5,6 +5,7 @@
  */
 package Models;
 
+import Utils.Coordinate;
 import java.util.Random;
 
 /**
@@ -13,13 +14,14 @@ import java.util.Random;
  */
 public class Arcere extends Charapter{
     
-    public Arcere(int id) {
+    public Arcere(int owner, int id, Coordinate coord) {
         // l'arcere ha basse statistiche, ma attacca da lontano suvvia
-        super(id);
+        super(owner, id, coord);
         Random rand = new Random();
         this.strength = rand.nextInt(5) + 20;
         this.defence = rand.nextInt(10) + 35;
         this.health = 150;
+        this.speed = 2;
     }
      @Override
     public int getType()

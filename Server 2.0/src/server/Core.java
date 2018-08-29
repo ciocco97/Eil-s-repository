@@ -66,6 +66,7 @@ public class Core extends Thread{
         long lastTime = System.nanoTime();
         long timer = 0;
         int update = 0;
+        int tick = 0;
         
         
         /**
@@ -83,7 +84,7 @@ public class Core extends Thread{
                 delta--;
             }
             //esegue questa operazione ogni mezzo secondo
-            if(timer >= 1000000000) {
+            if(timer >= 300000000) {
                 //prendo le mosse dal server TCP
                 String move1, move2;
                 move1 = player1.getBuffer();
@@ -94,11 +95,10 @@ public class Core extends Thread{
                 if (move1 != null)
                 {
                     Object data = Utils.getDataFromString(move1);
-                    System.out.println(data.getClass());
                     if (data.getClass() == ciao.getClass())
                     {
                         ciao = (ArrayList<Coordinate>) data;
-                        game.addMoves(ciao);
+                        game.addMoves(ciao, 0);
                         
                         player1.clearBuffer();
                     }
@@ -109,17 +109,18 @@ public class Core extends Thread{
                     if (data.getClass() == ciao.getClass())
                     {
                         ciao = (ArrayList<Coordinate>) data;
-                        game.addMoves(ciao);
+                        game.addMoves(ciao, 1);
                         
                         player2.clearBuffer();
                     }
                 }
-                game.update();
+                game.update(tick);
                 String map = Utils.mapToString(game);
                 //System.out.println(map);
                 serverUDP.send(map);
                 update = 0;
                 timer = 0;
+                tick = (tick+1)%4 + 1;
             }
             
         }

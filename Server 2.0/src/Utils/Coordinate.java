@@ -9,10 +9,6 @@ public class Coordinate {
         this.y = y;
     }
     
-    public boolean equal(Coordinate c) {
-        return c.getX() == this.x && c.getY() == this.y;
-    }
-
     public int getX() { return x; }
 
     public int getY() { return y; }
@@ -24,5 +20,12 @@ public class Coordinate {
     public String toString() {
         String s = x + " " + y;
         return s;
+    }
+    @Override
+    public boolean equals(Object coord)
+    {
+        Coordinate coords;
+        coords = (Coordinate) coord;
+        return this.x == coords.x && this.y==coords.y;
     }
 }
