@@ -21,6 +21,12 @@ public class Core extends Thread{
     private int width, height;
     private Connect player1, player2;
     
+    private final String lowerBound1 = "30";
+    private final String upperBound1 = "100";
+    private final String lowerBound2 = "101";
+    private final String upperBound2 = "200";
+    
+    
     public Core(Socket client1, Socket client2)
     {
         game = new Game();
@@ -35,11 +41,11 @@ public class Core extends Thread{
     private void initConnections()
     {
         //invio al giocatore 1 i suoi player bounds
-        player1.sendString("29");
-        player1.sendString("36");
+        player1.sendString(lowerBound1);
+        player1.sendString(upperBound1);
         // lo stesso per il giocatore 2
-        player2.sendString("29");
-        player2.sendString("36");
+        player2.sendString(lowerBound2);
+        player2.sendString(lowerBound2);
         //invio ad entrambi le dimensioni della mappa
         player1.sendString(""+this.width);
         player1.sendString(""+this.height);

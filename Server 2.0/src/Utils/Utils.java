@@ -12,19 +12,27 @@ import server.Game;
 
 public class Utils {
     
-    private static final int ARCERE_FULL_1 = 33;
-    private static final int ARCERE_HALF_1 = 34;
-    private static final int ARCERE_LOW_1 = 35;
     private static final int GUERIERO_FULL_1 = 30;
     private static final int GUERIERO_HALF_1 = 31;
     private static final int GUERIERO_LOW_1 = 32;
+    private static final int ARCERE_FULL_1 = 33;
+    private static final int ARCERE_HALF_1 = 34;
+    private static final int ARCERE_LOW_1 = 35;
+    private static final int KING_FULL_1 = 90;
+    private static final int KING_HALF_1 = 91;
+    private static final int KING_LOW_1 = 92;
     
-    private static final int ARCERE_FULL_2 = 33;
-    private static final int ARCERE_HALF_2 = 41;
-    private static final int ARCERE_LOW_2 = 42;
-    private static final int GUERIERO_FULL_2 = 30;
-    private static final int GUERIERO_HALF_2 = 44;
-    private static final int GUERIERO_LOW_2 = 45;
+    
+    private static final int GUERIERO_FULL_2 = 100;
+    private static final int GUERIERO_HALF_2 = 101;
+    private static final int GUERIERO_LOW_2 = 102;
+    private static final int ARCERE_FULL_2 = 110;
+    private static final int ARCERE_HALF_2 = 111;
+    private static final int ARCERE_LOW_2 = 112;
+    private static final int KING_FULL_2 = 190;
+    private static final int KING_HALF_2 = 191;
+    private static final int KING_LOW_2 = 192;
+    
     
     public static String loadFileAsStrig(String path) {
         StringBuilder stringBuilder = new StringBuilder();
