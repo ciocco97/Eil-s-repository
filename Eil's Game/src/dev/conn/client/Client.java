@@ -1,10 +1,14 @@
 package dev.conn.client;
 
+import dev.training.Game;
 import dev.training.Handeler;
 import dev.training.Utils;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client extends Thread {
     
@@ -21,18 +25,32 @@ public class Client extends Thread {
     private BufferedReader printIn;
     private ObjectInputStream in;
     private Socket socket;
+    private String serverAddress;
     
     private Handeler handeler;
     
     private final int PORT = 7777;
 
     public Client(String serverAddress) {
+        this.serverAddress = serverAddress;
         try {
             socket = new Socket(serverAddress, PORT);
         } catch (IOException ex) { 
-            System.out.println(ex.getMessage()); 
+            System.out.println(ex.getMessage() + "\n"); 
         }
         
+    }
+    
+    public Client reTry() {
+        Client c;
+        System.out.println("Tentativo di riconnessione");
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        c = new Client(serverAddress);
+        return c;
     }
     
     public void init() {
@@ -76,6 +94,7 @@ public class Client extends Thread {
 
     public int getHeight() { return height; }
     
+    public Socket getSocket() { return socket; }    
     
 //    public static void main(String args[])
 //    {

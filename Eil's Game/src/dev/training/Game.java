@@ -12,6 +12,9 @@ import dev.training.states.MenuState;
 import dev.training.states.State;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Per fare in modo che questa classe venga eseguita come un thread dobbiamo 
@@ -85,7 +88,8 @@ public class Game implements Runnable{
     }
     
     /**
-     * Questo metodo serve ad inizializzare tutta la grafica del gioco
+     * Questo metodo serve ad inizializzare tutta la grafica e la connection del 
+     * gioco
      */
     private void init() {
         display = new Display(title, width, height);
@@ -100,8 +104,14 @@ public class Game implements Runnable{
         
         gameCamera = new GameCamera(handeler, 0, 0);
         mouseManager.setHandeler(handeler);
+        
+        while(client.getSocket() == null) {
+            client = client.reTry();
+        }
         client.setHandeler(handeler);
         client.init();
+        
+        
         // Creazione mondo
         gameState.createWorld(client.getWidth(), client.getHeight(), client.getLowerBound(), client.getUpperBound());
     }

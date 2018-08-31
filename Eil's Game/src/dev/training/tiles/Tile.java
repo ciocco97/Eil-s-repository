@@ -23,6 +23,9 @@ public class Tile {
     private static Tile chapter_archer100 = new Archer100Tile(33);
     private static Tile chapter_archer50 = new Archer50Tile(34);
     private static Tile chapter_archer10 = new Archer10Tile(35);
+    private static Tile chapter_king100 = new King100Tile(90);
+    private static Tile chapter_king50 = new King100Tile(91);
+    private static Tile chapter_king10 = new King100Tile(92);
     
     
     protected BufferedImage texture;

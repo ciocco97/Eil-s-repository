@@ -22,6 +22,8 @@ public class World {
      * selezionabili, nonché i "buoni"
      */
     private int lowerBound, upperBound;
+    // Stacco tra gli omini propri e quelli avversari
+    private final int DELTA_OMINI = 100;
     
     private boolean path;
     
@@ -88,13 +90,18 @@ public class World {
                  */
                 getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
-                /**
-                 * Se il Tile è quello su cui è presente il mouse bisogna 
-                 * disegnarci sopra il Tile selezione
+                /***
+                 * Se il tile preso in considerazione è presente nella matrice 
+                 * selections significa che bisogna disegnarci sopra il Tile 
+                 * selezione
                  */
                 if (selections[x][y] != 0)
                     Tile.tiles[selections[x][y]].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+                /**
+                 * Se il Tile è quello su cui è presente il mouse bisogna 
+                 * disegnarci sopra il Tile selezione
+                 */
                 if(x == handeler.getMouseManager().getxTile() && y == handeler.getMouseManager().getyTile())
                     Tile.tiles[Tile.SELECT].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
@@ -105,6 +112,7 @@ public class World {
     private void selection() {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
+        
         Coordinate coordinate = new Coordinate(x, y);
         // Caso in cui si è fuori dalla mappa
         if(x < 0 || y < 0 || x >= width || y >= height) {

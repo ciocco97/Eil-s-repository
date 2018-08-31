@@ -13,7 +13,8 @@ public class Assets {
     
     public static BufferedImage dirt, grass, stone, selected, charapter;
     public static BufferedImage chapter_soldier100, chapter_soldier50, chapter_soldier10, 
-            chapter_archer100, chapter_archer50, chapter_archer10;
+            chapter_archer100, chapter_archer50, chapter_archer10,
+            chapter_king100, chapter_king50, chapter_king10;
     
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sprite.png"));
@@ -35,5 +36,7 @@ public class Assets {
         chapter_archer100 = sheet.crop(0, 380, 350, 350);
         chapter_archer50 = sheet.crop(351, 380, 350, 350);
         chapter_archer10 = sheet.crop(702, 380, 350, 350);
+        chapter_king100 = chapter_king50 = chapter_king10 = sheet.crop(0, 731, 350, 350);
+        
     }
 }
