@@ -45,7 +45,7 @@ public class Core extends Thread{
         player1.sendString(upperBound1);
         // lo stesso per il giocatore 2
         player2.sendString(lowerBound2);
-        player2.sendString(lowerBound2);
+        player2.sendString(upperBound2);
         //invio ad entrambi le dimensioni della mappa
         player1.sendString(""+this.width);
         player1.sendString(""+this.height);
