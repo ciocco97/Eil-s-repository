@@ -23,9 +23,9 @@ public class Utils {
     private static final int KING_LOW_1 = 92;
     
     
-    private static final int GUERIERO_FULL_2 = 100;
-    private static final int GUERIERO_HALF_2 = 101;
-    private static final int GUERIERO_LOW_2 = 102;
+    private static final int GUERIERO_FULL_2 = 101;
+    private static final int GUERIERO_HALF_2 = 102;
+    private static final int GUERIERO_LOW_2 = 103;
     private static final int ARCERE_FULL_2 = 110;
     private static final int ARCERE_HALF_2 = 111;
     private static final int ARCERE_LOW_2 = 112;

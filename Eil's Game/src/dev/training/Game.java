@@ -105,6 +105,9 @@ public class Game implements Runnable{
         gameCamera = new GameCamera(handeler, 0, 0);
         mouseManager.setHandeler(handeler);
         
+        /**
+         * Fino all'effettiva connessione con ilserver il client resta in attesa
+         */
         while(client.getSocket() == null) {
             client = client.reTry();
         }

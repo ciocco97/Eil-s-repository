@@ -19,7 +19,6 @@ public class KeyManager implements KeyListener{
         left = keys[KeyEvent.VK_A];
         right = keys[KeyEvent.VK_D];
         attack = keys[KeyEvent.VK_CONTROL];
-        System.out.println(attack);
     }
 
     @Override

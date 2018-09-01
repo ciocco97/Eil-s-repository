@@ -19,13 +19,14 @@ public class World {
     
     /**
      * Variabili settate da remoto che indicano al client quali sono i charapter 
-     * selezionabili, nonché i "buoni"
+     * selezionabili, nonché i "buoni", e quali quelli non selezionabili
      */
-    private int lowerBound, upperBound;
+    private int lowerBound_allies, upperBound_allies;
+    private int lowerBound_opponents, upperBound_opponents;
     // Stacco tra gli omini propri e quelli avversari
     private final int DELTA_OMINI = 100;
     
-    private boolean path;
+    private boolean path, attack;
     
     /**
      * Una matrice di ID che indicano come sono disposti i "Tile" all'interno 
@@ -34,8 +35,8 @@ public class World {
      * omini e una la selezione dell'utente; infine toGo rappresenta ciò che 
      * verrà inviato al server
      */
-    private int[][] world, selections, abcd;                                    // Da togliere (abcd)
-    private ArrayList<Coordinate> pathSteps;
+    private int[][] world, selections;                                    // Da togliere (abcd)
+    private ArrayList<Coordinate> pathSteps, attackSteps;
     
     /**
      * Costanti che servono a definire i separatori utilizzati per codificare la 
@@ -60,12 +61,15 @@ public class World {
 //        loadWorld("res//worlds/world");                                         // Da togliere
         selections = new int[width][height];
         pathSteps = new ArrayList<>();
+        attackSteps = new ArrayList<>();
     }
     
     public void update() {
 
         this.reciveWorld();
         selection();
+        attack();
+        
     }
     
     public void render(Graphics g) {
@@ -81,6 +85,8 @@ public class World {
         
         for(int y = yStart; y < yEnd; y++) {
             for(int x = xStart; x < xEnd; x++) {
+                
+                renderSfondo(x, y, g);
                 /**
                  * Moltiplico la x e la y per larghezza e altezza in quanto, 
                  * per esempio, se voglio disegnare il Tile con cordinate 1, 3 
@@ -90,21 +96,8 @@ public class World {
                  */
                 getTile(x, y).render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
                         (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
-                /***
-                 * Se il tile preso in considerazione è presente nella matrice 
-                 * selections significa che bisogna disegnarci sopra il Tile 
-                 * selezione
-                 */
-                if (selections[x][y] != 0)
-                    Tile.tiles[selections[x][y]].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
-                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
-                /**
-                 * Se il Tile è quello su cui è presente il mouse bisogna 
-                 * disegnarci sopra il Tile selezione
-                 */
-                if(x == handeler.getMouseManager().getxTile() && y == handeler.getMouseManager().getyTile())
-                    Tile.tiles[Tile.SELECT].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
-                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+                
+                renderSelectionAttack(x, y, g);
             }
         }
     }
@@ -115,18 +108,19 @@ public class World {
         
         Coordinate coordinate = new Coordinate(x, y);
         // Caso in cui si è fuori dalla mappa
-        if(x < 0 || y < 0 || x >= width || y >= height) {
+        if(x < 0 || y < 0 || x >= width || y >= height || attack || handeler.getKeyManager().attack) {
             // Sbagliato
-            reset();
+            if(!attack)
+                resetSelection();
         // Casi in cui è stato premuto il mouse
         } else if(handeler.getMouseManager().isPressed) {
-            // Caso in cui il tile su cui si è è un charapter
-            if(world[x][y] > lowerBound && world[x][y] < upperBound) {
+            // Caso in cui il tile su cui si è è un charapter selezionabile
+            if(world[x][y] >= lowerBound_allies && world[x][y] < upperBound_allies) {
                 // Se si stava già tracciando un percorso e si seleziona un charapter
                 if(path) {
                     // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
                     if(pathSteps.size() != 1) {
-                        reset();
+                        resetSelection();
                     }
                 // Unico caso in cui si può iniziare a tracciare un percorso
                 } else {
@@ -139,12 +133,12 @@ public class World {
                 }
             } else if(Tile.tiles[world[x][y]].isSolid()) {
                 // Sbagliato
-                reset();
+                resetSelection();
             // Caso in cui il tile premuto sia erba o terra
             } else {
                 if(!path) {
                     // Sbagliato
-                    reset();
+                    resetSelection();
                 } else {
                     // Giusto:  continua
                     selections[x][y] = Tile.SELECT;
@@ -154,30 +148,102 @@ public class World {
             }
         } else if(path) {
             // Giusto: invia
-            invia();
+            sendPath();
         // Caso in cui il mouse non è stato premuto e non si stava tracciando un percorso
         } else {
             // Sbagliato
-            reset();
+            resetSelection();
+        }
+    }
+    
+    private void attack() {
+        int x = handeler.getMouseManager().getxTile();
+        int y = handeler.getMouseManager().getyTile();
+        
+        Coordinate coordinate = new Coordinate(x, y);
+        // Caso in cui si è fuori dalla mappa
+        if(x < 0 || y < 0 || x >= width || y >= height) {
+            if(!path)
+                resetAttack();
+        // Casi in cui è stato premuto il mouse
+        } else if(handeler.getMouseManager().isPressed && handeler.getKeyManager().attack) {
+            // Caso in cui il tile su cui si è è un charapter selezionabile
+            if(world[x][y] >= lowerBound_allies && world[x][y] < upperBound_allies) {
+                // Se si stava già tracciando un attacco e si seleziona un charapter
+                if(attack) {
+                    // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
+                    if(attackSteps.size() != 1) {
+                        resetAttack();
+                    }
+                // Unico caso in cui si può iniziare a tracciare un percorso
+                } else {
+                    // Giusto: inizio
+                    attack = true;
+                    selections[x][y] = Tile.ATTACK;
+                    if(attackSteps.isEmpty()) {
+                        attackSteps.add(new Coordinate(x, y));
+                    }
+                }
+            /**
+             * Caso in cui il tile selezionato può essere sia roccia che un 
+             * giocatore alleato che un giocatore avversario
+             */
+            } else if(Tile.tiles[world[x][y]].isSolid()) {
+                // Giusto: invia
+                if(world[x][y] >= lowerBound_opponents || world[x][y] <= upperBound_opponents)
+                    if(!attackSteps.isEmpty())
+                        sendAttack();
+                // Sbagliato
+                resetAttack();
+            // Caso in cui il tile premuto sia erba o terra
+            } else {
+                if(!attack) {
+                    // Sbagliato
+                    resetAttack();
+                } else {
+                    // Giusto:  continua
+                    selections[x][y] = Tile.ATTACK;
+                    if(!attackSteps.get(attackSteps.size() - 1).equal(coordinate))
+                        attackSteps.add(new Coordinate(x, y));
+                }
+            }
+        } else if(attack) {
+            // Caso in cui si vuole fermare il giocatore all'attacco
+            if(attackSteps.size() == 1)
+                sendAttack();
+            // Sbagliato
+            else
+                resetAttack();
         }
     }
     
     /**
      * Funzione che resetta gli elementi della selezione
      */
-    private void reset() {
+    private void resetSelection() {
         path = false;
         selections = new int[width][height];
         pathSteps = new ArrayList<>();
     }
     
+    private void resetAttack() {
+        attack = false;
+        selections = new int[width][height];
+        attackSteps = new ArrayList<>();
+    }
+    
     /**
-     * Funzione che comincia l'invio dell'istruzione al server
+     * Funzione che avvia l'invio dell'istruzione al server
      */
-    private void invia() {
-        System.out.println("Invio di: " + pathSteps.toString());
+    private void sendPath() {
+        System.out.println("Invio path: " + pathSteps.toString());
         handeler.getGame().getClient().inviaPath(pathSteps);
-        reset();
+        resetSelection();
+    }
+    
+    private void sendAttack() {
+        System.out.println("Invio attack: " + attackSteps.toString());
+        resetAttack();
     }
     
     /**
@@ -196,6 +262,41 @@ public class World {
         if(t == null) t = Tile.tiles[11];
         return t;
     }
+    
+    private void renderSfondo(int x, int y, Graphics g) {
+        if(world[x][y] >= lowerBound_allies && world[x][y] <= upperBound_allies)
+            Tile.tiles[0].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+        if(world[x][y] >= lowerBound_opponents && world[x][y] <= upperBound_opponents)
+            Tile.tiles[1].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+    }
+    
+    private void renderSelectionAttack(int x, int y, Graphics g) {
+        /**
+         * Se il tile preso in considerazione è presente nella matrice 
+         * selections significa che bisogna disegnarci sopra il Tile 
+         * selezione
+         */
+        if (selections[x][y] == Tile.SELECT)
+            Tile.tiles[selections[x][y]].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+        /**
+         * Se sul tile preso i nconsiderazione bisogna disegnarci sopra 
+         * il tile attack
+         */
+        else if (selections[x][y] == Tile.ATTACK)
+            Tile.tiles[selections[x][y]].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+        /**
+         * Se il Tile è quello su cui è presente il mouse bisogna 
+         * disegnarci sopra il Tile selezione
+         */
+        else if(x == handeler.getMouseManager().getxTile() && y == handeler.getMouseManager().getyTile())
+            Tile.tiles[Tile.SELECT].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+                
+    }
 
     public int getWidth() { return width; }
 
@@ -203,9 +304,20 @@ public class World {
     
     public int[][] getWorld() { return world; }
     
+    /**
+     * Funzione che indica qual'è il range dei propri giocatori e il range di 
+     * quelli avversari
+     * @param lb
+     * @param ub 
+     */
     public void setCharaptersBounds(int lb, int ub) {
-        this.lowerBound = lb;
-        this.upperBound = ub;
+        if(lb == Tile.LOWER_BOUND_1) {
+            this.lowerBound_allies = Tile.LOWER_BOUND_1; this.upperBound_allies = Tile.UPPER_BOUND_1;
+            this.lowerBound_opponents = Tile.LOWER_BOUND_2; this.upperBound_opponents = Tile.UPPER_BOUND_2;
+        } else {
+            this.lowerBound_allies = Tile.LOWER_BOUND_2; this.upperBound_allies = Tile.UPPER_BOUND_2;
+            this.lowerBound_opponents = Tile.LOWER_BOUND_1; this.upperBound_opponents = Tile.UPPER_BOUND_1;
+        }
     }
     
     /**
@@ -215,12 +327,12 @@ public class World {
     private void loadWorld(String path) {                                       // Da togliere
         String file = Utils.loadFileAsStrig(path);
         String[] token = file.split("\\s+");
-        width = Utils.parseInt(token[0]);                                       // Importante: per adesso qua vengono settati numero righe e numero colonne
+        width = Utils.parseInt(token[0]);
         height = Utils.parseInt(token[1]);
         spawnX = Utils.parseInt(token[2]);
         spawnY = Utils.parseInt(token[3]);
         
-        abcd = new int[width][height];
+        world = new int[width][height];
         
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)
@@ -230,7 +342,7 @@ public class World {
                  * totale di colonne + numero di colonne. si aggiunge 4 perchè i 
                  * primi 4 elementi di token sono utilizzati per altri scopi.
                  */
-                abcd[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+                world[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
         
     }
     
