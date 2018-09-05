@@ -13,7 +13,7 @@ import Utils.Coordinate;
  */
 public class Charapter {
     protected int owner, id, health, strength, defence, speed;
-    private Coordinate coordinate;
+    protected Coordinate coordinate;
 
     
     public int getId() {
@@ -40,7 +40,7 @@ public class Charapter {
     
     public void attack(Charapter charapter)
     {
-        int damage = (this.strength * 10) / charapter.defence;
+        int damage = (this.strength * 10) / (charapter.defence * 2);
         charapter.health -= damage;
     }
     public int getType()
