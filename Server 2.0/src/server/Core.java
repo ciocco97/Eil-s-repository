@@ -90,7 +90,7 @@ public class Core extends Thread{
                 delta--;
             }
             //esegue questa operazione ogni mezzo secondo
-            if(timer >= 300000000) {
+            if(timer >= 500000000) {
                 //prendo le mosse dal server TCP
                 String move1, move2;
                 move1 = player1.getBuffer();
@@ -126,7 +126,8 @@ public class Core extends Thread{
                 serverUDP.send(map);
                 update = 0;
                 timer = 0;
-                tick = (tick+1)%8 + 1;
+                tick = (tick+1)%8;
+                System.out.println(tick);
             }
             
         }

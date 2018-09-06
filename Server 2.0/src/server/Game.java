@@ -56,18 +56,20 @@ public class Game {
             width = Utils.parseInt(token[0]);
             height = Utils.parseInt(token[1]);
             maxTeamID = Utils.parseInt(token[2])/2;
+            Random rand = new Random();
+            int king1ID = rand.nextInt(maxTeamID);
+            int king2ID = rand.nextInt(maxTeamID) + maxTeamID;
+            
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
                     //un if un po strano spero si capisca, in caso è per capire di chi è quel particolare personaggio
                     
-                    Random rand = new Random();
+                   
                     int owner = ID<maxTeamID?0:1;
-                    int king1ID = rand.nextInt(maxTeamID);
-                    int king2ID = rand.nextInt(maxTeamID) + maxTeamID;
                     if (ID != 0){
                         if (ID == king1ID)
-                        charapters.add(new King (owner, ID, new Coordinate(x,y)));
+                            charapters.add(new King (owner, ID, new Coordinate(x,y)));
                         else    
                         {
                         if (rand.nextBoolean())
@@ -89,47 +91,19 @@ public class Game {
     
     public void update(int tick)
     {
-        boolean toDo = true;
-        //entra l'update delle mosse, ogni 2 tick   
-        if (moves.size() > 0 && tick%2 == 0)
+        switch (tick)
         {
-            //scorro tutte le mosse ancora da eseguire
-            for (int i=0; i<moves.size(); i++)
-            {
-                toDo=true;
-                Move mossa = moves.get(i);
-                Charapter charapter = null;
-                int ID = mossa.getID();
-                for(Charapter charap:charapters){
-                        if (charap.getId()==ID)
-                            charapter = charap;
-                }
-                if (charapter.getSpeed()==1 && tick%4!=1)
-                    toDo=false;
-                Coordinate nextCoordinate = null;
-                //prendo le future coordinate e tolgo quelle in cui andrà il giocatore
-                if (mossa.getSteps().size()==1){
-                    moves.remove(i);
-                    break;
-                }
-                else
-                {
-                    nextCoordinate = mossa.getSteps().get(1);
-                    //scorro tutti i giocatori per vedere se non c'è nessuno in quelle coordinate
-                    for (Charapter charap:charapters){
-                        if (charap.getCoordinate().equals(nextCoordinate))
-                        {
-                            //significa che c'è qualcuno lungo il tragitto, mi fermo
-                            moves.remove(i);
-                            toDo = false;
-                        }           
-                    }
-                }  
-                if(toDo){
-                    charapter.setCoordinate(nextCoordinate);
-                    mossa.getSteps().remove(0);
-                }
-            }
+            case 0:{}
+            case 1:{moveCharapter(new int[]{2,0,0});}
+            case 2:{}
+            case 3:{moveCharapter(new int[]{1,2,0});}
+            case 4:{}
+            case 5:{moveCharapter(new int[]{2,0,0});}
+            case 6:{}
+            case 7:{moveCharapter(new int[]{1,2,3});}
+            
+                
+            
         }
     }
     public int[][] getMap()
@@ -191,5 +165,34 @@ public class Game {
         return data;
     } 
     
-    
+    private void moveCharapter(int[] type)
+    {
+        Move move;
+        if (moves.size() > 0)
+        {
+            for (int i = 0; i< moves.size(); i++){
+                move = moves.get(i);
+                if (move.getType() == type[0] || move.getType() == type[1] || move.getType() == type[2]) // altrimenti è qualcun altro, non gli arceri
+                    if (move.getSteps().size()==1) // mossa terminata
+                        moves.remove(i);
+                    else
+                    {
+                        for (Charapter charapter:charapters)
+                            if (charapter.getId() == move.getID())
+                            {
+                                Coordinate next = move.getSteps().get(1);
+                                if (getIDFromCoordinate(next)[0] != 0){
+                                    System.out.println("sono qui");
+                                    moves.remove(i);
+                                }
+                                else{
+                                    charapter.setCoordinate(next);
+                                    move.getSteps().remove(0);
+                                    System.out.println("sono qui 2");
+                                }
+                            }
+                    }
+            }
+        }
+    }
 }

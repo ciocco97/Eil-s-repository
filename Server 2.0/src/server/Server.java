@@ -13,13 +13,7 @@ public class Server extends Thread{
     private int width, height;
     private Game game;
     
-    
-    private PrintStream out1;
-    private PrintStream out2;
-    
-    private BufferedReader in1;
-    private BufferedReader in2;
-    
+
     private static InetAddress ia1;
     private static InetAddress ia2;
     
@@ -58,7 +52,7 @@ public class Server extends Thread{
                 System.out.println("Giocatore 1 connesso con indirizzo IP:" + client.getInetAddress());
                 System.out.println("Attesa giocatore 2");
                 Socket client2 = server.accept();
-                System.out.println("Giocatore 2 connesso con indirizzo IP:" + client.getInetAddress());
+                System.out.println("Giocatore 2 connesso con indirizzo IP:" + client2.getInetAddress());
                 Core core = new Core(client, client2);
                 core.start();
                 System.out.println("Partita creata, ritorno in attesa di giocatori");
