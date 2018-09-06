@@ -90,7 +90,7 @@ public class Core extends Thread{
                 delta--;
             }
             //esegue questa operazione ogni mezzo secondo
-            if(timer >= 500000000) {
+            if(timer >= 300000000) {
                 //prendo le mosse dal server TCP
                 String move1, move2;
                 move1 = player1.getBuffer();
@@ -105,7 +105,12 @@ public class Core extends Thread{
                     {
                         tempCoords = (ArrayList<Coordinate>) data;
                         game.addMoves(tempCoords, 0);
-                        
+                        player1.clearBuffer();
+                    }
+                     else
+                    {
+                        String action = move1;
+                        game.addAction(action);
                         player1.clearBuffer();
                     }
                 }
@@ -116,18 +121,21 @@ public class Core extends Thread{
                     {
                         tempCoords = (ArrayList<Coordinate>) data;
                         game.addMoves(tempCoords, 1);
-                        
+                        player2.clearBuffer();
+                    }
+                    else
+                    {
+                        String action = move2;
+                        game.addAction(action);
                         player2.clearBuffer();
                     }
                 }
                 game.update(tick);
                 String map = Utils.mapToString(game);
-                //System.out.println(map);
                 serverUDP.send(map);
                 update = 0;
                 timer = 0;
                 tick = (tick+1)%8;
-                System.out.println(tick);
             }
             
         }

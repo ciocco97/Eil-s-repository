@@ -104,14 +104,7 @@ public class Utils {
             return list;
         
         }
-        else
-        {
-            String core = buffer.substring(1, buffer.length());
-            String integers[] = core.split(" ");
-            int x = Integer.parseInt(integers[0]);
-            int y = Integer.parseInt(integers[1]);
-            return new Coordinate(x,y);
-        }
+        return buffer;
     }
     
     public static int getIdFromCharapter(Charapter charapter, int upperBound)

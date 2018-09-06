@@ -65,7 +65,7 @@ public class World {
     }
     
     public void update() {
-
+        System.out.println("mamma");
         this.reciveWorld();
         selection();
         attack();
@@ -105,7 +105,7 @@ public class World {
     private void selection() {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
-        
+        System.out.println(x + " - " +y);
         Coordinate coordinate = new Coordinate(x, y);
         // Caso in cui si è fuori dalla mappa
         if(x < 0 || y < 0 || x >= width || y >= height || attack || handeler.getKeyManager().attack) {
@@ -354,7 +354,6 @@ public class World {
         String updateMap = ClientUDP.map;
         if(updateMap != null) {
             if(world == null) {
-                System.out.println("Creazione matrice");
                 world = new int[width][height];
             }
             String[] colonne = updateMap.split(SEPARATORE_COLONNE);

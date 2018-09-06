@@ -59,18 +59,18 @@ public class Game {
             Random rand = new Random();
             int king1ID = rand.nextInt(maxTeamID);
             int king2ID = rand.nextInt(maxTeamID) + maxTeamID;
-            
+            System.out.println(king1ID + "-" + king2ID);
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
                     //un if un po strano spero si capisca, in caso è per capire di chi è quel particolare personaggio
-                    
+                    System.out.println(ID);
                    
                     int owner = ID<maxTeamID?0:1;
                     if (ID != 0){
-                        if (ID == king1ID)
+                        if (ID == king1ID || ID == king2ID)
                             charapters.add(new King (owner, ID, new Coordinate(x,y)));
-                        else    
+                        else
                         {
                         if (rand.nextBoolean())
                             charapters.add(new Archer(owner, ID, new Coordinate(x,y)));
@@ -91,20 +91,22 @@ public class Game {
     
     public void update(int tick)
     {
-        switch (tick)
-        {
-            case 0:{}
-            case 1:{moveCharapter(new int[]{2,0,0});}
-            case 2:{}
-            case 3:{moveCharapter(new int[]{1,2,0});}
-            case 4:{}
-            case 5:{moveCharapter(new int[]{2,0,0});}
-            case 6:{}
-            case 7:{moveCharapter(new int[]{1,2,3});}
+        for (Arrow arrow:arrows)
+            arrow.tick();
+        checkArrows();
+        if (tick==1)
+            {moveCharapter(new int[]{2,0,0}); shoot();}
+        else if (tick==3)
+            {moveCharapter(new int[]{2,1,0}); shoot();}
+        else if (tick==5)
+            {moveCharapter(new int[]{2,0,0}); shoot();}
+        else if (tick==7)
+            {moveCharapter(new int[]{2,1,3}); shoot();}
+                
             
                 
             
-        }
+        
     }
     public int[][] getMap()
     {
@@ -148,9 +150,24 @@ public class Game {
             int[] data = null;
             data = getIDFromCoordinate(list.get(0));
             moves.add(new Move(owner, data[0], data[1],  list));
+        }          
+    }
+    public void addAction(String data)
+    {
+        if (data.startsWith("f")) // comando per lanciare la freccia
+        {
+            int direction = Integer.parseInt(data.charAt(1)+"");
+            int x = Integer.parseInt(data.charAt(3)+"");
+            int y = Integer.parseInt(data.charAt(5)+"");
+            Coordinate coord = new Coordinate(x,y);
+            int ID = getIDFromCoordinate(coord)[0];
+            for (Charapter charap:charapters)
+                if (charap.getId() == ID && charap.getType() == 2)
+                {
+                    charap.setShooting(true);
+                    charap.setDirection(direction);
+                }
         }
-        
-                
     }
     
     private int[] getIDFromCoordinate(Coordinate coord)
@@ -172,7 +189,7 @@ public class Game {
         {
             for (int i = 0; i< moves.size(); i++){
                 move = moves.get(i);
-                if (move.getType() == type[0] || move.getType() == type[1] || move.getType() == type[2]) // altrimenti è qualcun altro, non gli arceri
+                if (move.getType() == type[0] || move.getType() == type[1] || move.getType() == type[2])
                     if (move.getSteps().size()==1) // mossa terminata
                         moves.remove(i);
                     else
@@ -182,17 +199,38 @@ public class Game {
                             {
                                 Coordinate next = move.getSteps().get(1);
                                 if (getIDFromCoordinate(next)[0] != 0){
-                                    System.out.println("sono qui");
                                     moves.remove(i);
                                 }
                                 else{
+                                    charapter.setShooting(false);
                                     charapter.setCoordinate(next);
                                     move.getSteps().remove(0);
-                                    System.out.println("sono qui 2");
                                 }
                             }
                     }
             }
         }
+    }
+    
+    private void checkArrows()
+    {
+        for (int i = 0; i < arrows.size(); i++)
+            for (int j = 0; j<charapters.size(); j++)
+            {
+                Charapter charap = charapters.get(j);
+                Arrow arrow = arrows.get(i);
+                if (charap.getCoordinate().equals(arrow.getCoordinate()))
+                {
+                    arrows.remove(i);
+                    if (charap.hit(arrow));
+                        charapters.remove(j);
+                }
+            }
+    }
+    private void shoot()
+    {
+        for(Charapter charap:charapters)
+            if (charap.getType()==2 && charap.isShooting())
+                arrows.add(charap.throwArrow(charap.getDirection()));
     }
 }

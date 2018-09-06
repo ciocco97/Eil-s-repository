@@ -14,6 +14,7 @@ import Utils.Coordinate;
 public class Arrow {
     private int direction;
     private int power;
+    private int owner;
     private Coordinate coordinate;
 
     public int getDirection() {
@@ -40,10 +41,11 @@ public class Arrow {
         this.coordinate = coordinate;
     }
 
-    public Arrow(int direction, int power, Coordinate coordinate) {
+    public Arrow(int direction, int power, int owner, Coordinate coordinate) {
         this.direction = direction;
         this.power = power;
         this.coordinate = coordinate;
+        this.owner = owner;
     }
 
     public Arrow() {
@@ -61,4 +63,13 @@ public class Arrow {
             case 7: {coordinate.setY(coordinate.getY()-1); coordinate.setX(coordinate.getX()-1);}
         }
     }
+
+    public int getOwner() {
+        return owner;
+    }
+
+    public void setOwner(int owner) {
+        this.owner = owner;
+    }
+    
 }
