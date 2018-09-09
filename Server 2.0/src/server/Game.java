@@ -23,6 +23,9 @@ public class Game {
     private ArrayList<Move> moves;
     private LinkedList<Arrow> arrows;
     private int maxTeamID;
+    private long startTime;
+    
+    public static final int TIME_OF_GAME_SETUP = 30;
     
     
     public Game()
@@ -30,6 +33,7 @@ public class Game {
         charapters = new LinkedList();
         moves = new ArrayList();
         arrows = new LinkedList();
+        
     }
     public void loadWorld(String path) {
         String fileWorld = Utils.loadFileAsStrig(path + "world");
@@ -38,11 +42,11 @@ public class Game {
         width = Utils.parseInt(token[0]);
         height = Utils.parseInt(token[1]);
         charapters = new LinkedList<>();
+        
         //spawnX = Utils.parseInt(token[2]);
         //spawnY = Utils.parseInt(token[3]);
-        
+        startTime = System.currentTimeMillis();
         world = new int[width][height];
-        
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++)
                 /**
@@ -112,10 +116,13 @@ public class Game {
     public int[][] getMap()
     {
         int[][] map = new int[width][height];
+        long deltaTime = (System.currentTimeMillis() - startTime) / 1000;
         //riempio con il mondo
         for (int i=0; i<width; i++)
-            for (int j=0; j<height; j++)
+            for (int j=0; j<height; j++){
                 map[i][j] = world[i][j];
+                
+            }
         
         //inserisco gli ID dei vari personaggi
         for (Charapter charap:charapters)
@@ -125,7 +132,11 @@ public class Game {
             int ID = Utils.getIdFromCharapter(charap, maxTeamID);
             map[x][y] = ID;
         }
-            
+        if (deltaTime < TIME_OF_GAME_SETUP) // tempo in secondi
+            for (int i = 0; i<height; i++)
+                map[(width/2)][i] = 12; // codice del blocco di pietra, cosi non si passa
+        
+        System.out.println(deltaTime);
         return map;
         
     }
@@ -137,12 +148,9 @@ public class Game {
             //scorro tutte le mosse per vedere quale ha quella posizione come attuale
             for (int i=0; i<moves.size(); i++)
             {   //se non è il proprietario della mossa, non può annullarla
-                if (moves.get(i).getOwner() == owner)
-                {
                     //se la prima coordinata della mossa (il giocatore) è uguale all'unica componente della lista
                     if(moves.get(i).getSteps().get(0).equals(list.get(0)))
                         moves.remove(i);
-                }
             }
         }
         else
