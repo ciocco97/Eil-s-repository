@@ -29,6 +29,7 @@ public class Game {
     {
         charapters = new LinkedList();
         moves = new ArrayList();
+        arrows = new LinkedList();
     }
     public void loadWorld(String path) {
         String fileWorld = Utils.loadFileAsStrig(path + "world");
