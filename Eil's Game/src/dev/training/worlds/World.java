@@ -105,11 +105,12 @@ public class World {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
         Coordinate coordinate = new Coordinate(x, y);
+        
+        if(attack) {
         // Caso in cui si è fuori dalla mappa
-        if(x < 0 || y < 0 || x >= width || y >= height || attack || handeler.getKeyManager().attack) {
+        } else if(x < 0 || y < 0 || x >= width || y >= height) {
             // Sbagliato
-            if(!attack)
-                resetSelection();
+            resetSelection();
         // Casi in cui è stato premuto il mouse
         } else if(handeler.getMouseManager().isPressed) {
             // Caso in cui il tile su cui si è è un charapter selezionabile
@@ -161,8 +162,7 @@ public class World {
         Coordinate coordinate = new Coordinate(x, y);
         // Caso in cui si è fuori dalla mappa
         if(x < 0 || y < 0 || x >= width || y >= height) {
-            if(!path)
-                resetAttack();
+            resetAttack();
         // Casi in cui è stato premuto il mouse
         } else if(handeler.getMouseManager().isPressed && handeler.getKeyManager().attack) {
             // Caso in cui il tile su cui si è è un charapter selezionabile
@@ -188,7 +188,7 @@ public class World {
              */
             } else if(Tile.tiles[world[x][y]].isSolid()) {
                 // Giusto: invia
-                if(world[x][y] >= lowerBound_opponents || world[x][y] <= upperBound_opponents)
+                if(world[x][y] >= lowerBound_opponents && world[x][y] <= upperBound_opponents)
                     if(!attackSteps.isEmpty())
                         sendAttack();
                 // Sbagliato
