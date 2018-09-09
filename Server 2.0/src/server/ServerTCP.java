@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 /**
  * Classe che implementa il canale di comunicazone tra Server e Client
  */
-public class Connect extends Thread {
+public class ServerTCP extends Thread {
 
 //    private PrintStream out;
     private ObjectOutputStream out;
@@ -17,15 +17,16 @@ public class Connect extends Thread {
     
     private String buffer;
     
-    public Connect(Socket client) {
+    public ServerTCP(Socket client) {
         try {
 
         this.out = new ObjectOutputStream (client.getOutputStream());
         this.in = new ObjectInputStream (client.getInputStream());
         
         } catch (IOException ex) {
-            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ServerTCP.class.getName()).log(Level.SEVERE, null, ex);
         }
+            // Canale di comunicazione in input
             // Canale di comunicazione in input
     }
     

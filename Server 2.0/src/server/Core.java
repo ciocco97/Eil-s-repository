@@ -19,7 +19,7 @@ public class Core extends Thread{
     private Game game;
     private boolean play;
     private int width, height;
-    private Connect player1, player2;
+    private ServerTCP player1, player2;
     
     private final String lowerBound1 = "30";
     private final String upperBound1 = "100";
@@ -32,8 +32,8 @@ public class Core extends Thread{
         game = new Game();
         game.loadWorld("res\\World\\");
         serverUDP = new ServerUDP(client1.getInetAddress(), client2.getInetAddress());
-        player1 = new Connect(client1);
-        player2 = new Connect(client2);
+        player1 = new ServerTCP(client1);
+        player2 = new ServerTCP(client2);
         this.width = game.getWidth();
         this.height = game.getHeight();
     }
