@@ -15,6 +15,7 @@ import java.util.LinkedList;
 public class Move {
     private int ID;
     private int owner;
+    private int type;
     private ArrayList<Coordinate> steps;
 
     public int getID() {
@@ -33,10 +34,11 @@ public class Move {
         this.steps = steps;
     }
 
-    public Move(int owner, int ID, ArrayList<Coordinate> steps) {
+    public Move(int owner, int ID, int type, ArrayList<Coordinate> steps) {
         this.ID = ID;
         this.steps = steps;
         this.owner = owner;
+        this.type = type;
     }
 
     public int getOwner() {
@@ -46,6 +48,17 @@ public class Move {
     public void setOwner(int owner) {
         this.owner = owner;
     }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+    
+    
+    
     
     
 }

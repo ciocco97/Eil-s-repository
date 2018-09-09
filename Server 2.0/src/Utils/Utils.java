@@ -104,20 +104,13 @@ public class Utils {
             return list;
         
         }
-        else
-        {
-            String core = buffer.substring(1, buffer.length());
-            String integers[] = core.split(" ");
-            int x = Integer.parseInt(integers[0]);
-            int y = Integer.parseInt(integers[1]);
-            return new Coordinate(x,y);
-        }
+        return buffer;
     }
     
-    public static int getIdFromCharapter(Charapter charapter)
+    public static int getIdFromCharapter(Charapter charapter, int upperBound)
     {
         //fa parte del primo team
-        if (charapter.getId() <=10)
+        if (charapter.getId() <=upperBound)
         {
             //gueriero
             if (charapter.getType() == 1){
@@ -128,7 +121,7 @@ public class Utils {
                 else
                     return GUERIERO_LOW_1;
             }
-            else
+            else if (charapter.getType() == 2)
             {
                 if (charapter.getHealth() > 50)
                     return ARCERE_FULL_1;
@@ -136,7 +129,16 @@ public class Utils {
                     return ARCERE_HALF_1;
                 else
                     return ARCERE_LOW_1;
-            } 
+            }
+            else if (charapter.getType() == 3)
+            {
+                if (charapter.getHealth() > 50)
+                    return KING_FULL_1;
+                else if (charapter.getHealth() > 25)
+                    return KING_HALF_1;
+                else
+                    return KING_LOW_1;
+            }
         }
         //fa parte del secondo team
         else
@@ -149,7 +151,7 @@ public class Utils {
                 else
                     return GUERIERO_LOW_2;
             }
-            else
+            else if (charapter.getType() == 2)
             {
                 if (charapter.getHealth() > 50)
                     return ARCERE_FULL_2;
@@ -158,8 +160,17 @@ public class Utils {
                 else
                     return ARCERE_LOW_2;
             }
+            else if (charapter.getType() == 3)
+            {
+                if (charapter.getHealth() > 50)
+                    return KING_FULL_2;
+                else if (charapter.getHealth() > 25)
+                    return KING_HALF_2;
+                else
+                    return KING_LOW_2;
+            }
         }
-        
+        return 0;
     }
     
 }

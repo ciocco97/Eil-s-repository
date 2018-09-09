@@ -12,22 +12,22 @@ import java.util.Random;
  *
  * @author Alessandro
  */
-public class Gueriero extends Charapter{
+public class King extends Charapter{
     
-    public Gueriero(int owner, int id,Coordinate coord) {
-        // l'arcere ha basse statistiche, ma attacca da lontano suvvia
+    Random rand;
+    
+    public King(int owner, int id, Coordinate coord) {
         super(owner, id, coord);
-        Random rand = new Random();
-        this.strength = rand.nextInt(20) + 40;
+        this.health = 500;
+        rand = new Random();
+        this.strength = 0;
         this.defence = rand.nextInt(10) + 35;
-        this.health = 100;
-        this.speed = 1;
     }
+    
     @Override
     public int getType()
     {
-        //ritorna il fatto di essere un gueriero
-        return 1;
+        return 3;
     }
     
 }

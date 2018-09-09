@@ -12,8 +12,9 @@ import Utils.Coordinate;
  * @author aless
  */
 public class Charapter {
-    protected int owner, id, health, strength, defence, speed;
-    private Coordinate coordinate;
+    protected int owner, id, health, strength, defence, speed, direction;
+    protected Coordinate coordinate;
+    protected boolean shooting;
 
     
     public int getId() {
@@ -36,11 +37,12 @@ public class Charapter {
         this.id = id;
         this.coordinate = coord;
         this.owner = owner;
+        this.shooting = false;
     }
     
     public void attack(Charapter charapter)
     {
-        int damage = (this.strength * 10) / charapter.defence;
+        int damage = (this.strength * 10) / (charapter.defence * 2);
         charapter.health -= damage;
     }
     public int getType()
@@ -68,6 +70,41 @@ public class Charapter {
     public int getSpeed() {
         return speed;
     }
+
+    /**
+     *
+     * @param direction
+     * @return
+     */
+    public Arrow throwArrow(int direction)
+    {
+        return null;
+    }
+    public boolean hit(Arrow arrow)
+    {
+        if (arrow.getOwner() != this.owner)
+            this.health -= (arrow.getPower() / this.defence);
+        if (this.health < 0)
+            return true;
+        return false;
+    }
+
+    public boolean isShooting() {
+        return shooting;
+    }
+
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
+        this.direction = direction;
+    }
+    
     
     
 }

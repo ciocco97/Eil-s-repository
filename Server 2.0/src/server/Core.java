@@ -96,37 +96,46 @@ public class Core extends Thread{
                 move1 = player1.getBuffer();
                 move2 = player2.getBuffer();
                 //assolutamente da rifare ahahahahaah
-                ArrayList<Coordinate> ciao = new ArrayList<Coordinate>();
+                ArrayList<Coordinate> tempCoords = new ArrayList<Coordinate>();
                 //se non sono nulle, le mando a Game per elaborarle
                 if (move1 != null)
                 {
                     Object data = Utils.getDataFromString(move1);
-                    if (data.getClass() == ciao.getClass())
+                    if (data.getClass() == tempCoords.getClass())
                     {
-                        ciao = (ArrayList<Coordinate>) data;
-                        game.addMoves(ciao, 0);
-                        
+                        tempCoords = (ArrayList<Coordinate>) data;
+                        game.addMoves(tempCoords, 0);
+                        player1.clearBuffer();
+                    }
+                     else
+                    {
+                        String action = move1;
+                        game.addAction(action);
                         player1.clearBuffer();
                     }
                 }
                 if (move2 != null)
                 {
                     Object data = Utils.getDataFromString(move2);
-                    if (data.getClass() == ciao.getClass())
+                    if (data.getClass() == tempCoords.getClass())
                     {
-                        ciao = (ArrayList<Coordinate>) data;
-                        game.addMoves(ciao, 1);
-                        
+                        tempCoords = (ArrayList<Coordinate>) data;
+                        game.addMoves(tempCoords, 1);
+                        player2.clearBuffer();
+                    }
+                    else
+                    {
+                        String action = move2;
+                        game.addAction(action);
                         player2.clearBuffer();
                     }
                 }
                 game.update(tick);
                 String map = Utils.mapToString(game);
-                //System.out.println(map);
                 serverUDP.send(map);
                 update = 0;
                 timer = 0;
-                tick = (tick+1)%4 + 1;
+                tick = (tick+1)%8;
             }
             
         }
