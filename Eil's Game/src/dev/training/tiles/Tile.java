@@ -12,7 +12,7 @@ public class Tile {
     public static final int SELECT = 20;
     public static final int ATTACK = 21;
     public static final int CHARAPTER_ID_SIZE = 4;
-    public static final int GROUNT_ID_SIZE = 2;
+    public static final int GROUND_ID_SIZE = 2;
     public static final int ARROW_ID_SIZE = 3;
     
     public static final int TEAM_POSITION = 0;
@@ -35,6 +35,16 @@ public class Tile {
     public static final int GRASS_TILE = 10;
     public static final int DIRT_TILE = 11;
     public static final int STONE_TILE = 12;
+    
+    public static final String UP = "1";
+    public static final String UP_RIGHT = "2";
+    public static final String RIGHT = "3";
+    public static final String DOWN_RIGHT = "4";
+    public static final String DOWN = "5";
+    public static final String DOWN_LEFT = "6";
+    public static final String LEFT = "7";
+    public static final String UP_LEFT = "8";
+    
     
     
     
@@ -73,6 +83,15 @@ public class Tile {
     private static Tile king50 = new Tile(Assets.king50, Utils.parseInt(KING_ID + HALF_HEALTH + NOT_ON_ATTACK));
     private static Tile kingk10 = new Tile(Assets.king10, Utils.parseInt(KING_ID + LOW_HEALTH + NOT_ON_ATTACK));
     
+    private static Tile arrowUp = new Tile(Assets.up, Utils.parseInt(UP));
+    private static Tile arrowUpRight = new Tile(Assets.up, Utils.parseInt(UP_RIGHT));
+    private static Tile arrowRight = new Tile(Assets.up, Utils.parseInt(RIGHT));
+    private static Tile arrowDownRight = new Tile(Assets.up, Utils.parseInt(DOWN_RIGHT));
+    private static Tile arrowDown = new Tile(Assets.up, Utils.parseInt(DOWN));
+    private static Tile arrowDownLeft = new Tile(Assets.up, Utils.parseInt(DOWN_LEFT));
+    private static Tile arrowLeft = new Tile(Assets.up, Utils.parseInt(LEFT));
+    private static Tile arrowUpLeft = new Tile(Assets.up, Utils.parseInt(UP_LEFT));
+    
     public static char TEAM;
     
     public static void render(Graphics g, int x, int y, String data) // owner serve per sapere chi sono i cattivi
@@ -91,10 +110,17 @@ public class Tile {
                 tile = tiles[Utils.parseInt(data.substring(1))];
             }  
         }
-        else // è solo un pezzo del mondo
+        else if (data.length() == GROUND_ID_SIZE)// è solo un pezzo del mondo
         {
             int IdentificationNumber = Utils.parseInt(data);
             tile = tiles[IdentificationNumber];
+        }
+        else if (data.length() == ARROW_ID_SIZE)
+        {
+            int direction = Utils.parseInt(data.substring(0,1));
+            int ground = Utils.parseInt(data.substring(1));
+            tiles[ground].render(g, x, y);
+            tile = tiles[direction];
         }
         if(tile == null) tile = stoneTile;
         tile.render(g, x, y);
