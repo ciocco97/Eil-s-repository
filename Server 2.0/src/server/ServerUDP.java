@@ -5,7 +5,8 @@ import java.net.*;
 
 public class ServerUDP extends Thread{
     boolean play;
-    private DatagramSocket socket;
+    private DatagramSocket socket1;
+    private DatagramSocket socket2;
     private InetAddress ia1;
     private InetAddress ia2;
     
@@ -17,7 +18,8 @@ public class ServerUDP extends Thread{
         this.ia1 = ia1;
         this.ia2 = ia2;
         try {
-            socket = new DatagramSocket();
+            socket1 = new DatagramSocket();
+            socket2 = new DatagramSocket();
         } catch (SocketException ex) { 
             System.out.println("Errore creazione serverUDP\n" + ex.getMessage()); 
         }
@@ -35,8 +37,8 @@ public class ServerUDP extends Thread{
             byte[] dataBytes = data.getBytes();
             DatagramPacket packet = new DatagramPacket(dataBytes, dataBytes.length, ia1, UDPORT);
             DatagramPacket packet2 = new DatagramPacket(dataBytes, dataBytes.length, ia2, UDPORT);
-            socket.send(packet);
-            socket.send(packet2);
+            socket1.send(packet);
+            socket2.send(packet2);
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
