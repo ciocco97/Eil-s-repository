@@ -22,7 +22,7 @@ public class World {
     // Stacco tra gli omini propri e quelli avversari
     private final int DELTA_OMINI = 100;
     
-    private boolean path, attack;
+    private boolean path, groundAttack, flyAttack;
     
     /**
      * Una matrice di ID che indicano come sono disposti i "Tile" all'interno 
@@ -104,7 +104,7 @@ public class World {
         int y = handeler.getMouseManager().getyTile();
         String worldID = "" + world[x][y];
         Coordinate coordinate = new Coordinate(x, y);
-        if(attack || handeler.getKeyManager().attack) {
+        if(groundAttack || handeler.getKeyManager().attack) {
         // Caso in cui si è fuori dalla mappa
         } else if(x < 0 || y < 0 || x >= width || y >= height) {
             // Sbagliato
@@ -132,7 +132,7 @@ public class World {
                 }
                 
             } else if(Tile.isSolid(worldID)) {
-                System.out.println("Sbagliato perché è solido");
+//                System.out.println("Sbagliato perché è solido");
                 // Sbagliato
                 resetSelection();
             // Caso in cui il tile premuto sia erba o terra
@@ -175,7 +175,7 @@ public class World {
             if((worldID).charAt(0)==Tile.TEAM 
                     && (worldID).length() == Tile.CHARAPTER_ID_SIZE) {
                 // Se si stava già tracciando un attacco e si seleziona un charapter
-                if(attack) {
+                if(groundAttack) {
                     // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
                     if(attackSteps.size() != 1) {
                         resetAttack();
@@ -183,7 +183,7 @@ public class World {
                 // Unico caso in cui si può iniziare a tracciare un percorso
                 } else {
                     // Giusto: inizio
-                    attack = true;
+                    groundAttack = true;
                     selections[x][y] = Tile.ATTACK;
                     if(attackSteps.isEmpty()) {
                         attackSteps.add(new Coordinate(x, y));
@@ -203,7 +203,7 @@ public class World {
                 resetAttack();
             // Caso in cui il tile premuto sia erba o terra
             } else {
-                if(!attack) {
+                if(!groundAttack) {
                     // Sbagliato
                     resetAttack();
                 } else {
@@ -213,7 +213,7 @@ public class World {
                         attackSteps.add(new Coordinate(x, y));
                 }
             }
-        } else if(attack) {
+        } else if(groundAttack) {
             // Caso in cui si vuole fermare il giocatore all'attacco
             if(attackSteps.size() == 1)
                 sendAttack();
@@ -233,7 +233,7 @@ public class World {
     }
     
     private void resetAttack() {
-        attack = false;
+        groundAttack = false;
         selections = new int[width][height];
         attackSteps = new ArrayList<>();
     }
