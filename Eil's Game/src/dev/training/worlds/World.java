@@ -127,7 +127,7 @@ public class World {
                     }
                 }
                 
-            } else if(false) {
+            } else if(Tile.tiles[world[x][y]].isSolid()) {
                 
                 // Sbagliato
                 resetSelection();

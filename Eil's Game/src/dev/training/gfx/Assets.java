@@ -13,9 +13,11 @@ public class Assets {
     
     // Bg sta per backGround
     public static BufferedImage dirt, grass, stone, selected, attack, alliesBg, opponentsBg;
-    public static BufferedImage chapter_soldier100, chapter_soldier50, chapter_soldier10, 
-            chapter_archer100, chapter_archer50, chapter_archer10,
-            chapter_king100, chapter_king50, chapter_king10;
+    public static BufferedImage soldier100, soldier50, soldier10, 
+                                archer100, archer50, archer10,
+                                king100, king50, king10,
+                                soldier100_attack, soldier50_attack, soldier10_attack,
+                                archer100_attack, archer50_attack, archer10_attack;
     
     public static void init() {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sprite.png"));
@@ -28,13 +30,22 @@ public class Assets {
         dirt = sheet.crop(60, 0, 20, 20);
         stone = sheet.crop(80, 0, 20, 20);
         
-        chapter_soldier100 = sheet.crop(0, 29, 350, 350);
-        chapter_soldier50 = sheet.crop(351, 29, 350, 350);
-        chapter_soldier10 = sheet.crop(702, 29, 350, 350);
-        chapter_archer100 = sheet.crop(0, 380, 350, 350);
-        chapter_archer50 = sheet.crop(351, 380, 350, 350);
-        chapter_archer10 = sheet.crop(702, 380, 350, 350);
-        chapter_king100 = chapter_king50 = chapter_king10 = sheet.crop(0, 731, 350, 350);
+        soldier100 = sheet.crop(0, 29, 350, 350);
+        soldier50 = sheet.crop(351, 29, 350, 350);
+        soldier10 = sheet.crop(702, 29, 350, 350);
+        archer100 = sheet.crop(0, 380, 350, 350);
+        archer50 = sheet.crop(351, 380, 350, 350);
+        archer10 = sheet.crop(702, 380, 350, 350);
+        king100 = king50 = king10 = sheet.crop(0, 731, 350, 350);
+        
+        soldier100_attack = sheet.crop(1053,29,350,350);
+        soldier50_attack = sheet.crop(1404,29,350,350);
+        soldier10_attack = sheet.crop(1755, 29, 350, 350);
+        
+        archer100_attack = sheet.crop(1053,380,350,350);
+        archer50_attack = sheet.crop(1404,380,350,350);
+        archer10_attack = sheet.crop(1755,380,350,350);
+        
         
     }
 }
