@@ -12,26 +12,16 @@ import server.Game;
 
 public class Utils {
     
-    private static final int GUERIERO_FULL_1 = 30;
-    private static final int GUERIERO_HALF_1 = 31;
-    private static final int GUERIERO_LOW_1 = 32;
-    private static final int ARCERE_FULL_1 = 33;
-    private static final int ARCERE_HALF_1 = 34;
-    private static final int ARCERE_LOW_1 = 35;
-    private static final int KING_FULL_1 = 90;
-    private static final int KING_HALF_1 = 91;
-    private static final int KING_LOW_1 = 92;
+    private static final String SOLDIER_ID = "0";
+    private static final String ARCHER_ID = "1";
+    private static final String KING_ID = "2";
+  
+    private static final String FULL_HEALTH = "0";
+    private static final String HALF_HEALTH = "1";
+    private static final String LOW_HEALTH = "2";
     
-    
-    private static final int GUERIERO_FULL_2 = 101;
-    private static final int GUERIERO_HALF_2 = 102;
-    private static final int GUERIERO_LOW_2 = 103;
-    private static final int ARCERE_FULL_2 = 110;
-    private static final int ARCERE_HALF_2 = 111;
-    private static final int ARCERE_LOW_2 = 112;
-    private static final int KING_FULL_2 = 190;
-    private static final int KING_HALF_2 = 191;
-    private static final int KING_LOW_2 = 192;
+    private static final String ON_ATTACK = "1";
+    private static final String NOT_ON_ATTACK = "0";
     
     
     public static String loadFileAsStrig(String path) {
@@ -109,68 +99,26 @@ public class Utils {
     
     public static int getIdFromCharapter(Charapter charapter, int upperBound)
     {
+        String data = "";
         //fa parte del primo team
         if (charapter.getId() <=upperBound)
-        {
-            //gueriero
-            if (charapter.getType() == 1){
-                if (charapter.getHealth() > 50)
-                    return GUERIERO_FULL_1;
-                else if (charapter.getHealth() > 25)
-                    return GUERIERO_HALF_1;
-                else
-                    return GUERIERO_LOW_1;
-            }
-            else if (charapter.getType() == 2)
-            {
-                if (charapter.getHealth() > 50)
-                    return ARCERE_FULL_1;
-                else if (charapter.getHealth() > 25)
-                    return ARCERE_HALF_1;
-                else
-                    return ARCERE_LOW_1;
-            }
-            else if (charapter.getType() == 3)
-            {
-                if (charapter.getHealth() > 50)
-                    return KING_FULL_1;
-                else if (charapter.getHealth() > 25)
-                    return KING_HALF_1;
-                else
-                    return KING_LOW_1;
-            }
-        }
-        //fa parte del secondo team
+            data+="1";
         else
-        {
-            if (charapter.getType() == 1){
-                if (charapter.getHealth() > 50)
-                    return GUERIERO_FULL_2;
-                else if (charapter.getHealth() > 25)
-                    return GUERIERO_HALF_2;
-                else
-                    return GUERIERO_LOW_2;
-            }
-            else if (charapter.getType() == 2)
-            {
-                if (charapter.getHealth() > 50)
-                    return ARCERE_FULL_2;
-                else if (charapter.getHealth() > 25)
-                    return ARCERE_HALF_2;
-                else
-                    return ARCERE_LOW_2;
-            }
-            else if (charapter.getType() == 3)
-            {
-                if (charapter.getHealth() > 50)
-                    return KING_FULL_2;
-                else if (charapter.getHealth() > 25)
-                    return KING_HALF_2;
-                else
-                    return KING_LOW_2;
-            }
-        }
-        return 0;
-    }
+            data+="2";
+        
+        data+=charapter.getType();
+        if (charapter.getHealth() > 50)
+            data+=FULL_HEALTH;
+        else if (charapter.getHealth() > 25)
+            data+=HALF_HEALTH;
+        else
+            data+=LOW_HEALTH;
+        if (charapter.isShooting())
+            data+=ON_ATTACK;
+        else
+            data+=NOT_ON_ATTACK;
+        return Utils.parseInt(data);
+    } 
+       
     
 }

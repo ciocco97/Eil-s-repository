@@ -13,7 +13,7 @@ import java.util.Random;
  * @author Alessandro
  */
 public class King extends Charapter{
-    
+    private static final String KING_ID = "3";
     Random rand;
     
     public King(int owner, int id, Coordinate coord) {
@@ -25,9 +25,9 @@ public class King extends Charapter{
     }
     
     @Override
-    public int getType()
+    public String getType()
     {
-        return 3;
+        return KING_ID;
     }
     
 }

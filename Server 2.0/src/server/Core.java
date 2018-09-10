@@ -21,10 +21,9 @@ public class Core extends Thread{
     private int width, height;
     private ServerTCP player1, player2;
     
-    private final String lowerBound1 = "30";
-    private final String upperBound1 = "100";
-    private final String lowerBound2 = "101";
-    private final String upperBound2 = "200";
+    private final String BLUE_TEAM_ID = "1";
+    private final String RED_TEAM_ID = "2";
+    
     
     
     public Core(Socket client1, Socket client2)
@@ -41,11 +40,9 @@ public class Core extends Thread{
     private void initConnections()
     {
         //invio al giocatore 1 i suoi player bounds
-        player1.sendString(lowerBound1);
-        player1.sendString(upperBound1);
-        // lo stesso per il giocatore 2
-        player2.sendString(lowerBound2);
-        player2.sendString(upperBound2);
+        player1.sendString(BLUE_TEAM_ID);
+        player2.sendString(RED_TEAM_ID);
+   
         //invio ad entrambi le dimensioni della mappa
         player1.sendString(""+this.width);
         player1.sendString(""+this.height);
@@ -90,7 +87,7 @@ public class Core extends Thread{
                 delta--;
             }
             //esegue questa operazione ogni mezzo secondo
-            if(timer >= 300000000) {
+            if(timer >= 200000000) {
                 //prendo le mosse dal server TCP
                 String move1, move2;
                 move1 = player1.getBuffer();

@@ -11,8 +11,7 @@ public class Server extends Thread{
     private ServerSocket server;
     private boolean running, firstTime;
     private int width, height;
-    private Game game;
-    
+    private Core core;
 
     private static InetAddress ia1;
     private static InetAddress ia2;
@@ -25,6 +24,8 @@ public class Server extends Thread{
      * 
      */
     public Server() {
+        
+        
         try { server = new ServerSocket(PORT); 
             System.out.println("---EIL'S GAME SERVER, VERSION 2.0--- ");
         
@@ -53,7 +54,7 @@ public class Server extends Thread{
                 System.out.println("Attesa giocatore 2");
                 Socket client2 = server.accept();
                 System.out.println("Giocatore 2 connesso con indirizzo IP:" + client2.getInetAddress());
-                Core core = new Core(client, client2);
+                core = new Core(client, client2);
                 core.start();
                 System.out.println("Partita creata, ritorno in attesa di giocatori");
             } catch (IOException ex) {

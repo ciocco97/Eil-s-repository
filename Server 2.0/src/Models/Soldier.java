@@ -14,6 +14,8 @@ import java.util.Random;
  */
 public class Soldier extends Charapter{
     
+    private static final String SOLDIER_ID = "1";
+    
     public Soldier(int owner, int id,Coordinate coord) {
         // l'arcere ha basse statistiche, ma attacca da lontano suvvia
         super(owner, id, coord);
@@ -24,10 +26,10 @@ public class Soldier extends Charapter{
         this.speed = 1;
     }
     @Override
-    public int getType()
+    public String getType()
     {
         //ritorna il fatto di essere un gueriero
-        return 1;
+        return SOLDIER_ID;
     }
     
 }

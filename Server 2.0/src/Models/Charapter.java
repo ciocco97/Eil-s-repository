@@ -45,10 +45,10 @@ public class Charapter {
         int damage = (this.strength * 10) / (charapter.defence * 2);
         charapter.health -= damage;
     }
-    public int getType()
+    public String getType()
     {
         //ritorna il tipo di personaggio, 0 è personaggio generico, non istanziato
-        return 0;
+        return "0";
     }
 
     public Coordinate getCoordinate() {
@@ -104,6 +104,8 @@ public class Charapter {
     public void setDirection(int direction) {
         this.direction = direction;
     }
+    
+   
     
     
     

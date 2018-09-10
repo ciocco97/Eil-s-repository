@@ -7,8 +7,4 @@ public class SelectedTile extends Tile {
         super(Assets.selected, id);
     }
     
-    @Override
-    public boolean isSolid() {
-        return true;
-    }
 }

@@ -13,7 +13,7 @@ import java.util.Random;
  * @author Alessandro
  */
 public class Archer extends Charapter{
-    
+    private static final String ARCHER_ID = "2";
     Random rand;
     
     public Archer(int owner, int id, Coordinate coord) {
@@ -27,10 +27,9 @@ public class Archer extends Charapter{
         
     }
      @Override
-    public int getType()
+    public String getType()
     {
-        //ritorna il fatto di essere un arcere
-        return 2;
+       return ARCHER_ID;
     }
     
     public Arrow throwArrow(int direction)

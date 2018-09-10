@@ -116,7 +116,7 @@ public class Game implements Runnable{
         
         
         // Creazione mondo
-        gameState.createWorld(client.getWidth(), client.getHeight(), client.getLowerBound(), client.getUpperBound());
+        gameState.createWorld(client.getWidth(), client.getHeight());
     }
     
     private void update() {

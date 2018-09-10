@@ -64,7 +64,6 @@ public class Game {
             Random rand = new Random();
             int king1ID = rand.nextInt(maxTeamID);
             int king2ID = rand.nextInt(maxTeamID) + maxTeamID;
-            System.out.println(king1ID + "-" + king2ID);
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
@@ -131,6 +130,7 @@ public class Game {
             int y=charap.getCoordinate().getY();
             int ID = Utils.getIdFromCharapter(charap, maxTeamID);
             map[x][y] = ID;
+            
         }
         if (deltaTime < TIME_OF_GAME_SETUP) // tempo in secondi
             for (int i = 0; i<height; i++)
@@ -171,7 +171,7 @@ public class Game {
             Coordinate coord = new Coordinate(x,y);
             int ID = getIDFromCoordinate(coord)[0];
             for (Charapter charap:charapters)
-                if (charap.getId() == ID && charap.getType() == 2)
+                if (charap.getId() == ID && Utils.parseInt(charap.getType()) == 2)
                 {
                     charap.setShooting(true);
                     charap.setDirection(direction);
@@ -186,7 +186,7 @@ public class Game {
             if(charap.getCoordinate().equals(coord))
             {
                 data[0]=charap.getId();
-                data[1]=charap.getType();
+                data[1]=Utils.parseInt(charap.getType());
             }
         return data;
     } 
@@ -239,7 +239,7 @@ public class Game {
     private void shoot()
     {
         for(Charapter charap:charapters)
-            if (charap.getType()==2 && charap.isShooting())
+            if (Utils.parseInt(charap.getType())==2 && charap.isShooting())
                 arrows.add(charap.throwArrow(charap.getDirection()));
     }
 }

@@ -16,9 +16,8 @@ public class GameState extends State{
     }
     
     @Override
-    public void createWorld(int width, int height, int lowerBound, int upperBound) {
+    public void createWorld(int width, int height) {
         world = new World(handeler, width, height);
-        world.setCharaptersBounds(lowerBound, upperBound);
     }
 
     @Override

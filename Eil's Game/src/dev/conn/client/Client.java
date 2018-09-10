@@ -3,6 +3,7 @@ package dev.conn.client;
 import dev.training.Game;
 import dev.training.Handeler;
 import dev.training.Utils;
+import dev.training.tiles.Tile;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ public class Client extends Thread {
      * lower and upper bound servono per capire che omini visualizzare come "propri"
      * width e height sono rappresentano le dimensioni della matrice dei tile
      */
-    private int lowerBound, upperBound, width, height;
+    private int  width, height;
+    private String team;
     
     // Elementi della connessione
     private PrintStream printOut;
@@ -57,19 +59,18 @@ public class Client extends Thread {
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-            primaApertura();
+            firstSetup();
         } catch (IOException|ClassNotFoundException ex) {
             System.out.println(ex.getMessage());
         }
     }
     
-    private void primaApertura() throws IOException, ClassNotFoundException {
-        
-        lowerBound = Utils.parseInt(in.readUTF());
-        upperBound = Utils.parseInt(in.readUTF());
+    private void firstSetup() throws IOException, ClassNotFoundException {
+        team = in.readUTF();
+        System.out.println("team dal server:"+team);
+        Tile.TEAM=team.charAt(0);
         width = Utils.parseInt(in.readUTF());
         height = Utils.parseInt(in.readUTF());
-        System.out.println("Range di omini: " + lowerBound + " - " + upperBound);
         System.out.println("Dimensioni griglia mondo: " + width + " - " + height);
         
     }
@@ -85,11 +86,11 @@ public class Client extends Thread {
     }
     
     public void setHandeler(Handeler handeler) { this.handeler = handeler; }
+
+    public String getTeam() {
+        return team;
+    }
     
-    public int getLowerBound() { return lowerBound; }
-
-    public int getUpperBound() { return upperBound; }
-
     public int getWidth() { return width; }
 
     public int getHeight() { return height; }
