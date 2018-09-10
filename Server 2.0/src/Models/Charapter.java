@@ -43,7 +43,7 @@ public class Charapter {
     
     public void attack(Charapter charapter)
     {
-        float damage = (this.strength * 10) / (charapter.defence * 2);
+        float damage = (this.strength * 10) / (charapter.defence);
         charapter.health -= damage;
     }
     public String getType()
@@ -84,7 +84,6 @@ public class Charapter {
     public boolean hit(Arrow arrow)
     {
         this.health -= (arrow.getPower() * 10)/(this.defence * 2);
-        System.out.println(health);
         if (this.health < 0)
             return true;
         return false;

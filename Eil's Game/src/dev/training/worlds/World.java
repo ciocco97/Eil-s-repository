@@ -18,6 +18,8 @@ public class World {
      * spawnX e spawnY sono sempre 0
      */
     private int width, height, spawnX, spawnY;
+    
+    private String actionGroundAttack = "a", actionCharapterMoovement = "m";
 
     // Stacco tra gli omini propri e quelli avversari
     private final int DELTA_OMINI = 100;
@@ -106,7 +108,7 @@ public class World {
         try {
             worldID = "" + world[x][y];
         }catch(Exception e) {
-            System.err.println("Errore nella selezione delle mamme");
+            
         }
         Coordinate coordinate = new Coordinate(x, y);
         if(groundAttack || handeler.getKeyManager().attack) {
@@ -172,7 +174,7 @@ public class World {
         try {
             worldID = "" + world[x][y];
         }catch(Exception e) {
-            System.err.println("Errore nella selezione delle mamme");
+            ;
         }
         
         Coordinate coordinate = new Coordinate(x, y);
@@ -205,10 +207,10 @@ public class World {
              */
             } else if(Tile.isSolid(worldID)) {
                 // Giusto: invia
-                if((worldID).charAt(0) == Tile.TEAM 
+                if((worldID).charAt(0) != Tile.TEAM 
                         && (worldID).length() == Tile.CHARAPTER_ID_SIZE)
                     if(!attackSteps.isEmpty())
-                        sendAttack();
+                        sendGroundAttack();
                 // Sbagliato
                 resetAttack();
             // Caso in cui il tile premuto sia erba o terra
@@ -226,7 +228,7 @@ public class World {
         } else if(groundAttack) {
             // Caso in cui si vuole fermare il giocatore all'attacco
             if(attackSteps.size() == 1)
-                sendAttack();
+                sendGroundAttack();
             // Sbagliato
             else
                 resetAttack();
@@ -253,12 +255,13 @@ public class World {
      */
     private void sendPath() {
         System.out.println("Invio path: " + pathSteps.toString());
-        handeler.getGame().getClient().inviaPath(pathSteps);
+        handeler.getGame().getClient().inviaPath(pathSteps, actionCharapterMoovement);
         resetSelection();
     }
     
-    private void sendAttack() {
+    private void sendGroundAttack() {
         System.out.println("Invio attack: " + attackSteps.toString());
+        handeler.getGame().getClient().inviaPath(attackSteps, actionGroundAttack);
         resetAttack();
     }
     

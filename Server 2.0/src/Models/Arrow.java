@@ -62,7 +62,6 @@ public class Arrow {
             case 7: coordinate.setY(coordinate.getX()-1);break;
             case 8: coordinate.setY(coordinate.getY()-1); coordinate.setX(coordinate.getX()-1);break;
         }
-        System.out.println(this.getCoordinate().getX());
     }
 
     public int getOwner() {

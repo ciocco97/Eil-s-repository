@@ -75,11 +75,11 @@ public class Client extends Thread {
         
     }
     
-    public void inviaPath(ArrayList pathSteps) {
+    public void inviaPath(ArrayList pathSteps, String action) {
         try {
-            out.writeUTF(pathSteps.toString());
+            out.writeUTF(action + pathSteps.toString());
             out.flush();
-            System.out.println("Inviato");
+            System.out.println(action + pathSteps.toString());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }

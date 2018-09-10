@@ -76,25 +76,15 @@ public class Utils {
      */
     public static Object getDataFromString(String buffer)
     {   //se è una lista 
-        if (buffer.startsWith("["))
-        {
-            ArrayList list = new ArrayList<Coordinate>();
-            //tolgo le parentesi quadre dai buffer
-            buffer = buffer.substring(1, buffer.length()-1);
-            buffer = " " + buffer;
-            //spezzo nei vari componenti che sono divisi da virgole
-            String[] splits = buffer.split(",");
-            for (String couple : splits)
-            {   //spezzo le coordinate divise da spazi
-                String[] integers = couple.split(" ");
-                int x = Integer.parseInt(integers[1]);
-                int y = Integer.parseInt(integers[2]);
-                list.add(new Coordinate(x,y));    
-            }
-            return list;
         
+        ArrayList list = decodeMovement(buffer.substring(1));
+        if (buffer.startsWith("a"))
+            list.add(new Coordinate(-2,0)); //uso l'ultima coordinata per riconoscere il tipo di movimento, o di attacco o di spostamento
+        else if (buffer.startsWith("m")){
+            list.add(new Coordinate(-1,0));
+
         }
-        return buffer;
+        return list;
     }
     
     public static int getIdFromCharapter(Charapter charapter, int upperBound)
@@ -119,6 +109,24 @@ public class Utils {
             data+=NOT_ON_ATTACK;
         return Utils.parseInt(data);
     } 
+    private static ArrayList<Coordinate> decodeMovement(String data)
+    {
+            ArrayList list = new ArrayList<Coordinate>();
+            //tolgo le parentesi quadre dai buffer
+            data = data.substring(1, data.length()-1);
+            data = " " + data;
+            //spezzo nei vari componenti che sono divisi da virgole
+            String[] splits = data.split(",");
+            for (String couple : splits)
+            {   //spezzo le coordinate divise da spazi
+                String[] integers = couple.split(" ");
+                int x = Integer.parseInt(integers[1]);
+                int y = Integer.parseInt(integers[2]);
+                list.add(new Coordinate(x,y));    
+            }
+            return list;
+        
+    }
        
     
 }
