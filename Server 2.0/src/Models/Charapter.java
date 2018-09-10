@@ -12,7 +12,8 @@ import Utils.Coordinate;
  * @author aless
  */
 public class Charapter {
-    protected int owner, id, health, strength, defence, speed, direction;
+    protected float health, strength, defence;
+    protected int owner, direction, speed, id;
     protected Coordinate coordinate;
     protected boolean shooting;
 
@@ -21,15 +22,15 @@ public class Charapter {
         return id;
     }
 
-    public int getHealth() {
+    public float getHealth() {
         return health;
     }
 
-    public int getStrength() {
+    public float getStrength() {
         return strength;
     }
 
-    public int getDefence() {
+    public float getDefence() {
         return defence;
     }
     public Charapter(int owner, int id, Coordinate coord)
@@ -42,7 +43,7 @@ public class Charapter {
     
     public void attack(Charapter charapter)
     {
-        int damage = (this.strength * 10) / (charapter.defence * 2);
+        float damage = (this.strength * 10) / (charapter.defence * 2);
         charapter.health -= damage;
     }
     public String getType()
@@ -82,8 +83,8 @@ public class Charapter {
     }
     public boolean hit(Arrow arrow)
     {
-        if (arrow.getOwner() != this.owner)
-            this.health -= (arrow.getPower() / this.defence);
+        this.health -= (arrow.getPower() * 10)/(this.defence * 2);
+        System.out.println(health);
         if (this.health < 0)
             return true;
         return false;

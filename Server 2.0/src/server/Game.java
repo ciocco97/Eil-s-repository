@@ -18,12 +18,13 @@ import java.util.Random;
 public class Game {
     
     private int width, height;
-    private int[][] world;
+    private int[][] world, ground;
     private LinkedList<Charapter> charapters;
     private ArrayList<Move> moves;
     private LinkedList<Arrow> arrows;
     private int maxTeamID;
     private long startTime;
+    private boolean gameTrigger;
     
     public static final int TIME_OF_GAME_SETUP = 30;
     
@@ -33,6 +34,7 @@ public class Game {
         charapters = new LinkedList();
         moves = new ArrayList();
         arrows = new LinkedList();
+        gameTrigger = false;
         
     }
     public void loadWorld(String path) {
@@ -47,8 +49,9 @@ public class Game {
         //spawnY = Utils.parseInt(token[3]);
         startTime = System.currentTimeMillis();
         world = new int[width][height];
+        ground = new int[width][height];
         for(int y = 0; y < height; y++) 
-            for(int x = 0; x < width; x++)
+            for(int x = 0; x < width; x++){
                 /**
                  * Se siamo alla terza riga e quarta colonna significa che 
                  * abbiamo già copiato un numero di elementi pari a: 2 * numero 
@@ -56,6 +59,10 @@ public class Game {
                  * primi 4 elementi di token sono utilizzati per altri scopi.
                  */
                 world[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+                ground[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+            }
+            for (int i = 0; i<height; i++)
+                world[(width/2)][i] = 12;    
         
             token = fileCharapters.split("\\s+");
             width = Utils.parseInt(token[0]);
@@ -77,7 +84,7 @@ public class Game {
                         {
                         if (rand.nextBoolean()){
                             Archer archer = new Archer(owner, ID, new Coordinate(x,y));
-                            archer.setDirection(3);
+                            archer.setDirection(4);
                             archer.setShooting(true);
                             charapters.add(archer);
                         }
@@ -98,21 +105,31 @@ public class Game {
     
     public void update(int tick)
     {
+        
+        long deltaTime = (System.currentTimeMillis() - startTime) / 1000;
+        if (deltaTime > TIME_OF_GAME_SETUP && !gameTrigger){ // tempo in secondi
+            for (int i = 0; i<height; i++)
+                world[(width/2)][i] = ground[(width/2)][i];
+                gameTrigger = true;
+                System.out.println("cambiato il mondo");
+        }
         if (tick==1)
-            {moveCharapter(new int[]{2,0,0}); shoot();
-              for (Arrow arrow:arrows)
-            arrow.tick();       checkArrows();}
+            {moveCharapter(new int[]{2,0,0});
+                     }
         else if (tick==3)
             {moveCharapter(new int[]{2,1,0}); shoot();}
         else if (tick==5)
-            {moveCharapter(new int[]{2,0,0}); shoot();}
+            {moveCharapter(new int[]{2,0,0}); }
         else if (tick==7)
             {moveCharapter(new int[]{2,1,3}); shoot();}
+        for (Arrow arrow:arrows)
+            arrow.tick();
+        checkArrows();
     }
     public int[][] getMap()
     {
         int[][] map = new int[width][height];
-        long deltaTime = (System.currentTimeMillis() - startTime) / 1000;
+        
         //riempio con il mondo
         for (int i=0; i<width; i++)
             for (int j=0; j<height; j++){
@@ -133,16 +150,14 @@ public class Game {
             int direction = arrow.getDirection();
             int X = arrow.getCoordinate().getX();
             int Y = arrow.getCoordinate().getY();
-            if (X < 0 || X > this.width || Y < 0 || Y > this.height)
+            if (X < 0 || X >= this.width || Y < 0 || Y >= this.height)
                 break;
             int ground = world[X][Y];
             int ID = ground + (100*direction);
             map[X][Y] = ID;
         
         }
-        if (deltaTime < TIME_OF_GAME_SETUP) // tempo in secondi
-            for (int i = 0; i<height; i++)
-                map[(width/2)][i] = 12; // codice del blocco di pietra, cosi non si passa
+         // codice del blocco di pietra, cosi non si passa
         
         return map;
         
@@ -240,7 +255,7 @@ public class Game {
                 Arrow arrow = arrows.get(i);
                 int x = arrow.getCoordinate().getX();
                 int y = arrow.getCoordinate().getY();
-                if (x < 0 || x > this.width || y < 0 || y > this.height){
+                if (x < 0 || x >= this.width || y < 0 || y >= this.height){
                     arrows.remove(i);
                     remuved = true;
                     break;
@@ -255,8 +270,10 @@ public class Game {
                 {
                     arrows.remove(i);
                     remuved = true;
-                    if (charap.hit(arrow));
+                    if (charap.hit(arrow)){
                         charapters.remove(j);
+                        System.out.println("sommuort");
+                }
                 }
             }
         }

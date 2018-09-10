@@ -102,7 +102,12 @@ public class World {
     private void selection() {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
-        String worldID = "" + world[x][y];
+        String worldID = null;
+        try {
+            worldID = "" + world[x][y];
+        }catch(Exception e) {
+            System.err.println("Errore nella selezione delle mamme");
+        }
         Coordinate coordinate = new Coordinate(x, y);
         if(attack || handeler.getKeyManager().attack) {
         // Caso in cui si è fuori dalla mappa
@@ -163,7 +168,12 @@ public class World {
     private void attack() {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
-        String worldID = "" + world[x][y];
+        String worldID = null;
+        try {
+            worldID = "" + world[x][y];
+        }catch(Exception e) {
+            System.err.println("Errore nella selezione delle mamme");
+        }
         
         Coordinate coordinate = new Coordinate(x, y);
         // Caso in cui si è fuori dalla mappa

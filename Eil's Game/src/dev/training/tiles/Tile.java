@@ -44,7 +44,7 @@ public class Tile {
     
     private static Tile grassTile = new GrassTile(GRASS_TILE);
     private static Tile dirtTile = new DirtTile(DIRT_TILE);
-    private static Tile rockTile = new StoneTile(STONE_TILE);
+    private static Tile stoneTile = new StoneTile(STONE_TILE);
     
     private static Tile selectedTile = new SelectedTile(SELECT);
     private static Tile attackTile = new AttackTile(ATTACK);
@@ -92,6 +92,7 @@ public class Tile {
             int IdentificationNumber = Utils.parseInt(data);
             tile = tiles[IdentificationNumber];
         }
+        if(tile == null) tile = stoneTile;
         tile.render(g, x, y);
     }
     
