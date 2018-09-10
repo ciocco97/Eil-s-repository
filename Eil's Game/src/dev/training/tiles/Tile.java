@@ -15,22 +15,26 @@ public class Tile {
     public static final int GROUNT_ID_SIZE = 2;
     public static final int ARROW_ID_SIZE = 3;
     
+    public static final int TEAM_POSITION = 0;
+    public static final int TIPOLOGY_POSITION = 1;
+    public static final int HEALTH_POSITION = 2;
+    public static final int STATUS_POSITION = 3;
     
     //codifica charapter: cifra0: team, cifra1: tipologia, cifra2: vita, cifra3:status di attacco
-    private static final String SOLDIER_ID = "1";
-    private static final String ARCHER_ID = "2";
-    private static final String KING_ID = "3";
+    public static final String SOLDIER_ID = "1";
+    public static final String ARCHER_ID = "2";
+    public static final String KING_ID = "3";
   
-    private static final String FULL_HEALTH = "0";
-    private static final String HALF_HEALTH = "1";
-    private static final String LOW_HEALTH = "2";
+    public static final String FULL_HEALTH = "0";
+    public static final String HALF_HEALTH = "1";
+    public static final String LOW_HEALTH = "2";
     
-    private static final String ON_ATTACK = "1";
-    private static final String NOT_ON_ATTACK = "0";
+    public static final String ON_ATTACK = "1";
+    public static final String NOT_ON_ATTACK = "0";
     
-    private static final int GRASS_TILE = 10;
-    private static final int DIRT_TILE = 11;
-    private static final int STONE_TILE = 12;
+    public static final int GRASS_TILE = 10;
+    public static final int DIRT_TILE = 11;
+    public static final int STONE_TILE = 12;
     
     
     
@@ -73,7 +77,7 @@ public class Tile {
     
     public static void render(Graphics g, int x, int y, String data) // owner serve per sapere chi sono i cattivi
     {
-        int team = Utils.parseInt(data.charAt(0)+"");
+        int team = Utils.parseInt(data.charAt(TEAM_POSITION)+"");
         Tile tile = null;
         if (data.length() == CHARAPTER_ID_SIZE){ // è un charapter
             if (team == Utils.parseInt(TEAM+""))

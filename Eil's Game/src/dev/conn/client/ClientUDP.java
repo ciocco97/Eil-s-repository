@@ -32,8 +32,11 @@ public class ClientUDP extends Thread{
         DatagramPacket packet = new DatagramPacket(buffer, BUFF_LENGHT);
         while(run) {
             try { 
+                System.out.println("attendo udp");
                 socket.receive(packet);
+                System.out.println("ecco mamme yeeee");
                 map = new String(packet.getData());
+                System.out.println(map);
             } catch (IOException ex) {
                 System.out.println(ex.getMessage());
             } 

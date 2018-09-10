@@ -3,6 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
+            <file>file:/C:/Users/franc/Documents/Università/Secondo%20anno/Programmazione%20avanzata/Progetti%20in%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Launcher.java</file>
+=======
             <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Launcher.java</file>
             <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Utils/Utils.java</file>
             <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Game.java</file>
@@ -11,6 +14,7 @@
             <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Server.java</file>
             <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/ServerTCP.java</file>
             <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Core.java</file>
+>>>>>>> 9d6ce71ce509eb2b8dfc881645c5d30669575240
         </group>
     </open-files>
 </project-private>
