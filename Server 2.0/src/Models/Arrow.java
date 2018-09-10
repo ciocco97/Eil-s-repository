@@ -53,15 +53,17 @@ public class Arrow {
     public void tick()
     {
         switch (direction){
-            case 0: {coordinate.setY(coordinate.getY()-1);}
-            case 1: {coordinate.setY(coordinate.getY()-1); coordinate.setX(coordinate.getX()+1);}
-            case 2: {coordinate.setX(coordinate.getX()+1);}
-            case 3: {coordinate.setY(coordinate.getY()+1); coordinate.setX(coordinate.getX()+1);}
-            case 4: {coordinate.setY(coordinate.getY()+1);}
-            case 5: {coordinate.setY(coordinate.getY()+1); coordinate.setX(coordinate.getX()-1);}
-            case 6: {coordinate.setY(coordinate.getX()-1);}
-            case 7: {coordinate.setY(coordinate.getY()-1); coordinate.setX(coordinate.getX()-1);}
+            case 1: coordinate.setY(coordinate.getY()-1);break;
+            case 2: coordinate.setY(coordinate.getY()-1); coordinate.setX(coordinate.getX()+1);break;
+            case 3: coordinate.setX(coordinate.getX()+1);
+                System.out.println("mamma");break;
+            case 4: coordinate.setY(coordinate.getY()+1); coordinate.setX(coordinate.getX()+1);break;
+            case 5: coordinate.setY(coordinate.getY()+1);break;
+            case 6: coordinate.setY(coordinate.getY()+1); coordinate.setX(coordinate.getX()-1);break;
+            case 7: coordinate.setY(coordinate.getX()-1);break;
+            case 8: coordinate.setY(coordinate.getY()-1); coordinate.setX(coordinate.getX()-1);break;
         }
+        System.out.println(this.getCoordinate().getX());
     }
 
     public int getOwner() {
