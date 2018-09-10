@@ -18,12 +18,13 @@ import java.util.Random;
 public class Game {
     
     private int width, height;
-    private int[][] world;
+    private int[][] world, ground;
     private LinkedList<Charapter> charapters;
     private ArrayList<Move> moves;
     private LinkedList<Arrow> arrows;
     private int maxTeamID;
     private long startTime;
+    private boolean gameTrigger;
     
     public static final int TIME_OF_GAME_SETUP = 30;
     
@@ -33,6 +34,7 @@ public class Game {
         charapters = new LinkedList();
         moves = new ArrayList();
         arrows = new LinkedList();
+        gameTrigger = false;
         
     }
     public void loadWorld(String path) {
@@ -47,8 +49,9 @@ public class Game {
         //spawnY = Utils.parseInt(token[3]);
         startTime = System.currentTimeMillis();
         world = new int[width][height];
+        ground = new int[width][height];
         for(int y = 0; y < height; y++) 
-            for(int x = 0; x < width; x++)
+            for(int x = 0; x < width; x++){
                 /**
                  * Se siamo alla terza riga e quarta colonna significa che 
                  * abbiamo già copiato un numero di elementi pari a: 2 * numero 
@@ -56,6 +59,10 @@ public class Game {
                  * primi 4 elementi di token sono utilizzati per altri scopi.
                  */
                 world[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+                ground[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+            }
+            for (int i = 0; i<height; i++)
+                world[(width/2)][i] = 12;    
         
             token = fileCharapters.split("\\s+");
             width = Utils.parseInt(token[0]);
@@ -68,7 +75,6 @@ public class Game {
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
                     //un if un po strano spero si capisca, in caso è per capire di chi è quel particolare personaggio
-                    System.out.println(ID);
                    
                     int owner = ID<maxTeamID?0:1;
                     if (ID != 0){
@@ -76,8 +82,12 @@ public class Game {
                             charapters.add(new King (owner, ID, new Coordinate(x,y)));
                         else
                         {
-                        if (rand.nextBoolean())
-                            charapters.add(new Archer(owner, ID, new Coordinate(x,y)));
+                        if (rand.nextBoolean()){
+                            Archer archer = new Archer(owner, ID, new Coordinate(x,y));
+                            archer.setDirection(4);
+                            archer.setShooting(true);
+                            charapters.add(archer);
+                        }
                         else
                             charapters.add(new Soldier(owner, ID, new Coordinate(x,y)));
                         }
@@ -95,34 +105,37 @@ public class Game {
     
     public void update(int tick)
     {
-        for (Arrow arrow:arrows)
-            arrow.tick();
-        checkArrows();
+        
+        long deltaTime = (System.currentTimeMillis() - startTime) / 1000;
+        if (deltaTime > TIME_OF_GAME_SETUP && !gameTrigger){ // tempo in secondi
+            for (int i = 0; i<height; i++)
+                world[(width/2)][i] = ground[(width/2)][i];
+                gameTrigger = true;
+                System.out.println("cambiato il mondo");
+        }
         if (tick==1)
-            {moveCharapter(new int[]{2,0,0}); shoot();}
+            {moveCharapter(new int[]{2,0,0});
+                     }
         else if (tick==3)
             {moveCharapter(new int[]{2,1,0}); shoot();}
         else if (tick==5)
-            {moveCharapter(new int[]{2,0,0}); shoot();}
+            {moveCharapter(new int[]{2,0,0}); }
         else if (tick==7)
             {moveCharapter(new int[]{2,1,3}); shoot();}
-                
-            
-                
-            
-        
+        for (Arrow arrow:arrows)
+            arrow.tick();
+        checkArrows();
     }
     public int[][] getMap()
     {
         int[][] map = new int[width][height];
-        long deltaTime = (System.currentTimeMillis() - startTime) / 1000;
+        
         //riempio con il mondo
         for (int i=0; i<width; i++)
             for (int j=0; j<height; j++){
                 map[i][j] = world[i][j];
                 
             }
-        
         //inserisco gli ID dei vari personaggi
         for (Charapter charap:charapters)
         {
@@ -132,11 +145,20 @@ public class Game {
             map[x][y] = ID;
             
         }
-        if (deltaTime < TIME_OF_GAME_SETUP) // tempo in secondi
-            for (int i = 0; i<height; i++)
-                map[(width/2)][i] = 12; // codice del blocco di pietra, cosi non si passa
+        for (Arrow arrow:arrows)
+        {
+            int direction = arrow.getDirection();
+            int X = arrow.getCoordinate().getX();
+            int Y = arrow.getCoordinate().getY();
+            if (X < 0 || X >= this.width || Y < 0 || Y >= this.height)
+                break;
+            int ground = world[X][Y];
+            int ID = ground + (100*direction);
+            map[X][Y] = ID;
         
-        System.out.println(deltaTime);
+        }
+         // codice del blocco di pietra, cosi non si passa
+        
         return map;
         
     }
@@ -223,18 +245,38 @@ public class Game {
     
     private void checkArrows()
     {
+        boolean remuved = false;
         for (int i = 0; i < arrows.size(); i++)
-            for (int j = 0; j<charapters.size(); j++)
+        {
+            remuved = false;
+            for (int j = 0; j<charapters.size() && !remuved; j++)
             {
                 Charapter charap = charapters.get(j);
                 Arrow arrow = arrows.get(i);
+                int x = arrow.getCoordinate().getX();
+                int y = arrow.getCoordinate().getY();
+                if (x < 0 || x >= this.width || y < 0 || y >= this.height){
+                    arrows.remove(i);
+                    remuved = true;
+                    break;
+                }
+                int ground = world[x][y];
+                if (ground == 12){
+                    arrows.remove(i);
+                    remuved = true;
+                    break;
+                }
                 if (charap.getCoordinate().equals(arrow.getCoordinate()))
                 {
                     arrows.remove(i);
-                    if (charap.hit(arrow));
+                    remuved = true;
+                    if (charap.hit(arrow)){
                         charapters.remove(j);
+                        System.out.println("sommuort");
+                }
                 }
             }
+        }
     }
     private void shoot()
     {

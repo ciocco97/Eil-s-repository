@@ -34,7 +34,7 @@ public class Archer extends Charapter{
     
     public Arrow throwArrow(int direction)
     {
-        int power = this.strength - rand.nextInt(8);
+        float power = this.strength - rand.nextInt(8);
         Arrow arrow = new Arrow (direction, power, owner,  new Coordinate(coordinate.getX(), coordinate.getY()));
         return arrow;
     }

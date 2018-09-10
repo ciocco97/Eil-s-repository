@@ -64,11 +64,9 @@ public class Core extends Thread{
         
         int fps = 5;
         double timePerUpdate = 1000000000 / fps;
-        double delta = 0;
         long now;
         long lastTime = System.nanoTime();
         long timer = 0;
-        int update = 0;
         int tick = 0;
         
         
@@ -79,15 +77,10 @@ public class Core extends Thread{
             
             //inizializziamo il timer per ottenere un tick di mezzo secondo
             now = System.nanoTime();
-            delta += (now - lastTime) / timePerUpdate;
             timer += now - lastTime;
             lastTime = now;
-            if(delta >= 1) {
-                update++;
-                delta--;
-            }
             //esegue questa operazione ogni mezzo secondo
-            if(timer >= 200000000) {
+            if(timer >= 280000000) {
                 //prendo le mosse dal server TCP
                 String move1, move2;
                 move1 = player1.getBuffer();
@@ -130,7 +123,6 @@ public class Core extends Thread{
                 game.update(tick);
                 String map = Utils.mapToString(game);
                 serverUDP.send(map);
-                update = 0;
                 timer = 0;
                 tick = (tick+1)%8;
             }
