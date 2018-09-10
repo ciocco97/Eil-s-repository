@@ -65,7 +65,8 @@ public class World {
         reciveWorld();
         if (world!=null){
             selection();
-            attack();}
+            attack();
+        }
         
     }
     
@@ -101,8 +102,9 @@ public class World {
     private void selection() {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
+        String worldID = "" + world[x][y];
         Coordinate coordinate = new Coordinate(x, y);
-        if(attack) {
+        if(attack || handeler.getKeyManager().attack) {
         // Caso in cui si è fuori dalla mappa
         } else if(x < 0 || y < 0 || x >= width || y >= height) {
             // Sbagliato
@@ -110,7 +112,8 @@ public class World {
         // Casi in cui è stato premuto il mouse
         } else if(handeler.getMouseManager().isPressed) {
             // Caso in cui il tile su cui si è è un charapter selezionabile
-            if((""+world[x][y]).charAt(0)==Tile.TEAM) {
+            if((worldID).charAt(0) == Tile.TEAM 
+                    && (worldID).length() == Tile.CHARAPTER_ID_SIZE) {
                 // Se si stava già tracciando un percorso e si seleziona un charapter
                 if(path) {
                     // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
@@ -123,24 +126,28 @@ public class World {
                     path = true;
                     selections[x][y] = Tile.SELECT;
                     if(pathSteps.isEmpty()) {
+//                        System.out.println("Inizio selezione");
                         pathSteps.add(new Coordinate(x, y));
                     }
                 }
                 
-            } else if(Tile.tiles[world[x][y]].isSolid()) {
-                
+            } else if(Tile.isSolid(worldID)) {
+                System.out.println("Sbagliato perché è solido");
                 // Sbagliato
                 resetSelection();
             // Caso in cui il tile premuto sia erba o terra
             } else {
                 if(!path) {
                     // Sbagliato
+//                    System.out.println("Premuto-selezione non iniziata");
                     resetSelection();
                 } else {
                     // Giusto:  continua
+//                    System.out.println("Premuto-path-grass");
                     selections[x][y] = Tile.SELECT;
-                    if(!pathSteps.get(pathSteps.size() - 1).equal(coordinate))
+                    if(!pathSteps.get(pathSteps.size() - 1).equal(coordinate)) {
                         pathSteps.add(new Coordinate(x, y));
+                    }
                 }
             }
         } else if(path) {
@@ -156,6 +163,7 @@ public class World {
     private void attack() {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
+        String worldID = "" + world[x][y];
         
         Coordinate coordinate = new Coordinate(x, y);
         // Caso in cui si è fuori dalla mappa
@@ -164,7 +172,8 @@ public class World {
         // Casi in cui è stato premuto il mouse
         } else if(handeler.getMouseManager().isPressed && handeler.getKeyManager().attack) {
             // Caso in cui il tile su cui si è è un charapter selezionabile
-            if((""+world[x][y]).charAt(0)==Tile.TEAM) {
+            if((worldID).charAt(0)==Tile.TEAM 
+                    && (worldID).length() == Tile.CHARAPTER_ID_SIZE) {
                 // Se si stava già tracciando un attacco e si seleziona un charapter
                 if(attack) {
                     // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
@@ -184,9 +193,10 @@ public class World {
              * Caso in cui il tile selezionato può essere sia roccia che un 
              * giocatore alleato che un giocatore avversario
              */
-            } else if(Tile.tiles[world[x][y]].isSolid()) {
+            } else if(Tile.isSolid(worldID)) {
                 // Giusto: invia
-                if((""+world[x][y]).charAt(0)==Tile.TEAM)
+                if((worldID).charAt(0) == Tile.TEAM 
+                        && (worldID).length() == Tile.CHARAPTER_ID_SIZE)
                     if(!attackSteps.isEmpty())
                         sendAttack();
                 // Sbagliato
@@ -273,16 +283,16 @@ public class World {
          * Se sul tile preso i nconsiderazione bisogna disegnarci sopra 
          * il tile attack
          */
-//        else if (selections[x][y] == Tile.ATTACK)
-//            Tile.tiles[selections[x][y]].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
-//                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
-//        /**
-//         * Se il Tile è quello su cui è presente il mouse bisogna 
-//         * disegnarci sopra il Tile selezione
-//         */
-//        else if(x == handeler.getMouseManager().getxTile() && y == handeler.getMouseManager().getyTile())
-//            Tile.tiles[Tile.SELECT].render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
-//                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()));
+        else if (selections[x][y] == Tile.ATTACK)
+            Tile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()), "" + Tile.ATTACK);
+        /**
+         * Se il Tile è quello su cui è presente il mouse bisogna 
+         * disegnarci sopra il Tile selezione
+         */
+        else if(x == handeler.getMouseManager().getxTile() && y == handeler.getMouseManager().getyTile())
+            Tile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
+                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()), "" + Tile.SELECT);
                 
     }
 

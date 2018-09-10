@@ -11,6 +11,9 @@ public class Tile {
     public static final int TILEWIDTH = 140, TILEHEIGHT = 140;
     public static final int SELECT = 20;
     public static final int ATTACK = 21;
+    public static final int CHARAPTER_ID_SIZE = 4;
+    public static final int GROUNT_ID_SIZE = 2;
+    public static final int ARROW_ID_SIZE = 3;
     
     
     //codifica charapter: cifra0: team, cifra1: tipologia, cifra2: vita, cifra3:status di attacco
@@ -67,11 +70,12 @@ public class Tile {
     private static Tile kingk10 = new Tile(Assets.king10, Utils.parseInt(KING_ID + LOW_HEALTH + NOT_ON_ATTACK));
     
     public static char TEAM;
+    
     public static void render(Graphics g, int x, int y, String data) // owner serve per sapere chi sono i cattivi
     {
         int team = Utils.parseInt(data.charAt(0)+"");
         Tile tile = null;
-        if (data.length()==4){ // è un charapter
+        if (data.length() == CHARAPTER_ID_SIZE){ // è un charapter
             if (team == Utils.parseInt(TEAM+""))
             {
                 tiles[0].render(g, x, y); // stampo la tile degli alleati blu
@@ -89,6 +93,11 @@ public class Tile {
             tile = tiles[IdentificationNumber];
         }
         tile.render(g, x, y);
+    }
+    
+    public static boolean isSolid(String data) {
+        int dataInt = Utils.parseInt(data);
+        return !(dataInt == GRASS_TILE || dataInt == DIRT_TILE || dataInt == SELECT || dataInt == ATTACK);
     }
     
    
@@ -112,11 +121,6 @@ public class Tile {
     
     private void render(Graphics g, int x, int y) {
         g.drawImage(texture, x, y, TILEWIDTH, TILEHEIGHT, null);
-    }
-    
-    public boolean isSolid() {
-        return !(id == GRASS_TILE || id == DIRT_TILE || id==SELECT || id==ATTACK);
-                    
     }
     
     public int getId() {
