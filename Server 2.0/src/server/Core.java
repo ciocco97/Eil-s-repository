@@ -80,7 +80,7 @@ public class Core extends Thread{
             timer += now - lastTime;
             lastTime = now;
             //esegue questa operazione ogni mezzo secondo
-            if(timer >= 50000000) {
+            if(timer >= 150000000) {
                 //prendo le mosse dal server TCP
                 String move1, move2;
                 move1 = player1.getBuffer();
