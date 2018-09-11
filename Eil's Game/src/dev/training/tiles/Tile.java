@@ -45,7 +45,8 @@ public class Tile {
     public static final String LEFT = "7";
     public static final String UP_LEFT = "8";
     
-    
+    public static final int ALLIES_ID = 15;
+    private static final int OPPONENTS_ID = 16;
     
     
        
@@ -53,8 +54,8 @@ public class Tile {
      * Contiene ogni singolo tipo di Tile
      */
     public static Tile[] tiles = new Tile[2400];
-    private static Tile alliesTile = new AlliesTile(0);
-    private static Tile opponentsTile = new OpponentsTile(1);
+    private static Tile alliesTile = new AlliesTile(ALLIES_ID);
+    private static Tile opponentsTile = new OpponentsTile(OPPONENTS_ID);
     
     private static Tile grassTile = new GrassTile(GRASS_TILE);
     private static Tile dirtTile = new DirtTile(DIRT_TILE);
@@ -84,13 +85,13 @@ public class Tile {
     private static Tile kingk10 = new Tile(Assets.king10, Utils.parseInt(KING_ID + LOW_HEALTH + NOT_ON_ATTACK));
     
     private static Tile arrowUp = new Tile(Assets.up, Utils.parseInt(UP));
-    private static Tile arrowUpRight = new Tile(Assets.up, Utils.parseInt(UP_RIGHT));
-    private static Tile arrowRight = new Tile(Assets.up, Utils.parseInt(RIGHT));
-    private static Tile arrowDownRight = new Tile(Assets.up, Utils.parseInt(DOWN_RIGHT));
-    private static Tile arrowDown = new Tile(Assets.up, Utils.parseInt(DOWN));
-    private static Tile arrowDownLeft = new Tile(Assets.up, Utils.parseInt(DOWN_LEFT));
-    private static Tile arrowLeft = new Tile(Assets.up, Utils.parseInt(LEFT));
-    private static Tile arrowUpLeft = new Tile(Assets.up, Utils.parseInt(UP_LEFT));
+    private static Tile arrowUpRight = new Tile(Assets.upRight, Utils.parseInt(UP_RIGHT));
+    private static Tile arrowRight = new Tile(Assets.right, Utils.parseInt(RIGHT));
+    private static Tile arrowDownRight = new Tile(Assets.downRight, Utils.parseInt(DOWN_RIGHT));
+    private static Tile arrowDown = new Tile(Assets.down, Utils.parseInt(DOWN));
+    private static Tile arrowDownLeft = new Tile(Assets.downLeft, Utils.parseInt(DOWN_LEFT));
+    private static Tile arrowLeft = new Tile(Assets.left, Utils.parseInt(LEFT));
+    private static Tile arrowUpLeft = new Tile(Assets.upLeft, Utils.parseInt(UP_LEFT));
     
     public static char TEAM;
     
@@ -101,12 +102,12 @@ public class Tile {
         if (data.length() == CHARAPTER_ID_SIZE){ // è un charapter
             if (team == Utils.parseInt(TEAM+""))
             {
-                tiles[0].render(g, x, y); // stampo la tile degli alleati blu
+                tiles[ALLIES_ID].render(g, x, y); // stampo la tile degli alleati blu
                 tile = tiles[Utils.parseInt(data.substring(1))];
             }
             else 
             {
-                tiles[1].render(g, x, y); // stampo la tile degli avversari rossa
+                tiles[OPPONENTS_ID].render(g, x, y); // stampo la tile degli avversari rossa
                 tile = tiles[Utils.parseInt(data.substring(1))];
             }  
         }
@@ -119,6 +120,7 @@ public class Tile {
         {
             int direction = Utils.parseInt(data.substring(0,1));
             int ground = Utils.parseInt(data.substring(1));
+//            System.out.println("direction: " + direction + "ground: " + ground);
             tiles[ground].render(g, x, y);
             tile = tiles[direction];
         }
@@ -128,7 +130,8 @@ public class Tile {
     
     public static boolean isSolid(String data) {
         int dataInt = Utils.parseInt(data);
-        return !(dataInt == GRASS_TILE || dataInt == DIRT_TILE || dataInt == SELECT || dataInt == ATTACK);
+        boolean ritorno = (dataInt == GRASS_TILE || dataInt == DIRT_TILE || dataInt == SELECT || dataInt == ATTACK) || data.length() == 3;
+        return !ritorno;
     }
     
    

@@ -80,7 +80,7 @@ public class Core extends Thread{
             timer += now - lastTime;
             lastTime = now;
             //esegue questa operazione ogni mezzo secondo
-            if(timer >= 280000000) {
+            if(timer >= 300000000) {
                 //prendo le mosse dal server TCP
                 String move1, move2;
                 move1 = player1.getBuffer();
@@ -94,8 +94,18 @@ public class Core extends Thread{
                     if (data.getClass() == tempCoords.getClass())
                     {
                         tempCoords = (ArrayList<Coordinate>) data;
-                        game.addMoves(tempCoords, 0);
-                        player1.clearBuffer();
+                        if (tempCoords.get((tempCoords.size()-1)).getX()==-1)
+                        {
+                            tempCoords.remove(tempCoords.size()-1);
+                            game.addMoves(tempCoords, 1);
+                            player1.clearBuffer();
+                        }
+                        else if (tempCoords.get((tempCoords.size()-1)).getX()==-2)
+                        {
+                            tempCoords.remove(tempCoords.size()-1);
+                            game.addAttack(tempCoords, 1);
+                            player1.clearBuffer();
+                        }
                     }
                      else
                     {
@@ -110,14 +120,24 @@ public class Core extends Thread{
                     if (data.getClass() == tempCoords.getClass())
                     {
                         tempCoords = (ArrayList<Coordinate>) data;
-                        game.addMoves(tempCoords, 1);
-                        player2.clearBuffer();
+                        if (tempCoords.get((tempCoords.size()-1)).getX()==-1)
+                        {
+                            tempCoords.remove(tempCoords.size()-1);
+                            game.addMoves(tempCoords, 2);
+                            player2.clearBuffer();
+                        }
+                        else if (tempCoords.get((tempCoords.size()-1)).getX()==-2)
+                        {
+                            tempCoords.remove(tempCoords.size()-1);
+                            game.addAttack(tempCoords, 2);
+                            player2.clearBuffer();
+                        }
                     }
-                    else
+                     else
                     {
                         String action = move2;
                         game.addAction(action);
-                        player2.clearBuffer();
+                        player1.clearBuffer();
                     }
                 }
                 game.update(tick);

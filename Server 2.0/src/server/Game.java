@@ -5,6 +5,7 @@ import Models.Arrow;
 import Models.Charapter;
 import Models.King;
 import Models.Soldier;
+import Utils.Attack;
 import Utils.Coordinate;
 import Utils.Move;
 import Utils.Utils;
@@ -22,6 +23,7 @@ public class Game {
     private LinkedList<Charapter> charapters;
     private ArrayList<Move> moves;
     private LinkedList<Arrow> arrows;
+    private ArrayList<Attack> attacks;
     private int maxTeamID;
     private long startTime;
     private boolean gameTrigger;
@@ -34,6 +36,7 @@ public class Game {
         charapters = new LinkedList();
         moves = new ArrayList();
         arrows = new LinkedList();
+        attacks = new ArrayList();
         gameTrigger = false;
         
     }
@@ -76,7 +79,7 @@ public class Game {
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
                     //un if un po strano spero si capisca, in caso è per capire di chi è quel particolare personaggio
                    
-                    int owner = ID<maxTeamID?0:1;
+                    int owner = ID<maxTeamID?1:2;
                     if (ID != 0){
                         if (ID == king1ID || ID == king2ID)
                             charapters.add(new King (owner, ID, new Coordinate(x,y)));
@@ -111,11 +114,9 @@ public class Game {
             for (int i = 0; i<height; i++)
                 world[(width/2)][i] = ground[(width/2)][i];
                 gameTrigger = true;
-                System.out.println("cambiato il mondo");
         }
         if (tick==1)
-            {moveCharapter(new int[]{2,0,0});
-                     }
+            {moveCharapter(new int[]{2,0,0});}      
         else if (tick==3)
             {moveCharapter(new int[]{2,1,0}); shoot();}
         else if (tick==5)
@@ -125,6 +126,7 @@ public class Game {
         for (Arrow arrow:arrows)
             arrow.tick();
         checkArrows();
+        
     }
     public int[][] getMap()
     {
@@ -171,8 +173,11 @@ public class Game {
             for (int i=0; i<moves.size(); i++)
             {   //se non è il proprietario della mossa, non può annullarla
                     //se la prima coordinata della mossa (il giocatore) è uguale all'unica componente della lista
-                    if(moves.get(i).getSteps().get(0).equals(list.get(0)))
+                    if(moves.get(i).getSteps().get(0).equals(list.get(0))){
                         moves.remove(i);
+                        int id = getIDFromCoordinate(list.get(0))[0];
+                        charapters.get(id).setShooting(false);
+                    }
             }
         }
         else
@@ -221,8 +226,10 @@ public class Game {
             for (int i = 0; i< moves.size(); i++){
                 move = moves.get(i);
                 if (move.getType() == type[0] || move.getType() == type[1] || move.getType() == type[2])
-                    if (move.getSteps().size()==1) // mossa terminata
+                    if (move.getSteps().size()==1){ // mossa terminata
                         moves.remove(i);
+                        i--;
+                    }
                     else
                     {
                         for (Charapter charapter:charapters)
@@ -231,6 +238,7 @@ public class Game {
                                 Coordinate next = move.getSteps().get(1);
                                 if (getIDFromCoordinate(next)[0] != 0){
                                     moves.remove(i);
+                                    i--;
                                 }
                                 else{
                                     charapter.setShooting(false);
@@ -241,41 +249,35 @@ public class Game {
                     }
             }
         }
+ 
     }
     
     private void checkArrows()
     {
-        boolean remuved = false;
+        int x=0,y=0;
+        Arrow arrow;
         for (int i = 0; i < arrows.size(); i++)
         {
-            remuved = false;
-            for (int j = 0; j<charapters.size() && !remuved; j++)
-            {
-                Charapter charap = charapters.get(j);
-                Arrow arrow = arrows.get(i);
-                int x = arrow.getCoordinate().getX();
-                int y = arrow.getCoordinate().getY();
-                if (x < 0 || x >= this.width || y < 0 || y >= this.height){
-                    arrows.remove(i);
-                    remuved = true;
-                    break;
-                }
-                int ground = world[x][y];
-                if (ground == 12){
-                    arrows.remove(i);
-                    remuved = true;
-                    break;
-                }
-                if (charap.getCoordinate().equals(arrow.getCoordinate()))
-                {
-                    arrows.remove(i);
-                    remuved = true;
-                    if (charap.hit(arrow)){
-                        charapters.remove(j);
-                        System.out.println("sommuort");
-                }
-                }
+            arrow = arrows.get(i);
+            x = arrow.getCoordinate().getX();
+            y = arrow.getCoordinate().getY();
+            if (x < 0 || x > width-1 || y < 0 || y > height-1 || world[x][y] == 12){
+                arrows.remove(i);
+                i--;
             }
+            else
+                for (int j = 0; j<charapters.size(); j++)
+                {
+                    Charapter charap = charapters.get(j);
+                    if (charap.getCoordinate().equals(arrow.getCoordinate()))
+                    {
+                        arrows.remove(i);
+                        i--;
+                        if (charap.hit(arrow)){
+                            charapters.remove(j);
+                    }
+                    }
+                }
         }
     }
     private void shoot()
@@ -283,5 +285,13 @@ public class Game {
         for(Charapter charap:charapters)
             if (Utils.parseInt(charap.getType())==2 && charap.isShooting())
                 arrows.add(charap.throwArrow(charap.getDirection()));
+        System.out.println("sparo");
+    }
+    
+    public void addAttack(ArrayList<Coordinate> list, int owner)
+    {
+        this.addMoves(list, owner);
+        int ID = getIDFromCoordinate(list.get(0))[0];
+        charapters.get(ID).setShooting(true);
     }
 }

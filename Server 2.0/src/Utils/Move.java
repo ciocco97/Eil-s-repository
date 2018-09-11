@@ -16,6 +16,7 @@ public class Move {
     private int ID;
     private int owner;
     private int type;
+    
     private ArrayList<Coordinate> steps;
 
     public int getID() {
