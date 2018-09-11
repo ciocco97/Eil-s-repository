@@ -85,7 +85,6 @@ public class Core extends Thread{
                 String move1, move2;
                 move1 = player1.getBuffer();
                 move2 = player2.getBuffer();
-                //assolutamente da rifare ahahahahaah
                 ArrayList<Coordinate> tempCoords = new ArrayList<Coordinate>();
                 //se non sono nulle, le mando a Game per elaborarle
                 if (move1 != null)
