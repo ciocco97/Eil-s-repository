@@ -19,7 +19,7 @@ public class World {
      */
     private int width, height, spawnX, spawnY;
     
-    private String actionGroundAttack = "a", actionCharapterMoovement = "m";
+    private String actionGroundAttack = "a", actionCharapterMoovement = "m", actionArcherAttack = "f";
 
     // Stacco tra gli omini propri e quelli avversari
     private final int DELTA_OMINI = 100;
@@ -70,7 +70,7 @@ public class World {
         reciveWorld();
         if (world!=null){
             selection();
-            attackProva();
+            attack();
         }
         
     }
@@ -170,7 +170,7 @@ public class World {
         }
     }
     
-    private void attackProva() {
+    private void attack() {
         int x = handeler.getMouseManager().getxTile();
         int y = handeler.getMouseManager().getyTile();
         Coordinate coordinate = new Coordinate(x, y);
@@ -178,18 +178,18 @@ public class World {
         try { worldID = "" + world[x][y]; } catch (Exception e) { }
         
         if(groundAttack) {
-            attaccoSoldatoProva(x, y, coordinate, worldID);
+            attaccoSoldato(x, y, coordinate, worldID);
         } else if(flyAttack) {
             attaccoArcereProva(x, y, coordinate, worldID);
         } else {
             if(handeler.getKeyManager().attack && handeler.getMouseManager().isPressed) {
                 if(!(x < 0 || y < 0 || x >= width || y >= height)) {
-                    System.out.println("Is in");
                     if(isMyCharapterType(worldID, Tile.ARCHER_ID)) {
                         System.out.println("Inizio attacco arcere");
-                        //flyAttack = true;
+                        flyAttack = true;
                         attackSteps.add(coordinate);
                         selezioneAttaccoArcere(x, y);
+                        archerTileAttack = coordinate;
                     } else if(isMyCharapterType(worldID, Tile.SOLDIER_ID)) {
                         System.out.println("Inizio attacco soldato");
                         groundAttack = true;
@@ -202,7 +202,7 @@ public class World {
         
     }
     
-    private void attaccoSoldatoProva(int x, int y, Coordinate coordinate, String worldID) {
+    private void attaccoSoldato(int x, int y, Coordinate coordinate, String worldID) {
         if(worldID != null) {
             if(handeler.getKeyManager().attack && handeler.getMouseManager().isPressed) {
                 if(isMyCharapter(worldID)) {
@@ -229,13 +229,28 @@ public class World {
         } else resetAttack();
     }
     
+    private Coordinate archerTileAttack;
+    
     private void attaccoArcereProva(int x, int y, Coordinate coordinate, String worldID) {
-        if(worldID != null) {
-            if(attackSteps.size() == 1) {
-                
-            } else {
-                
-            }
+        if(handeler.getKeyManager().attack && handeler.getMouseManager().isPressed) {
+            if(worldID != null) {
+                int selezionato = selections[x][y];
+                if(isArrow("" + selezionato)) {
+                    System.out.println("Arrow selected");
+                    selections = new int[width][height];
+                    selezioneAttaccoArcere(archerTileAttack.getX(), archerTileAttack.getY());
+                    selections[x][y] = Tile.ATTACK;
+                    attackSteps.add(coordinate);
+                } else if(isMyCharapter("" + world[x][y])) {
+                    if(!archerTileAttack.equal(archerTileAttack)) {
+                        System.out.println("Non è il charapter iniziale");
+                        resetAttack();
+                    }
+                }
+            } else {  }
+            
+        } else {
+            sendFlyAttack();
         }
     }
     
@@ -278,6 +293,10 @@ public class World {
         return is;
     }
     
+    private boolean isArrow(String ID) {
+        return ID.length() == Tile.ARROW_ID_SIZE;
+    }
+    
     private boolean isEnemyCharapter(String ID) {
         boolean is;
         if(ID.length() == Tile.CHARAPTER_ID_SIZE) {
@@ -299,74 +318,6 @@ public class World {
         return isEqual;
     }
     
-    private void attack() {
-        int x = handeler.getMouseManager().getxTile();
-        int y = handeler.getMouseManager().getyTile();
-        String worldID = null;
-        try {
-            worldID = "" + world[x][y];
-        }catch(Exception e) {
-            ;
-        }
-        
-        Coordinate coordinate = new Coordinate(x, y);
-        // Caso in cui si è fuori dalla mappa
-        if(x < 0 || y < 0 || x >= width || y >= height) {
-            resetAttack();
-        // Casi in cui è stato premuto il mouse
-        } else if(handeler.getMouseManager().isPressed && handeler.getKeyManager().attack) {
-            // Caso in cui il tile su cui si è è un charapter selezionabile
-            if((worldID).charAt(0)==Tile.TEAM 
-                    && (worldID).length() == Tile.CHARAPTER_ID_SIZE) {
-                // Se si stava già tracciando un attacco e si seleziona un charapter
-                if(groundAttack) {
-                    // Sbagliato (Se non hai appena iniziato altrimenti non si fa niente)
-                    if(attackSteps.size() != 1) {
-                        resetAttack();
-                    }
-                // Unico caso in cui si può iniziare a tracciare un percorso
-                } else {
-                    // Giusto: inizio
-                    groundAttack = true;
-                    selections[x][y] = Tile.ATTACK;
-                    if(attackSteps.isEmpty()) {
-                        attackSteps.add(new Coordinate(x, y));
-                    }
-                }
-            /**
-             * Caso in cui il tile selezionato può essere sia roccia che un 
-             * giocatore alleato che un giocatore avversario
-             */
-            } else if(Tile.isSolid(worldID)) {
-                // Giusto: invia
-                if((worldID).charAt(0) != Tile.TEAM 
-                        && (worldID).length() == Tile.CHARAPTER_ID_SIZE)
-                    if(!attackSteps.isEmpty())
-                        sendGroundAttack();
-                // Sbagliato
-                resetAttack();
-            // Caso in cui il tile premuto sia erba o terra
-            } else {
-                if(!groundAttack) {
-                    // Sbagliato
-                    resetAttack();
-                } else {
-                    // Giusto:  continua
-                    selections[x][y] = Tile.ATTACK;
-                    if(!attackSteps.get(attackSteps.size() - 1).equal(coordinate))
-                        attackSteps.add(new Coordinate(x, y));
-                }
-            }
-        } else if(groundAttack) {
-            // Caso in cui si vuole fermare il giocatore all'attacco
-            if(attackSteps.size() == 1)
-                sendGroundAttack();
-            // Sbagliato
-            else
-                resetAttack();
-        }
-    }
-    
     /**
      * Funzione che resetta gli elementi della selezione
      */
@@ -380,6 +331,7 @@ public class World {
         groundAttack = flyAttack = false;
         selections = new int[width][height];
         attackSteps = new ArrayList<>();
+        archerTileAttack = null;
     }
     
     /**
@@ -394,6 +346,17 @@ public class World {
     private void sendGroundAttack() {
         System.out.println("Invio attack: " + attackSteps.toString());
         handeler.getGame().getClient().inviaPath(attackSteps, actionGroundAttack);
+        resetAttack();
+    }
+    
+    private void sendFlyAttack() {
+        for(int i = 1; i < attackSteps.size() - 1; i++) {
+            attackSteps.remove(i);
+            i--;
+        }
+        System.out.println("Invio attack: " + attackSteps.toString());
+        handeler.getGame().getClient().inviaPath(attackSteps, actionArcherAttack);
+        
         resetAttack();
     }
     
@@ -416,32 +379,11 @@ public class World {
     
     
     private void renderSelectionAttack(int x, int y, Graphics g) {
+        
         if(selections[x][y] != 0) {
             Tile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()), ""+selections[x][y]);
         }
-//        /**
-//         * Se il tile preso in considerazione è presente nella matrice 
-//         * selections significa che bisogna disegnarci sopra il Tile 
-//         * selezione
-//         */
-//        if (selections[x][y] == Tile.SELECT)
-//            Tile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
-//                        (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()), ""+selections[x][y]);
-//        /**
-//         * Se sul tile preso i nconsiderazione bisogna disegnarci sopra 
-//         * il tile attack
-//         */
-//        else if (selections[x][y] == Tile.ATTACK)
-//            Tile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
-//                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()), "" + Tile.ATTACK);
-//        /**
-//         * Se il Tile è quello su cui è presente il mouse bisogna 
-//         * disegnarci sopra il Tile selezione
-//         */
-//        else if(x == handeler.getMouseManager().getxTile() && y == handeler.getMouseManager().getyTile())
-//            Tile.render(g, (int) (spawnX + x * Tile.TILEWIDTH - handeler.getGameCamera().getxOffset()), 
-//                (int) (spawnY + y * Tile.TILEHEIGHT - handeler.getGameCamera().getyOffset()), "" + Tile.SELECT);
-                
+    
     }
 
     public int getWidth() { return width; }
@@ -451,43 +393,10 @@ public class World {
     public int[][] getWorld() { return world; }
     
     /**
-     * Funzione che indica qual'è il range dei propri giocatori e il range di 
-     * quelli avversari
-     * @param lb
-     * @param ub 
-     */
- 
-    /**
-     * Crea la matrica world
-     * @param path percorso del file in cui si trova il mondo codificato
-     */
-    private void loadWorld(String path) {                                       // Da togliere
-        String file = Utils.loadFileAsStrig(path);
-        String[] token = file.split("\\s+");
-        width = Utils.parseInt(token[0]);
-        height = Utils.parseInt(token[1]);
-        spawnX = Utils.parseInt(token[2]);
-        spawnY = Utils.parseInt(token[3]);
-        
-        world = new int[width][height];
-        
-        for(int y = 0; y < height; y++) 
-            for(int x = 0; x < width; x++)
-                /**
-                 * Se siamo alla terza riga e quarta colonna significa che 
-                 * abbiamo già copiato un numero di elementi pari a: 2 * numero 
-                 * totale di colonne + numero di colonne. si aggiunge 4 perchè i 
-                 * primi 4 elementi di token sono utilizzati per altri scopi.
-                 */
-                world[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
-        
-    }
-    
-    /**
      * Funzione che aggiorna il world da server prendendo una String da ClientUDP 
      * e poi convertendola in una matrice di interi
      */
-    private void reciveWorld() { 
+    private void reciveWorld() {
         String updateMap = ClientUDP.map;
         if(updateMap != null) {
             if(world == null) {
