@@ -48,9 +48,9 @@ public class Charapter {
     
     public boolean attack(Charapter charapter)
     {
-        System.out.println("attacco");
-        if (charapter.getType().equals(SOLDIER_ID))
+        if (charapter.getType().equals(SOLDIER_ID)){
             charapter.shooting = true;
+        }
         float damage = (this.strength * 10) / (charapter.defence);
         charapter.health -= damage;
         if (charapter.health < 0)

@@ -5,7 +5,6 @@ import Models.Arrow;
 import Models.Charapter;
 import Models.King;
 import Models.Soldier;
-import Utils.Attack;
 import Utils.Coordinate;
 import Utils.Move;
 import Utils.Utils;
@@ -23,7 +22,6 @@ public class Game {
     private LinkedList<Charapter> charapters;
     private ArrayList<Move> moves;
     private LinkedList<Arrow> arrows;
-    private ArrayList<Attack> attacks;
     private int maxTeamID;
     private long startTime;
     private boolean gameTrigger;
@@ -36,7 +34,6 @@ public class Game {
         charapters = new LinkedList();
         moves = new ArrayList();
         arrows = new LinkedList();
-        attacks = new ArrayList();
         gameTrigger = false;
         
     }
@@ -116,16 +113,15 @@ public class Game {
         if (tick==1)
             {moveCharapter(new int[]{2,0,0});}      
         else if (tick==3)
-            {moveCharapter(new int[]{2,1,0}); shoot();}
+            {moveCharapter(new int[]{2,1,0}); shoot();checkAttacks();}
         else if (tick==5)
             {moveCharapter(new int[]{2,0,0}); }
         else if (tick==7)
-            {moveCharapter(new int[]{2,1,3}); shoot();}
+            {moveCharapter(new int[]{2,1,3}); shoot();checkAttacks();}
         for (Arrow arrow:arrows)
             arrow.tick();
         checkArrows();
-        checkAttacks();
-        System.out.println(arrows.size());
+        
         
     }
     public int[][] getMap()
@@ -319,7 +315,6 @@ public class Game {
         for (Charapter charap:charapters)
             if (charap.getId() == ID){
                 charap.setShooting(true);
-                System.out.println("messo in attacco");
             }
     }
     private void checkAttacks()
@@ -327,23 +322,15 @@ public class Game {
         for (int i = 0; i< charapters.size(); i++)
         {
             Charapter attacker = charapters.get(i);
-            if(attacker.isShooting())
-                System.out.println("in attacco");
-            if (!attacker.getType().equals("1") || !attacker.isShooting()){
-                    break;
-            }
-            Coordinate coordinate = attacker.getCoordinate();
-            System.out.println("2");
-            for (int j = 0; j < charapters.size(); j++)
+            for (int j = 0; j < charapters.size() && attacker.isShooting() && attacker.getType() == "1"; j++)
                 // metto il secondo controllo per impedire di controllare anche lo stesso charapter
             {
-                System.out.println("qui9 ci sonoo");
                 Charapter defender = charapters.get(j);
-                if (attacker.isNear(defender)){
-                    System.out.println("c'è qualcuno di near, attacco e la vita è:" + defender.getHealth());
-                
-                    if (attacker.attack(defender))
+                if (attacker.isNear(defender)){               
+                    if (attacker.attack(defender)){
                         charapters.remove(j);
+                        attacker.setShooting(false);
+                    }
                 }
                     
             }

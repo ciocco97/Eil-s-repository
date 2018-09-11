@@ -38,6 +38,12 @@ public class Archer extends Charapter{
         Arrow arrow = new Arrow (direction, power, owner,  new Coordinate(coordinate.getX(), coordinate.getY()));
         return arrow;
     }
+    
+    @Override
+    public boolean attack(Charapter charapter)
+    {
+        return false;
+    }
 
     
     
