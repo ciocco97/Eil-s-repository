@@ -294,11 +294,13 @@ public class World {
     }
     
     private boolean isArrowSelection(String ID) {
-        return ID.length() == Tile.ARROW_SELECTION_SIZE;
+        int point = Utils.parseInt(ID);
+        int lowerRange = Utils.parseInt(Tile.UP);
+        int upperRange = Utils.parseInt(Tile.UP_LEFT);
+        return point >= lowerRange && point <= upperRange;
     }
     
     private boolean isArrow(String ID) {
-        System.out.println(ID);
         return ID.length() == Tile.ARROW_ID_SIZE;
     }
     
