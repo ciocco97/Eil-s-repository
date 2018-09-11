@@ -294,7 +294,7 @@ public class World {
     }
     
     private boolean isArrowSelection(String ID) {
-        return ID.length() == Tile.ARROW_SELECTION_SIZE && ID != "0";
+        return ID.length() == Tile.ARROW_SELECTION_SIZE;
     }
     
     private boolean isArrow(String ID) {
