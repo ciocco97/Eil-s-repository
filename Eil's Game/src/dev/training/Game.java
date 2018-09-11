@@ -1,7 +1,6 @@
 package dev.training;
 
 import dev.conn.client.Client;
-import dev.conn.client.ClientUDP;
 import dev.training.display.Display;
 import dev.training.gfx.Assets;
 import dev.training.gfx.GameCamera;
@@ -12,9 +11,6 @@ import dev.training.states.MenuState;
 import dev.training.states.State;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Per fare in modo che questa classe venga eseguita come un thread dobbiamo 

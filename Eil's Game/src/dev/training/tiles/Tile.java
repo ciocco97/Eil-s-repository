@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 
 public class Tile {
     
+    public static char TEAM;
+    
     // Costanti
     public static final int TILEWIDTH = 140, TILEHEIGHT = 140;
     public static final int SELECT = 20;
@@ -14,6 +16,7 @@ public class Tile {
     public static final int CHARAPTER_ID_SIZE = 4;
     public static final int GROUND_ID_SIZE = 2;
     public static final int ARROW_ID_SIZE = 3;
+    public static final int ARROW_CHARAPTER_ID_SIZE = CHARAPTER_ID_SIZE + 1;
     
     public static final int TEAM_POSITION = 0;
     public static final int TIPOLOGY_POSITION = 1;
@@ -47,9 +50,7 @@ public class Tile {
     
     public static final int ALLIES_ID = 15;
     private static final int OPPONENTS_ID = 16;
-    
-    
-       
+     
     /**
      * Contiene ogni singolo tipo di Tile
      */
@@ -93,36 +94,41 @@ public class Tile {
     private static Tile arrowLeft = new Tile(Assets.left, Utils.parseInt(LEFT));
     private static Tile arrowUpLeft = new Tile(Assets.upLeft, Utils.parseInt(UP_LEFT));
     
-    public static char TEAM;
-    
     public static void render(Graphics g, int x, int y, String data) // owner serve per sapere chi sono i cattivi
     {
         int team = Utils.parseInt(data.charAt(TEAM_POSITION)+"");
         Tile tile = null;
-        if (data.length() == CHARAPTER_ID_SIZE){ // è un charapter
-            if (team == Utils.parseInt(TEAM+""))
-            {
-                tiles[ALLIES_ID].render(g, x, y); // stampo la tile degli alleati blu
-                tile = tiles[Utils.parseInt(data.substring(1))];
-            }
-            else 
-            {
-                tiles[OPPONENTS_ID].render(g, x, y); // stampo la tile degli avversari rossa
-                tile = tiles[Utils.parseInt(data.substring(1))];
-            }  
-        }
-        else if (data.length() == GROUND_ID_SIZE)// è solo un pezzo del mondo
-        {
-            int IdentificationNumber = Utils.parseInt(data);
-            tile = tiles[IdentificationNumber];
-        }
-        else if (data.length() == ARROW_ID_SIZE)
-        {
-            int direction = Utils.parseInt(data.substring(0,1));
-            int ground = Utils.parseInt(data.substring(1));
-//            System.out.println("direction: " + direction + "ground: " + ground);
-            tiles[ground].render(g, x, y);
-            tile = tiles[direction];
+        switch (data.length()) {
+            case CHARAPTER_ID_SIZE:
+                // è un charapter
+                if (team == Utils.parseInt(TEAM + "")) {
+                    tiles[ALLIES_ID].render(g, x, y); // stampo la tile degli alleati blu
+                    tile = tiles[Utils.parseInt(data.substring(1))];
+                } else {
+                    tiles[OPPONENTS_ID].render(g, x, y); // stampo la tile degli avversari rossa
+                    tile = tiles[Utils.parseInt(data.substring(1))];
+                }
+                break;
+            // è solo un pezzo del mondo
+            case GROUND_ID_SIZE:
+                int IdentificationNumber = Utils.parseInt(data);
+                tile = tiles[IdentificationNumber];
+                break;
+            case ARROW_ID_SIZE:
+                int direction = Utils.parseInt(data.substring(0, 1));
+                int ground = Utils.parseInt(data.substring(1));
+                //            System.out.println("direction: " + direction + "ground: " + ground);
+                tiles[ground].render(g, x, y);
+                tile = tiles[direction];
+                break;
+            case ARROW_CHARAPTER_ID_SIZE:
+                int direction_1 = Utils.parseInt(data.substring(0, 1));
+                String charapter = data.substring(1);
+                Tile.render(g, x, y, charapter);
+                tile = tiles[direction_1];
+                break;
+            default:
+                break;
         }
         if(tile == null) tile = stoneTile;
         tile.render(g, x, y);

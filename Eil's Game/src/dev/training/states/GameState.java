@@ -22,7 +22,6 @@ public class GameState extends State{
 
     @Override
     public void update() {
-        
             world.update();
     }
 
