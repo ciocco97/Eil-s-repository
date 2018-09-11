@@ -26,7 +26,7 @@ public class Game {
     private long startTime;
     private boolean gameTrigger;
     
-    public static final int TIME_OF_GAME_SETUP = 5;
+    public static final int TIME_OF_GAME_SETUP = 30;
     
     
     public Game()
@@ -70,7 +70,7 @@ public class Game {
             maxTeamID = Utils.parseInt(token[2])/2;
             Random rand = new Random();
             int king1ID = rand.nextInt(maxTeamID);
-            int king2ID = rand.nextInt(maxTeamID) + maxTeamID;
+            int king2ID = rand.nextInt(maxTeamID) + maxTeamID + 1;
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
@@ -319,14 +319,17 @@ public class Game {
     }
     private void checkAttacks()
     {
+        boolean isAttacking = false;
         for (int i = 0; i< charapters.size(); i++)
         {
+            isAttacking = false;
             Charapter attacker = charapters.get(i);
-            for (int j = 0; j < charapters.size() && attacker.isShooting() && attacker.getType() == "1"; j++)
+            for (int j = 0; j < charapters.size() && attacker.isShooting() && attacker.getType() == Utils.SOLDIER_ID && !isAttacking; j++)
                 // metto il secondo controllo per impedire di controllare anche lo stesso charapter
             {
                 Charapter defender = charapters.get(j);
-                if (attacker.isNear(defender)){               
+                if (attacker.isNear(defender)){    
+                    isAttacking = true;
                     if (attacker.attack(defender)){
                         charapters.remove(j);
                         attacker.setShooting(false);

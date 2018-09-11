@@ -10,7 +10,7 @@ public class Tile {
     public static char TEAM;
     
     // Costanti
-    public static final int TILEWIDTH = 100, TILEHEIGHT = 100;
+    public static final int TILEWIDTH = 120, TILEHEIGHT = 120;
     public static final int SELECT = 20;
     public static final int ATTACK = 21;
     public static final int CHARAPTER_ID_SIZE = 4;
