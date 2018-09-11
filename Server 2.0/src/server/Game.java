@@ -28,7 +28,7 @@ public class Game {
     private long startTime;
     private boolean gameTrigger;
     
-    public static final int TIME_OF_GAME_SETUP = 30;
+    public static final int TIME_OF_GAME_SETUP = 5;
     
     
     public Game()
@@ -126,6 +126,7 @@ public class Game {
         for (Arrow arrow:arrows)
             arrow.tick();
         checkArrows();
+        checkAttacks();
         
     }
     public int[][] getMap()
@@ -176,7 +177,9 @@ public class Game {
                     if(moves.get(i).getSteps().get(0).equals(list.get(0))){
                         moves.remove(i);
                         int id = getIDFromCoordinate(list.get(0))[0];
-                        charapters.get(id).setShooting(false);
+                        for (Charapter charap:charapters)
+                            if (charap.getId() == id)
+                                charap.setShooting(false);
                     }
             }
         }
@@ -241,7 +244,6 @@ public class Game {
                                     i--;
                                 }
                                 else{
-                                    charapter.setShooting(false);
                                     charapter.setCoordinate(next);
                                     move.getSteps().remove(0);
                                 }
@@ -285,13 +287,33 @@ public class Game {
         for(Charapter charap:charapters)
             if (Utils.parseInt(charap.getType())==2 && charap.isShooting())
                 arrows.add(charap.throwArrow(charap.getDirection()));
-        System.out.println("sparo");
     }
     
     public void addAttack(ArrayList<Coordinate> list, int owner)
     {
         this.addMoves(list, owner);
         int ID = getIDFromCoordinate(list.get(0))[0];
-        charapters.get(ID).setShooting(true);
+        for (Charapter charap:charapters)
+            if (charap.getId() == ID)
+                charap.setShooting(true);
+    }
+    private void checkAttacks()
+    {
+        
+        for (int i = 0; i< charapters.size(); i++)
+        {
+            Coordinate coordinate = charapters.get(i).getCoordinate();
+            for (int j = 0; j < charapters.size() && !(charapters.get(j).getCoordinate().equals(coordinate)); j++)
+                // metto il secondo controllo per impedire di controllare anche lo stesso charapter
+            {
+                if (charapters.get(j).isNear(charapters.get(i)) && charapters.get(i).isShooting()){
+                    System.out.println("c'è qualcuno di near, attacco e la vita è:" + charapters.get(j).getHealth());
+                
+                    if (charapters.get(i).attack(charapters.get(j)))
+                        charapters.remove(j);
+                }
+                    
+            }
+        }
     }
 }

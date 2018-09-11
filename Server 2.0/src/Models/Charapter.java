@@ -12,6 +12,11 @@ import Utils.Coordinate;
  * @author aless
  */
 public class Charapter {
+    
+    private static final String KING_ID = "3";
+    private static final String ARCHER_ID = "2";
+    private static final String SOLDIER_ID = "1";
+    
     protected float health, strength, defence;
     protected int owner, direction, speed, id;
     protected Coordinate coordinate;
@@ -41,10 +46,15 @@ public class Charapter {
         this.shooting = false;
     }
     
-    public void attack(Charapter charapter)
+    public boolean attack(Charapter charapter)
     {
+        if (charapter.getType().equals(SOLDIER_ID))
+            charapter.shooting = true;
         float damage = (this.strength * 10) / (charapter.defence);
         charapter.health -= damage;
+        if (charapter.health < 0)
+            return true;
+        return false;
     }
     public String getType()
     {
@@ -103,6 +113,32 @@ public class Charapter {
 
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+    
+    public boolean isNear(Charapter charap)
+    {
+        int x = this.coordinate.getX();
+        int y = this.coordinate.getY();
+        int X = charap.coordinate.getX();
+        int Y = charap.coordinate.getY();
+        
+        if (x == X && y==Y+1)
+            return true;
+        if (x == X && y==Y-1)
+            return true;
+        if (x == X+1 && y==Y-1)
+            return true;
+        if (x == X+1 && y==Y)
+            return true;
+        if (x == X+1 && y==Y+1)
+            return true;
+        if (x == X-1 && y==Y-1)
+            return true;
+        if (x == X-1 && y==Y+1)
+            return true;
+        if (x == X-1 && y==Y)
+            return true;
+        return false;
     }
     
    
