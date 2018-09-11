@@ -5,7 +5,7 @@
  */
 package Models;
 
-import Utils.Coordinate;
+import Utils.*;
 import java.util.Random;
 
 /**
@@ -22,7 +22,7 @@ public class Soldier extends Charapter{
         Random rand = new Random();
         this.strength = rand.nextInt(20) + 40;
         this.defence = rand.nextInt(10) + 35;
-        this.health = 100;
+        this.health = Utils.SOLDIER_HEALTH;
         this.speed = 1;
     }
     @Override

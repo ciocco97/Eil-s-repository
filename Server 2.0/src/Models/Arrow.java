@@ -12,6 +12,8 @@ import Utils.Coordinate;
  * @author Alessandro
  */
 public class Arrow {
+    
+    
     private int direction;
     private float power;
     private int owner;

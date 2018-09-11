@@ -6,6 +6,7 @@
 package Models;
 
 import Utils.Coordinate;
+import Utils.Utils;
 import java.util.Random;
 
 /**
@@ -14,6 +15,7 @@ import java.util.Random;
  */
 public class Archer extends Charapter{
     private static final String ARCHER_ID = "2";
+    private static final int ARROW_POWER = 15;
     Random rand;
     
     public Archer(int owner, int id, Coordinate coord) {
@@ -22,7 +24,7 @@ public class Archer extends Charapter{
         rand = new Random();
         this.strength = rand.nextInt(5) + 20;
         this.defence = rand.nextInt(10) + 35;
-        this.health = 150;
+        this.health = Utils.ARCHER_HEALTH;
         this.speed = 2;
         
     }

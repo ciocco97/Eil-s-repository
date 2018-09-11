@@ -6,6 +6,7 @@
 package Models;
 
 import Utils.Coordinate;
+import Utils.Utils;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Charapter {
         if (charapter.getType().equals(SOLDIER_ID)){
             charapter.shooting = true;
         }
-        float damage = (this.strength * 10) / (charapter.defence);
+        float damage = (this.strength * Utils.ARROW_POWER) / (charapter.defence);
         charapter.health -= damage;
         if (charapter.health < 0)
             return true;

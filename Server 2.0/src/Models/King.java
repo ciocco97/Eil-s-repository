@@ -5,7 +5,7 @@
  */
 package Models;
 
-import Utils.Coordinate;
+import Utils.*;
 import java.util.Random;
 
 /**
@@ -18,7 +18,7 @@ public class King extends Charapter{
     
     public King(int owner, int id, Coordinate coord) {
         super(owner, id, coord);
-        this.health = 500;
+        this.health = Utils.KING_HEALTH;
         rand = new Random();
         this.strength = 0;
         this.defence = rand.nextInt(10) + 35;

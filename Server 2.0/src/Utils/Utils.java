@@ -32,6 +32,14 @@ public class Utils {
     public static final String LEFT = "7";
     public static final String UP_LEFT = "8";
     
+    public static final int ARCHER_HEALTH = 100;
+    public static final int SOLDIER_HEALTH = 150;
+    public static final int KING_HEALTH = 300;
+    
+    public static final int ATTACK_POWER = 10;
+    public static final int DEFENCE_POWER = 2;
+    public static final int ARROW_POWER = 15;
+    
     
     public static String loadFileAsStrig(String path) {
         StringBuilder stringBuilder = new StringBuilder();
