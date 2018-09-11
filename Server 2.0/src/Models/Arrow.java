@@ -59,7 +59,7 @@ public class Arrow {
             case 4: coordinate.setY(coordinate.getY()+1); coordinate.setX(coordinate.getX()+1);break;
             case 5: coordinate.setY(coordinate.getY()+1);break;
             case 6: coordinate.setY(coordinate.getY()+1); coordinate.setX(coordinate.getX()-1);break;
-            case 7: coordinate.setY(coordinate.getX()-1);break;
+            case 7: coordinate.setX(coordinate.getX()-1);break;
             case 8: coordinate.setY(coordinate.getY()-1); coordinate.setX(coordinate.getX()-1);break;
         }
     }

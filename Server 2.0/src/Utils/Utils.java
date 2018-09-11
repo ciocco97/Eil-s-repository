@@ -23,6 +23,15 @@ public class Utils {
     private static final String ON_ATTACK = "1";
     private static final String NOT_ON_ATTACK = "0";
     
+    public static final String UP = "1";
+    public static final String UP_RIGHT = "2";
+    public static final String RIGHT = "3";
+    public static final String DOWN_RIGHT = "4";
+    public static final String DOWN = "5";
+    public static final String DOWN_LEFT = "6";
+    public static final String LEFT = "7";
+    public static final String UP_LEFT = "8";
+    
     
     public static String loadFileAsStrig(String path) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -84,6 +93,9 @@ public class Utils {
             list.add(new Coordinate(-1,0));
 
         }
+        else if (buffer.startsWith("f")){
+            return buffer;
+        }
         return list;
     }
     
@@ -109,7 +121,7 @@ public class Utils {
             data+=NOT_ON_ATTACK;
         return Utils.parseInt(data);
     } 
-    private static ArrayList<Coordinate> decodeMovement(String data)
+    public static ArrayList<Coordinate> decodeMovement(String data)
     {
             ArrayList list = new ArrayList<Coordinate>();
             //tolgo le parentesi quadre dai buffer

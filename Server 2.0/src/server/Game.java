@@ -125,6 +125,7 @@ public class Game {
             arrow.tick();
         checkArrows();
         checkAttacks();
+        System.out.println(arrows.size());
         
     }
     public int[][] getMap()
@@ -194,18 +195,39 @@ public class Game {
     }
     public void addAction(String data)
     {
+
         if (data.startsWith("f")) // comando per lanciare la freccia
         {
-            int direction = Integer.parseInt(data.charAt(1)+"");
-            int x = Integer.parseInt(data.charAt(3)+"");
-            int y = Integer.parseInt(data.charAt(5)+"");
-            Coordinate coord = new Coordinate(x,y);
-            int ID = getIDFromCoordinate(coord)[0];
-            for (Charapter charap:charapters)
-                if (charap.getId() == ID && Utils.parseInt(charap.getType()) == 2)
-                {
-                    charap.setShooting(true);
+            ArrayList<Coordinate> list = new ArrayList();
+            list = (ArrayList)Utils.decodeMovement(data.substring(1));
+            Coordinate coordinate= list.get(0);
+            Coordinate direzione = list.get(1);
+            int x = coordinate.getX();
+            int y = coordinate.getY();
+            int X = direzione.getX();
+            int Y = direzione.getY();
+            int direction = 0;
+            
+            if (x == X && Y < y)
+                direction = Utils.parseInt(Utils.UP);
+            else if (X > x && Y < y)
+                direction = Utils.parseInt(Utils.UP_RIGHT); 
+            else if (X > x && Y == y)
+                direction = Utils.parseInt(Utils.RIGHT); 
+            else if (X > x && Y > y)
+                direction = Utils.parseInt(Utils.DOWN_RIGHT); 
+            else if (X == x && Y > y)
+                direction = Utils.parseInt(Utils.DOWN); 
+            else if (X < x && Y > y)
+                direction = Utils.parseInt(Utils.DOWN_LEFT); 
+            else if (X < x && Y == y)
+                direction = Utils.parseInt(Utils.LEFT); 
+            else if (X < x && Y < y)
+                direction = Utils.parseInt(Utils.UP_LEFT); 
+            for(Charapter charap:charapters)
+                if (charap.getCoordinate().equals(coordinate)){
                     charap.setDirection(direction);
+                    charap.setShooting(true);
                 }
         }
     }

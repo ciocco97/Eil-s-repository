@@ -16,7 +16,7 @@ public class Tile {
     public static final int CHARAPTER_ID_SIZE = 4;
     public static final int GROUND_ID_SIZE = 2;
     public static final int ARROW_ID_SIZE = 3;
-    public static final int ARROW_CHARAPTER_ID_SIZE = CHARAPTER_ID_SIZE + 1;
+    public static final int ARROW_SELECTION_SIZE = 1;
     
     public static final int TEAM_POSITION = 0;
     public static final int TIPOLOGY_POSITION = 1;
@@ -121,10 +121,14 @@ public class Tile {
                 tiles[ground].render(g, x, y);
                 tile = tiles[direction];
                 break;
-            case ARROW_CHARAPTER_ID_SIZE:
-                int direction_1 = Utils.parseInt(data.substring(0, 1));
-                String charapter = data.substring(1);
-                Tile.render(g, x, y, charapter);
+//            case ARROW_CHARAPTER_ID_SIZE:
+//                int direction_1 = Utils.parseInt(data.substring(0, 1));
+//                String charapter = data.substring(1);
+//                Tile.render(g, x, y, charapter);
+//                tile = tiles[direction_1];
+//                break;
+            case ARROW_SELECTION_SIZE:
+                int direction_1 = Utils.parseInt(data);
                 tile = tiles[direction_1];
                 break;
             default:

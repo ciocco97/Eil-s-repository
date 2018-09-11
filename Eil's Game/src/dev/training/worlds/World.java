@@ -72,7 +72,7 @@ public class World {
             selection();
             attack();
         }
-        
+               
     }
     
     public void render(Graphics g) {
@@ -180,7 +180,7 @@ public class World {
         if(groundAttack) {
             attaccoSoldato(x, y, coordinate, worldID);
         } else if(flyAttack) {
-            attaccoArcereProva(x, y, coordinate, worldID);
+            attaccoArcere(x, y, coordinate, worldID);
         } else {
             if(handeler.getKeyManager().attack && handeler.getMouseManager().isPressed) {
                 if(!(x < 0 || y < 0 || x >= width || y >= height)) {
@@ -231,18 +231,18 @@ public class World {
     
     private Coordinate archerTileAttack;
     
-    private void attaccoArcereProva(int x, int y, Coordinate coordinate, String worldID) {
+    private void attaccoArcere(int x, int y, Coordinate coordinate, String worldID) {
         if(handeler.getKeyManager().attack && handeler.getMouseManager().isPressed) {
             if(worldID != null) {
                 int selezionato = selections[x][y];
-                if(isArrow("" + selezionato)) {
+                if(isArrowSelection("" + selezionato)) {
                     System.out.println("Arrow selected");
                     selections = new int[width][height];
                     selezioneAttaccoArcere(archerTileAttack.getX(), archerTileAttack.getY());
                     selections[x][y] = Tile.ATTACK;
                     attackSteps.add(coordinate);
                 } else if(isMyCharapter("" + world[x][y])) {
-                    if(!archerTileAttack.equal(archerTileAttack)) {
+                    if(!coordinate.equal(archerTileAttack)) {
                         System.out.println("Non è il charapter iniziale");
                         resetAttack();
                     }
@@ -250,7 +250,8 @@ public class World {
             } else {  }
             
         } else {
-            sendFlyAttack();
+            if(attackSteps.size() != 1)
+                sendFlyAttack();
         }
     }
     
@@ -258,30 +259,29 @@ public class World {
         selections[x][y] = Tile.ATTACK;
         String selezione;
         
-        selezione = Tile.UP + world[x][y - 1];
+        selezione = Tile.UP;
         selections[x][y - 1] = Utils.parseInt(selezione);
         
-        selezione = Tile.UP_RIGHT + world[x + 1][y - 1];
+        selezione = Tile.UP_RIGHT;
         selections[x + 1][y - 1] = Utils.parseInt(selezione);
         
-        selezione = Tile.RIGHT + world[x + 1][y];
+        selezione = Tile.RIGHT;
         selections[x + 1][y] = Utils.parseInt(selezione);
         
-        selezione = Tile.DOWN_RIGHT + world[x + 1][y + 1];
+        selezione = Tile.DOWN_RIGHT;
         selections[x + 1][y + 1] = Utils.parseInt(selezione);
         
-        selezione = Tile.DOWN + world[x][y + 1];
+        selezione = Tile.DOWN;
         selections[x][y + 1] = Utils.parseInt(selezione);
         
-        selezione = Tile.DOWN_LEFT + world[x - 1][y + 1];
+        selezione = Tile.DOWN_LEFT;
         selections[x - 1][y + 1] = Utils.parseInt(selezione);
         
-        selezione = Tile.LEFT + world[x - 1][y];
+        selezione = Tile.LEFT;
         selections[x - 1][y] = Utils.parseInt(selezione);
         
-        selezione = Tile.UP_LEFT + world[x - 1][y - 1];
+        selezione = Tile.UP_LEFT;
         selections[x - 1][y - 1] = Utils.parseInt(selezione);
-        
     }
     
     private boolean isMyCharapter(String ID) {
@@ -293,7 +293,12 @@ public class World {
         return is;
     }
     
+    private boolean isArrowSelection(String ID) {
+        return ID.length() == Tile.ARROW_SELECTION_SIZE;
+    }
+    
     private boolean isArrow(String ID) {
+        System.out.println(ID);
         return ID.length() == Tile.ARROW_ID_SIZE;
     }
     
