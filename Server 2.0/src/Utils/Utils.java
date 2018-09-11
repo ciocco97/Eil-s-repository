@@ -12,9 +12,9 @@ import server.Game;
 
 public class Utils {
     
-    public static final String SOLDIER_ID = "0";
-    public static final String ARCHER_ID = "1";
-    public static final String KING_ID = "2";
+    public static final String SOLDIER_ID = "1";
+    public static final String ARCHER_ID = "2";
+    public static final String KING_ID = "3";
   
     private static final String FULL_HEALTH = "0";
     private static final String HALF_HEALTH = "1";

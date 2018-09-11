@@ -328,7 +328,7 @@ public class Game {
                 // metto il secondo controllo per impedire di controllare anche lo stesso charapter
             {
                 Charapter defender = charapters.get(j);
-                if (attacker.isNear(defender)){    
+                if (attacker.isNear(defender)){   
                     isAttacking = true;
                     if (attacker.attack(defender)){
                         charapters.remove(j);
