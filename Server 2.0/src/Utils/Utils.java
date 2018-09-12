@@ -121,9 +121,8 @@ public class Utils {
             list.add(new Coordinate(-2,0)); //uso l'ultima coordinata per riconoscere il tipo di movimento, o di attacco o di spostamento
         else if (buffer.startsWith("m"))
             list.add(new Coordinate(-1,0));
-        else if (buffer.startsWith("f")){
-            return buffer;
-        }
+        else if (buffer.startsWith("f"))
+            list.add(new Coordinate(-3,0));
         return list;
     }
     

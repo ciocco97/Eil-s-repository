@@ -210,13 +210,11 @@ public class Game {
                     charap.setShooting(false);
         }          
     }
-    public void addAction(String data)
+    public void addAction(ArrayList<Coordinate> list)
     {
 
-        if (data.startsWith("f")) // comando per lanciare la freccia
-        {
-            ArrayList<Coordinate> list = new ArrayList();
-            list = (ArrayList)Utils.decodeMovement(data.substring(1));
+        
+            
             Coordinate coordinate= list.get(0);
             Coordinate direzione = list.get(1);
             int x = coordinate.getX();
@@ -246,7 +244,7 @@ public class Game {
                     charap.setDirection(direction);
                     charap.setShooting(true);
                 }
-        }
+        
     }
     //ritorna anche il tipo
     private int[] getIDFromCoordinate(Coordinate coord)

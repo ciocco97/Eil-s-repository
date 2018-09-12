@@ -98,13 +98,16 @@ public class Core extends Thread{
                         {
                             tempCoords.remove(tempCoords.size()-1);
                             game.addMoves(tempCoords, 1);
-                            player1.clearBuffer();
                         }
                         else if (tempCoords.get((tempCoords.size()-1)).getX()==-2)
                         {
                             tempCoords.remove(tempCoords.size()-1);
                             game.addAttack(tempCoords, 1);
-                            player1.clearBuffer();
+                        }
+                        else if (tempCoords.get((tempCoords.size()-1)).getX()==-3)
+                        {
+                            tempCoords.remove(tempCoords.size()-1);
+                            game.addAction(tempCoords);
                         }
                         else
                         {
@@ -112,13 +115,12 @@ public class Core extends Thread{
                             String dataToSend = charap.getHealth()+"-"+charap.getStrength()+"-"+charap.getDefence();
                             player1.sendString(dataToSend);
                         }
-                    }
-                     else
-                    {
-                        game.addAction(move1);
                         player1.clearBuffer();
                     }
                 }
+                
+                
+                //mosse giocatore 2
                 if (move2 != null)
                 {
                     Object data = Utils.getDataFromString(move2);
@@ -129,22 +131,24 @@ public class Core extends Thread{
                         {
                             tempCoords.remove(tempCoords.size()-1);
                             game.addMoves(tempCoords, 2);
-                            player2.clearBuffer();
                         }
                         else if (tempCoords.get((tempCoords.size()-1)).getX()==-2)
                         {
                             tempCoords.remove(tempCoords.size()-1);
                             game.addAttack(tempCoords, 2);
-                            player2.clearBuffer();
+                        }
+                        else if (tempCoords.get((tempCoords.size()-1)).getX()==-3)
+                        {
+                            tempCoords.remove(tempCoords.size()-1);
+                            game.addAction(tempCoords);
                         }
                         else
                         {
                             Charapter charap = game.getCharapterFromCoordinate(tempCoords.get(0));
                             String dataToSend = charap.getHealth()+"-"+charap.getStrength()+"-"+charap.getDefence();
-                            player1.sendString(dataToSend);
+                            player2.sendString(dataToSend);
                         }
-                        game.addAction(move2);
-                        player1.clearBuffer();
+                        player2.clearBuffer();
                     }
                 }
                 game.update(tick);
