@@ -86,6 +86,28 @@ public class Utils {
         }
         return buffer;
     }
+    
+    public static String getFinalMapToString(Game game, int index)
+    {
+        int width=game.getWidth();
+        int height=game.getHeight();
+        
+        int [][] map;
+        if (index == 1)
+            map = Game.victoryMap;
+        else
+            map = Game.looserMap;
+        String buffer = new String();
+        for (int i=0; i<width; i++){
+            for (int j=0; j<height; j++)
+            {
+                buffer += map[i][j];
+                buffer +=" ";
+            }
+            buffer +="-";
+        }
+        return buffer;
+    }
     /**
      * Metodo che decodifica la stringa ricevuta in ingrasso, può essere una lista (mossa) o una coordinata che indiza un azione
      * @param buffer Stringa che rappresenta il dato codificato
@@ -101,7 +123,7 @@ public class Utils {
             list.add(new Coordinate(-1,0));
 
         }
-        else if (buffer.startsWith("f")){
+        else if (buffer.startsWith("f") || buffer.startsWith("i")){
             return buffer;
         }
         return list;
@@ -147,6 +169,7 @@ public class Utils {
             return list;
         
     }
-       
+    
+    
     
 }

@@ -2,6 +2,27 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Launcher.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Utils/Attack.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/res/World/world</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Models/Charapter.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Models/Soldier.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Core.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Game.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Models/Arrow.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Utils/Utils.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Models/King.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/res/World/win_world</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/ServerUDP.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/Models/Archer.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/Server.java</file>
+            <file>file:/C:/Users/Alessandro/Documents/Universwità/Programmazione%20avanzata/Progetti%20Java/Programmazione%202d/Eil-s-repository/Server%202.0/src/server/ServerTCP.java</file>
+        </group>
+>>>>>>> 576ef918c7ed0f0c1668dd7e2336b67fc773d7bc
     </open-files>
 </project-private>

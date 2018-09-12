@@ -17,8 +17,9 @@ import java.util.Random;
 
 public class Game {
     
-    private int width, height;
+    private int width, height, king1ID, king2ID;
     private int[][] world, ground;
+    public static int[][] victoryMap, looserMap;
     private LinkedList<Charapter> charapters;
     private ArrayList<Move> moves;
     private LinkedList<Arrow> arrows;
@@ -38,16 +39,18 @@ public class Game {
         
     }
     public void loadWorld(String path) {
+        startTime = System.currentTimeMillis();
+        //victoryMap = loadFinalMaps(path+"win_world");
+        //looserMap = loadFinalMaps(path+"looser_world");
         String fileWorld = Utils.loadFileAsStrig(path + "world");
         String fileCharapters = Utils.loadFileAsStrig(path + "charapters");
         String[] token = fileWorld.split("\\s+");
         width = Utils.parseInt(token[0]);
         height = Utils.parseInt(token[1]);
-        charapters = new LinkedList<>();
         
         //spawnX = Utils.parseInt(token[2]);
         //spawnY = Utils.parseInt(token[3]);
-        startTime = System.currentTimeMillis();
+        
         world = new int[width][height];
         ground = new int[width][height];
         for(int y = 0; y < height; y++) 
@@ -69,8 +72,8 @@ public class Game {
             height = Utils.parseInt(token[1]);
             maxTeamID = Utils.parseInt(token[2])/2;
             Random rand = new Random();
-            int king1ID = rand.nextInt(maxTeamID);
-            int king2ID = rand.nextInt(maxTeamID) + maxTeamID + 1;
+            king1ID = rand.nextInt(maxTeamID);
+            king2ID = rand.nextInt(maxTeamID) + maxTeamID + 1;
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
@@ -91,6 +94,31 @@ public class Game {
                         }
                     }  
                 }
+    }
+    
+    private int [][] loadFinalMaps(String path)
+    {
+        String fileWorld = Utils.loadFileAsStrig(path);
+        int map[][];
+        String[] token = fileWorld.split("\\s+");
+        width = Utils.parseInt(token[0]);
+        height = Utils.parseInt(token[1]);
+        
+        //spawnX = Utils.parseInt(token[2]);
+        //spawnY = Utils.parseInt(token[3]);
+        
+        map = new int[width][height];
+        for(int y = 0; y < height; y++) 
+            for(int x = 0; x < width; x++){
+                /**
+                 * Se siamo alla terza riga e quarta colonna significa che 
+                 * abbiamo già copiato un numero di elementi pari a: 2 * numero 
+                 * totale di colonne + numero di colonne. si aggiunge 4 perchè i 
+                 * primi 4 elementi di token sono utilizzati per altri scopi.
+                 */
+                map[x][y] = Utils.parseInt(token[x + (y * width) + 4]);
+            }
+        return map;
     }
 
     public int getWidth() {
@@ -121,6 +149,7 @@ public class Game {
         for (Arrow arrow:arrows)
             arrow.tick();
         checkArrows();
+        checkVictory();
         
         
     }
@@ -338,5 +367,31 @@ public class Game {
                     
             }
         }
+    }
+    public int checkVictory()
+    {
+        boolean flag1 = false, flag2 = false;
+        for (Charapter charap:charapters)
+        {
+            if (charap.getId() == king1ID)
+                flag1 = true;
+            if (charap.getId() == king2ID)
+                flag2 = true;
+        }
+        if (flag1)
+            return 1;
+        if (flag2)
+            return 2;
+        return 0;
+    }
+    
+    public Charapter getCharapterFromCoordinate(String data)
+    {
+        ArrayList<Coordinate> coordinate = (ArrayList) Utils.decodeMovement(data.substring(1));
+        System.out.println(coordinate.get(0));
+        for (Charapter charap:charapters)
+            if (charap.getCoordinate().equals(coordinate.get(0)))
+                return charap;
+        return null;
     }
 }

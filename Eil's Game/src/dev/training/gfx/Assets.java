@@ -39,7 +39,9 @@ public class Assets {
         archer100 = sheet.crop(0, 380, 350, 350);
         archer50 = sheet.crop(351, 380, 350, 350);
         archer10 = sheet.crop(702, 380, 350, 350);
-        king100 = king50 = king10 = sheet.crop(0, 731, 350, 350);
+        king100 = sheet.crop(0, 731, 350, 350);
+        king50 = sheet.crop(351,731,350,350);
+        king10 = sheet.crop(702,731,350,350);
         
         soldier100_attack = sheet.crop(1053,29,350,350);
         soldier50_attack = sheet.crop(1404,29,350,350);

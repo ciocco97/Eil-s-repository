@@ -48,8 +48,11 @@ public class Tile {
     public static final String LEFT = "7";
     public static final String UP_LEFT = "8";
     
-    public static final int ALLIES_ID = 15;
+    private static final int ALLIES_ID = 15;
     private static final int OPPONENTS_ID = 16;
+    
+    private static final int WIN_TILE = 22;
+    private static final int LOOSE_TILE = 23;
      
     /**
      * Contiene ogni singolo tipo di Tile
@@ -61,6 +64,8 @@ public class Tile {
     private static Tile grassTile = new GrassTile(GRASS_TILE);
     private static Tile dirtTile = new DirtTile(DIRT_TILE);
     private static Tile stoneTile = new StoneTile(STONE_TILE);
+//    private static Tile winTile = new Tile(Assets.winTile, WIN_TILE);
+//    private static Tile looseTile = new Tile(Assets.looseTile, LOOSE_TILE);
     
     private static Tile selectedTile = new SelectedTile(SELECT);
     private static Tile attackTile = new AttackTile(ATTACK);

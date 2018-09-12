@@ -2,11 +2,12 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ServerUDP extends Thread{
     boolean play;
-    private DatagramSocket socket1;
-    private DatagramSocket socket2;
+    private DatagramSocket socket;
     private InetAddress ia1;
     private InetAddress ia2;
     
@@ -18,8 +19,7 @@ public class ServerUDP extends Thread{
         this.ia1 = ia1;
         this.ia2 = ia2;
         try {
-            socket1 = new DatagramSocket();
-            socket2 = new DatagramSocket();
+            socket = new DatagramSocket();
         } catch (SocketException ex) { 
             System.out.println("Errore creazione serverUDP\n" + ex.getMessage()); 
         }
@@ -37,14 +37,30 @@ public class ServerUDP extends Thread{
             byte[] dataBytes = data.getBytes();
             DatagramPacket packet = new DatagramPacket(dataBytes, dataBytes.length, ia1, UDPORT);
             DatagramPacket packet2 = new DatagramPacket(dataBytes, dataBytes.length, ia2, UDPORT);
-            socket1.send(packet);
-            socket2.send(packet2);
+            socket.send(packet);
+            socket.send(packet2);
+
             
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
-
+    public void sendSingle(String data, int index)
+    {
+        try {
+            InetAddress ia;
+            if (index == 1)
+                ia = ia1;
+            else
+                ia = ia2;
+            byte[] dataBytes = data.getBytes();
+            DatagramPacket packet = new DatagramPacket(dataBytes, dataBytes.length, ia, UDPORT);
+            socket.send(packet);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerUDP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
     public boolean isPlay() { return play; }
 
     public void setPlay(boolean play) { this.play = play; }
