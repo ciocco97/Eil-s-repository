@@ -19,7 +19,8 @@ public class World {
      */
     private int width, height, spawnX, spawnY;
     
-    private String actionGroundAttack = "a", actionCharapterMoovement = "m", actionArcherAttack = "f";
+    private String actionGroundAttack = "a", actionCharapterMoovement = "m", 
+            actionArcherAttack = "f", actionRequestInfo = "i";
 
     // Stacco tra gli omini propri e quelli avversari
     private final int DELTA_OMINI = 100;
@@ -71,8 +72,27 @@ public class World {
         if (world!=null){
             selection();
             attack();
+            request();
         }
                
+    }
+    
+    public void request() {
+        int x = handeler.getMouseManager().getxTile();
+        int y = handeler.getMouseManager().getyTile();
+        
+        if(handeler.getKeyManager().request) {
+            resetAttack(); resetSelection();
+            if(handeler.getMouseManager().isPressed) {
+                if(!(x < 0 || y < 0 || x >= width || y >= height)) {
+                    String IDWorld = "" + world[x][y];
+                    if(isMyCharapter(IDWorld)) {
+                        pathSteps.add(new Coordinate(x, y));
+                        handeler.getGame().getClient().inviaPath(pathSteps, actionRequestInfo);
+                    }
+                }
+            }
+        }
     }
     
     public void render(Graphics g) {

@@ -8,6 +8,7 @@ public class KeyManager implements KeyListener{
     private boolean[] keys;
     public boolean up, down, left, right;
     public boolean attack;
+    public boolean request;
     
     public KeyManager() {
         keys = new boolean[256];
@@ -19,10 +20,12 @@ public class KeyManager implements KeyListener{
         left = keys[KeyEvent.VK_A];
         right = keys[KeyEvent.VK_D];
         attack = keys[KeyEvent.VK_CONTROL];
+        request = keys[KeyEvent.VK_R];
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
+        
     }
 
     @Override

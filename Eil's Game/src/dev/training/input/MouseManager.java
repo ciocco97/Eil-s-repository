@@ -12,7 +12,7 @@ public class MouseManager implements MouseListener{
     int width, height;
     
     // Valori degli input
-    public boolean up, down, left, right, isPressed;
+    public boolean up, down, left, right, isPressed, isClicked;
 
     // margini della cornice in cui è catturato il movimento
     private int xLeft, xRight, yTop, yBottom;
@@ -96,7 +96,7 @@ public class MouseManager implements MouseListener{
     public void setHandeler(Handeler handeler) { this.handeler = handeler; }
 
     @Override
-    public void mouseClicked(MouseEvent me) { }
+    public void mouseClicked(MouseEvent me) { this.isClicked = true; }
 
     @Override
     public void mousePressed(MouseEvent me) { this.isPressed = true; }

@@ -3,6 +3,7 @@ package dev.conn.client;
 import dev.training.Game;
 import dev.training.Handeler;
 import dev.training.Utils;
+import dev.training.display.InformationPane;
 import dev.training.tiles.Tile;
 import java.io.*;
 import java.net.*;
@@ -28,6 +29,7 @@ public class Client extends Thread {
     private ObjectInputStream in;
     private Socket socket;
     private String serverAddress;
+    private InformationPane informationPane;
     
     private Handeler handeler;
     
@@ -75,6 +77,17 @@ public class Client extends Thread {
         
     }
     
+    private void recive() {
+        String ricezione = null;
+        try {
+            ricezione = in.readUTF();
+        } catch (IOException ex) { System.out.println(ex.getMessage()); }
+        System.out.println("Ricezione da server: " + ricezione);
+        if(ricezione != null) {
+            informationPane = new InformationPane(ricezione);
+        }
+    }
+    
     public void inviaPath(ArrayList pathSteps, String action) {
         try {
             out.writeUTF(action + pathSteps.toString());
@@ -83,6 +96,8 @@ public class Client extends Thread {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
+        if(action == "i")
+            recive();
     }
     
     public void setHandeler(Handeler handeler) { this.handeler = handeler; }
