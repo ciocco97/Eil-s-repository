@@ -103,6 +103,7 @@ public class World {
          * solamente dove serve
          */
         update();
+        System.out.println("in world: "+Tile.TILEHEIGHT);
         int xStart = (int) Math.max(0, handeler.getGameCamera().getxOffset() / Tile.TILEWIDTH);
         int xEnd = (int) Math.min(width, (handeler.getGameCamera().getxOffset() + handeler.getWidth()) / Tile.TILEWIDTH + 1);
         int yStart = (int) Math.max(0, handeler.getGameCamera().getyOffset() / Tile.TILEHEIGHT);

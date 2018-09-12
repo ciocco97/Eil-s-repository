@@ -180,7 +180,7 @@ public class Launcher extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int tileSize;
+        int tileSize = 100;
         int selectedTile = jComboBox1.getSelectedIndex();
         switch(selectedTile){
             case 0:tileSize = 100;break;
@@ -190,6 +190,10 @@ public class Launcher extends javax.swing.JFrame {
             case 4:tileSize = 180;break;
             case 5:tileSize = 200;break;
         }
+        
+        //Tile.TILEHEIGHT = tileSize;
+        //Tile.TILEWIDTH = tileSize;
+        System.out.println(tileSize);
         int width, height;
         if (jCheckBox1.isSelected()){
             width = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -203,8 +207,9 @@ public class Launcher extends javax.swing.JFrame {
         String serverAddress = jTextField2.getText();
         Game game = new Game("Eil's Game", serverAddress, width, height);
         game.start();
-        JOptionPane.showMessageDialog(this, "In attesa dell'avversario");
         this.setVisible(false);
+        JOptionPane.showMessageDialog(this, "In attesa dell'avversario");
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed

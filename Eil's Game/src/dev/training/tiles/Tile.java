@@ -10,7 +10,6 @@ public class Tile {
     public static char TEAM;
     
     // Costanti
-    public static final int TILEWIDTH = 120, TILEHEIGHT = 120;
     public static final int SELECT = 20;
     public static final int ATTACK = 21;
     public static final int CHARAPTER_ID_SIZE = 4;
@@ -53,6 +52,8 @@ public class Tile {
     
     private static final int WIN_TILE = 22;
     private static final int LOOSE_TILE = 23;
+    
+    public static int TILEWIDTH=120, TILEHEIGHT=120;
      
     /**
      * Contiene ogni singolo tipo di Tile
@@ -101,6 +102,7 @@ public class Tile {
     
     public static void render(Graphics g, int x, int y, String data) // owner serve per sapere chi sono i cattivi
     {
+        System.out.println(Tile.TILEHEIGHT);
         int team = Utils.parseInt(data.charAt(TEAM_POSITION)+"");
         Tile tile = null;
         switch (data.length()) {

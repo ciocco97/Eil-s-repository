@@ -26,6 +26,7 @@ public class InformationPane extends javax.swing.JFrame {
         "Ha un tic insopportabile", "Il suo hobby è la pesca", 
         "Quando torna a casa guarda i cantieri"};
 
+        
     /**
      * Creates new form informationPane
      * @param info
@@ -42,6 +43,7 @@ public class InformationPane extends javax.swing.JFrame {
         jLabelVita.setText(informazioni[0]);
         int indiceDescrizione = random.nextInt(descrizioni.length);
         jLabelDescrizione.setText(descrizioni[indiceDescrizione]);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 

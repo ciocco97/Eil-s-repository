@@ -70,6 +70,7 @@ public class Game {
             Random rand = new Random();
             king1ID = rand.nextInt(maxTeamID);
             king2ID = rand.nextInt(maxTeamID) + maxTeamID + 1;
+            boolean archerOrSoldier = true;
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
                     int ID = Utils.parseInt(token[x + (y * width) + 4]);
@@ -81,14 +82,14 @@ public class Game {
                             charapters.add(new King (owner, ID, new Coordinate(x,y)));
                         else
                         {
-                        if (rand.nextBoolean()){
-                            Archer archer = new Archer(owner, ID, new Coordinate(x,y));
-                            charapters.add(archer);
+                        if (archerOrSoldier){
+                            charapters.add(new Archer(owner, ID, new Coordinate(x,y)));
                         }
                         else
                             charapters.add(new Soldier(owner, ID, new Coordinate(x,y)));
                         }
                     }  
+                    archerOrSoldier = !archerOrSoldier;
                 }
     }
     
