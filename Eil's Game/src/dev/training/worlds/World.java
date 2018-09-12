@@ -21,9 +21,6 @@ public class World {
     
     private String actionGroundAttack = "a", actionCharapterMoovement = "m", 
             actionArcherAttack = "f", actionRequestInfo = "i";
-
-    // Stacco tra gli omini propri e quelli avversari
-    private final int DELTA_OMINI = 100;
     
     private boolean path, groundAttack, flyAttack;
     
@@ -34,7 +31,7 @@ public class World {
      * omini e una la selezione dell'utente; infine toGo rappresenta ciò che 
      * verrà inviato al server
      */
-    private int[][] world, selections;                                    // Da togliere (abcd)
+    private int[][] world, selections;
     private ArrayList<Coordinate> pathSteps, attackSteps;
     
     /**

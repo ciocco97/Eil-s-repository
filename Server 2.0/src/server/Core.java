@@ -90,7 +90,6 @@ public class Core extends Thread{
                 //se non sono nulle, le mando a Game per elaborarle
                 if (move1 != null)
                 {
-                    System.out.println(move1);
                     Object data = Utils.getDataFromString(move1);
                     if (data.getClass() == tempCoords.getClass())
                     {
@@ -107,27 +106,21 @@ public class Core extends Thread{
                             game.addAttack(tempCoords, 1);
                             player1.clearBuffer();
                         }
+                        else
+                        {
+                            Charapter charap = game.getCharapterFromCoordinate(tempCoords.get(0));
+                            String dataToSend = charap.getHealth()+"-"+charap.getStrength()+"-"+charap.getDefence();
+                            player1.sendString(dataToSend);
+                        }
                     }
                      else
                     {
-                        System.out.println(move1);
-                        String action = move1;
-                        if (action.startsWith("i"))
-                        {
-                            Charapter charap = game.getCharapterFromCoordinate(action.substring(1));
-                            String dataToSend = charap.getHealth()+"-"+charap.getStrength()+"-"+charap.getDefence();
-                            System.out.println(dataToSend);
-                            player1.sendString(dataToSend);
-                            
-                        }
-                        else
-                            game.addAction(action);
+                        game.addAction(move1);
                         player1.clearBuffer();
                     }
                 }
                 if (move2 != null)
                 {
-                    System.out.println(move2);
                     Object data = Utils.getDataFromString(move2);
                     if (data.getClass() == tempCoords.getClass())
                     {
@@ -144,41 +137,34 @@ public class Core extends Thread{
                             game.addAttack(tempCoords, 2);
                             player2.clearBuffer();
                         }
-                    }
-                     else
-                    {
-                        String action = move2;
-                        System.out.println(move2);
-                        if (action.startsWith("i"))
-                        {
-                            Charapter charap = game.getCharapterFromCoordinate(action);
-                            String dataToSend = charap.getHealth()+"-"+charap.getStrength()+"-"+charap.getDefence();
-                            System.out.println(dataToSend);
-                            player2.sendString(dataToSend);
-                            
-                        }
                         else
-                            game.addAction(action);
+                        {
+                            Charapter charap = game.getCharapterFromCoordinate(tempCoords.get(0));
+                            String dataToSend = charap.getHealth()+"-"+charap.getStrength()+"-"+charap.getDefence();
+                            player1.sendString(dataToSend);
+                        }
+                        game.addAction(move2);
                         player1.clearBuffer();
                     }
                 }
                 game.update(tick);
                 String map = Utils.mapToString(game);
                 serverUDP.send(map);
-                
-//                int victoryIndex = game.checkVictory();
-//                if (victoryIndex == 1){
-//                    String victoryMap = Utils.getFinalMapToString(game, 1);
-//                    String looserMap = Utils.getFinalMapToString(game, 2);
-//                    serverUDP.sendSingle(victoryMap, 1);
-//                    serverUDP.sendSingle(looserMap, 2);
-//                }
-//                else if (victoryIndex == 2){
-//                    String victoryMap = Utils.getFinalMapToString(game, 1);
-//                    String looserMap = Utils.getFinalMapToString(game, 2);
-//                    serverUDP.sendSingle(victoryMap, 2);
-//                    serverUDP.sendSingle(looserMap, 1);
-//                }
+                int victoryIndex = game.checkVictory();
+                if (victoryIndex == 1){
+                    String victoryMap = Utils.getFinalMapToString(game, 1);
+                    String looserMap = Utils.getFinalMapToString(game, 2);
+                    serverUDP.sendSingle(victoryMap, Utils.parseInt(RED_TEAM_ID));
+                    serverUDP.sendSingle(looserMap, Utils.parseInt(BLUE_TEAM_ID));
+                    play = false;
+                }
+                else if (victoryIndex == 2){
+                    String victoryMap = Utils.getFinalMapToString(game, 1);
+                    String looserMap = Utils.getFinalMapToString(game, 2);
+                    serverUDP.sendSingle(victoryMap, Utils.parseInt(BLUE_TEAM_ID));
+                    serverUDP.sendSingle(looserMap, Utils.parseInt(RED_TEAM_ID));
+                    play = false;
+                }
                 timer = 0;
                 tick = (tick+1)%8;
             }

@@ -119,11 +119,9 @@ public class Utils {
         ArrayList list = decodeMovement(buffer.substring(1));
         if (buffer.startsWith("a"))
             list.add(new Coordinate(-2,0)); //uso l'ultima coordinata per riconoscere il tipo di movimento, o di attacco o di spostamento
-        else if (buffer.startsWith("m")){
+        else if (buffer.startsWith("m"))
             list.add(new Coordinate(-1,0));
-
-        }
-        else if (buffer.startsWith("f") || buffer.startsWith("i")){
+        else if (buffer.startsWith("f")){
             return buffer;
         }
         return list;

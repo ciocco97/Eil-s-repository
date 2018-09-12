@@ -16,10 +16,19 @@ public class InformationPane extends javax.swing.JFrame {
         "Ernesto", "Enzo", "Falco", "Franco", "Giuseppe", "Gertrudo", "Genoveffo", "Giocondo", 
         "Ilario", "James", "Ken", "Lucrezio", "Leonardo", "Lucio", "Mario", "Minosse",
         "Narciso", "Nerone", "Osvaldo", "Paolino", "Pino", "Pierino", "Peppino", 
-        "Qui", "Quo", "Qua", "Ramarro"};
+        "Qui", "Quo", "Qua", "Ramarro", "Severo", "Salomone", "Traiano", "Timone", 
+        "Ugo", "Valentino", "Zagabrio"};
+    
+    String[] cognomi = {"da Lampedusa", "Bevi l'Acqua"};
+    
+    String[] descrizioni = {"Ha moglie e figli", "Gli piacciono le anatre", 
+        "In cantina possiede una pala", "Domani ha un impegno molto importante", 
+        "Ha un tic insopportabile", "Il suo hobby è la pesca", 
+        "Quando torna a casa guarda i cantieri"};
 
     /**
      * Creates new form informationPane
+     * @param info
      */
     public InformationPane(String info) {
         initComponents();
@@ -28,9 +37,11 @@ public class InformationPane extends javax.swing.JFrame {
         jLabelDifesa.setText(informazioni[2]);
         Random random = new Random();
         int indiceNome = random.nextInt(nomi.length);
-        jLabelNome.setText(nomi[indiceNome]);
+        int indiceCognome = random.nextInt(cognomi.length);
+        jLabelNome.setText(nomi[indiceNome] + " " + cognomi[indiceCognome]);
         jLabelVita.setText(informazioni[0]);
-        this.setVisible(true);
+        int indiceDescrizione = random.nextInt(descrizioni.length);
+        jLabelDescrizione.setText(descrizioni[indiceDescrizione]);
     }
 
     /**

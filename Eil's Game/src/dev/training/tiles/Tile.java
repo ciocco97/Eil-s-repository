@@ -64,8 +64,8 @@ public class Tile {
     private static Tile grassTile = new GrassTile(GRASS_TILE);
     private static Tile dirtTile = new DirtTile(DIRT_TILE);
     private static Tile stoneTile = new StoneTile(STONE_TILE);
-//    private static Tile winTile = new Tile(Assets.winTile, WIN_TILE);
-//    private static Tile looseTile = new Tile(Assets.looseTile, LOOSE_TILE);
+    private static Tile winTile = new Tile(Assets.winTile, WIN_TILE);
+    private static Tile looseTile = new Tile(Assets.looseTile, LOOSE_TILE);
     
     private static Tile selectedTile = new SelectedTile(SELECT);
     private static Tile attackTile = new AttackTile(ATTACK);
@@ -116,8 +116,12 @@ public class Tile {
                 break;
             // è solo un pezzo del mondo
             case GROUND_ID_SIZE:
-                int IdentificationNumber = Utils.parseInt(data);
-                tile = tiles[IdentificationNumber];
+                int identificationNumber = Utils.parseInt(data);
+                tile = tiles[identificationNumber];
+                if(identificationNumber == WIN_TILE)
+                    tiles[ALLIES_ID].render(g, x, y);
+                else if(identificationNumber == LOOSE_TILE)
+                    tiles[OPPONENTS_ID].render(g, x, y);
                 break;
             case ARROW_ID_SIZE:
                 int direction = Utils.parseInt(data.substring(0, 1));

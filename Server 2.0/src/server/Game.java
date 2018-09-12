@@ -40,17 +40,13 @@ public class Game {
     }
     public void loadWorld(String path) {
         startTime = System.currentTimeMillis();
-        //victoryMap = loadFinalMaps(path+"win_world");
-        //looserMap = loadFinalMaps(path+"looser_world");
+        victoryMap = loadFinalMaps(path+"winnerWorld");
+        looserMap = loadFinalMaps(path+"looserWorld");
         String fileWorld = Utils.loadFileAsStrig(path + "world");
         String fileCharapters = Utils.loadFileAsStrig(path + "charapters");
         String[] token = fileWorld.split("\\s+");
         width = Utils.parseInt(token[0]);
         height = Utils.parseInt(token[1]);
-        
-        //spawnX = Utils.parseInt(token[2]);
-        //spawnY = Utils.parseInt(token[3]);
-        
         world = new int[width][height];
         ground = new int[width][height];
         for(int y = 0; y < height; y++) 
@@ -103,10 +99,6 @@ public class Game {
         String[] token = fileWorld.split("\\s+");
         width = Utils.parseInt(token[0]);
         height = Utils.parseInt(token[1]);
-        
-        //spawnX = Utils.parseInt(token[2]);
-        //spawnY = Utils.parseInt(token[3]);
-        
         map = new int[width][height];
         for(int y = 0; y < height; y++) 
             for(int x = 0; x < width; x++){
@@ -378,19 +370,17 @@ public class Game {
             if (charap.getId() == king2ID)
                 flag2 = true;
         }
-        if (flag1)
+        if (!flag1)
             return 1;
-        if (flag2)
+        if (!flag2)
             return 2;
         return 0;
     }
     
-    public Charapter getCharapterFromCoordinate(String data)
+    public Charapter getCharapterFromCoordinate(Coordinate coord)
     {
-        ArrayList<Coordinate> coordinate = (ArrayList) Utils.decodeMovement(data.substring(1));
-        System.out.println(coordinate.get(0));
         for (Charapter charap:charapters)
-            if (charap.getCoordinate().equals(coordinate.get(0)))
+            if (charap.getCoordinate().equals(coord))
                 return charap;
         return null;
     }

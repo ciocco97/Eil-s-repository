@@ -18,7 +18,8 @@ public class Assets {
                                 king100, king50, king10,
                                 soldier100_attack, soldier50_attack, soldier10_attack,
                                 archer100_attack, archer50_attack, archer10_attack,
-                                up, upRight, right, downRight, down, downLeft, left, upLeft;
+                                up, upRight, right, downRight, down, downLeft, left, upLeft,
+                                winTile, looseTile;
     
                                     
     
@@ -32,6 +33,8 @@ public class Assets {
         grass = sheet.crop(40, 0, 20, 20);
         dirt = sheet.crop(60, 0, 20, 20);
         stone = sheet.crop(80, 0, 20, 20);
+        winTile = sheet.crop(1053,731,350,350);
+        looseTile = sheet.crop(1404, 731, 350, 350);
         
         soldier100 = sheet.crop(0, 29, 350, 350);
         soldier50 = sheet.crop(351, 29, 350, 350);
