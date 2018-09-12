@@ -37,6 +37,7 @@ public class Tile {
     public static final int GRASS_TILE = 10;
     public static final int DIRT_TILE = 11;
     public static final int STONE_TILE = 12;
+    public static final int REQUEST_TILE = 13;
     
     public static final String UP = "1";
     public static final String UP_RIGHT = "2";
@@ -67,6 +68,7 @@ public class Tile {
     private static Tile stoneTile = new StoneTile(STONE_TILE);
     private static Tile winTile = new Tile(Assets.winTile, WIN_TILE);
     private static Tile looseTile = new Tile(Assets.looseTile, LOOSE_TILE);
+    private static Tile requestTile = new Tile(Assets.requestTile, REQUEST_TILE);
     
     private static Tile selectedTile = new SelectedTile(SELECT);
     private static Tile attackTile = new AttackTile(ATTACK);
@@ -102,7 +104,6 @@ public class Tile {
     
     public static void render(Graphics g, int x, int y, String data) // owner serve per sapere chi sono i cattivi
     {
-        System.out.println(Tile.TILEHEIGHT);
         int team = Utils.parseInt(data.charAt(TEAM_POSITION)+"");
         Tile tile = null;
         switch (data.length()) {

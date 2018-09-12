@@ -19,7 +19,7 @@ public class Assets {
                                 soldier100_attack, soldier50_attack, soldier10_attack,
                                 archer100_attack, archer50_attack, archer10_attack,
                                 up, upRight, right, downRight, down, downLeft, left, upLeft,
-                                winTile, looseTile;
+                                winTile, looseTile, requestTile;
     
                                     
     
@@ -35,6 +35,7 @@ public class Assets {
         stone = sheet.crop(80, 0, 20, 20);
         winTile = sheet.crop(1053,731,350,350);
         looseTile = sheet.crop(1404, 731, 350, 350);
+        requestTile = sheet.crop(220, 0, 20, 20);
         
         soldier100 = sheet.crop(0, 29, 350, 350);
         soldier50 = sheet.crop(351, 29, 350, 350);

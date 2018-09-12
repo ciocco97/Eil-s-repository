@@ -68,8 +68,8 @@ public class Game {
             height = Utils.parseInt(token[1]);
             maxTeamID = Utils.parseInt(token[2])/2;
             Random rand = new Random();
-            king1ID = rand.nextInt(maxTeamID);
-            king2ID = rand.nextInt(maxTeamID) + maxTeamID + 1;
+            king1ID = rand.nextInt(maxTeamID) +1;
+            king2ID = rand.nextInt(maxTeamID+1) + maxTeamID ;
             boolean archerOrSoldier = true;
              for(int y = 0; y < height; y++) 
                 for(int x = 0; x < width; x++){
@@ -364,7 +364,7 @@ public class Game {
         boolean flag1 = false, flag2 = false;
         for (Charapter charap:charapters)
         {
-            if (charap.getId() == king1ID)
+            if (charap.getId() == king1ID) //non c'è il king1, ha vinto il team 2
                 flag1 = true;
             if (charap.getId() == king2ID)
                 flag2 = true;
