@@ -22,7 +22,7 @@ public class World {
     private String actionGroundAttack = "a", actionCharapterMoovement = "m", 
             actionArcherAttack = "f", actionRequestInfo = "i";
     
-    private boolean path, groundAttack, flyAttack;
+    private boolean path, groundAttack, flyAttack, request;
     
     /**
      * Una matrice di ID che indicano come sono disposti i "Tile" all'interno 
@@ -79,16 +79,21 @@ public class World {
         int y = handeler.getMouseManager().getyTile();
         
         if(handeler.getKeyManager().request) {
-            resetAttack(); resetSelection();
             if(handeler.getMouseManager().isPressed) {
                 if(!(x < 0 || y < 0 || x >= width || y >= height)) {
                     String IDWorld = "" + world[x][y];
                     if(isMyCharapter(IDWorld)) {
-                        pathSteps.add(new Coordinate(x, y));
-                        handeler.getGame().getClient().inviaPath(pathSteps, actionRequestInfo);
+                        if(!request) {
+                            request = true;
+                            pathSteps.add(new Coordinate(x, y));
+                            handeler.getGame().getClient().inviaPath(pathSteps, actionRequestInfo);
+                        }
                     }
                 }
             }
+        } else if (request) {
+            request = false;
+            resetAttack();
         }
     }
     
